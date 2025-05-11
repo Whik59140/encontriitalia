@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { getCityBySlug, getAllCategories, getAllCities } from '@/lib/utils/geo';
 // import type { City, Category } from '@/types/geo'; // Removed as types are inferred
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardTitle } from '@/components/ui/card';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
 import { DirectEncounterCTA } from '@/components/common/direct-encounter-cta';
 

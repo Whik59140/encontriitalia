@@ -193,6 +193,7 @@ export function DirectEncounterCTA({ cityName }: DirectEncounterCTAProps) {
         {step === 'confirmation' && selectedButtonInfo && (
           <Card className="max-w-md mx-auto shadow-xl bg-white dark:bg-gray-800">
             <CardHeader>
+              {/* eslint-disable-next-line react/no-unescaped-entities */}
               <CardTitle className="text-3xl font-bold text-purple-600 dark:text-purple-400">Conferma l'Accesso! ✅</CardTitle>
             </CardHeader>
             <CardContent>
