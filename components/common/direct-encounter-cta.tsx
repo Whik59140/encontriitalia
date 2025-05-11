@@ -52,26 +52,60 @@ const encounterButtons: EncounterButton[] = [
   },
 ];
 
+// Helper for Emojis
+const categoryEmojis: { [key: string]: string } = {
+  gay: '🏳️‍🌈',
+  donne: '💃',
+  trans: '⚧️',
+  milf: '💋',
+  ragazze: '✨',
+  studentesse: '🎓',
+};
+
+// Map for category display names in confirmation
+const categoryDisplayNames: { [key: string]: string } = {
+  gay: 'Gay',
+  donne: 'Donne',
+  trans: 'Trans',
+  milf: 'MILF',
+  ragazze: 'Ragazze',
+  studentesse: 'Studentesse',
+};
+
+// SVG Icon Component
+function ClickIcon({ className }: { className?: string }) {
+  return (
+    <svg 
+      xmlns="http://www.w3.org/2000/svg" 
+      enable-background="new 0 0 100 100" 
+      viewBox="0 0 100 100" 
+      className={className}
+      fill="currentColor" // Added fill currentColor to inherit text color
+    >
+      <path d="M91.41,78.68L77.26,64.54l8.49-8.49c0.48-0.48,0.68-1.17,0.54-1.84c-0.15-0.66-0.62-1.21-1.26-1.45L37.66,35.08c-0.74-0.27-1.56-0.09-2.12,0.46c-0.55,0.56-0.73,1.38-0.46,2.12l17.68,47.37c0.24,0.64,0.79,1.11,1.45,1.26c0.66,0.15,1.36-0.06,1.84-0.54l8.49-8.49l14.14,14.15c0.39,0.39,0.9,0.58,1.41,0.58c0.51,0,1.03-0.19,1.42-0.58l9.9-9.9C92.19,80.72,92.19,79.46,91.41,78.68z M80.09,87.16L65.95,73.02c-0.38-0.37-0.88-0.59-1.41-0.59c-0.54,0-1.04,0.22-1.42,0.59l-7.7,7.7L40.36,40.36l40.36,15.06l-7.7,7.7c-0.37,0.38-0.59,0.88-0.59,1.42c0,0.53,0.22,1.03,0.59,1.41l14.14,14.14L80.09,87.16z M36,24V10c0-1.1,0.9-2,2-2s2,0.9,2,2v14c0,1.1-0.9,2-2,2S36,25.1,36,24z M24,40H10c-1.1,0-2-0.9-2-2s0.9-2,2-2h14c1.1,0,2,0.9,2,2S25.1,40,24,40z M46.49,29.51c-0.78-0.78-0.78-2.05,0-2.83l9.9-9.9c0.78-0.78,2.05-0.78,2.83,0c0.78,0.78,0.78,2.05,0,2.83l-9.9,9.9c-0.39,0.39-0.9,0.59-1.41,0.59S46.88,29.91,46.49,29.51z M29.51,46.49c0.78,0.78,0.78,2.05,0,2.83l-9.9,9.9c-0.39,0.39-0.9,0.59-1.41,0.59s-1.02-0.2-1.41-0.59c-0.78-0.78-0.78-2.05,0-2.83l9.9-9.9C27.47,45.7,28.73,45.7,29.51,46.49z M29.51,26.69c0.78,0.78,0.78,2.05,0,2.83c-0.39,0.39-0.9,0.59-1.41,0.59s-1.02-0.2-1.41-0.59l-9.9-9.9c-0.78-0.78-0.78-2.05,0-2.83c0.78-0.78,2.05-0.78,2.83,0L29.51,26.69z"/>
+    </svg>
+  );
+}
+
 interface DirectEncounterCTAProps {
   cityName?: string;
 }
 
 export function DirectEncounterCTA({ cityName }: DirectEncounterCTAProps) {
   const [step, setStep] = useState<'selection' | 'confirmation'>('selection');
-  const [selectedAffiliateUrl, setSelectedAffiliateUrl] = useState<string | null>(null);
+  const [selectedButtonInfo, setSelectedButtonInfo] = useState<EncounterButton | null>(null);
 
-  function handleCategoryClick(url: string) {
-    setSelectedAffiliateUrl(url);
+  function handleCategoryClick(buttonInfo: EncounterButton) {
+    setSelectedButtonInfo(buttonInfo);
     setStep('confirmation');
+    window.scrollTo(0, 0);
   }
 
   function handleConfirmation() {
-    if (selectedAffiliateUrl) {
-      window.location.href = selectedAffiliateUrl;
+    if (selectedButtonInfo?.affiliateUrl) {
+      window.open(selectedButtonInfo.affiliateUrl, '_blank');
     } else {
-      // Fallback or error, though this case should ideally not be reached if UI is correct
-      console.error('No affiliate URL selected');
-      // Optionally redirect to a generic page or show an error message
+      console.error('No affiliate URL selected or button info missing');
     }
   }
 
@@ -110,44 +144,69 @@ export function DirectEncounterCTA({ cityName }: DirectEncounterCTAProps) {
                 <span>Solo la tua Email</span>
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 md:gap-6 max-w-2xl md:max-w-3xl lg:max-w-4xl xl:max-w-6xl mx-auto">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 md:gap-5 max-w-2xl md:max-w-4xl lg:max-w-6xl xl:max-w-screen-xl mx-auto">
               {encounterButtons.map((buttonInfo) => (
                 <div
                   key={buttonInfo.id}
-                  onClick={() => handleCategoryClick(buttonInfo.affiliateUrl)}
-                  className="p-3 h-24 sm:p-4 sm:h-28 flex flex-col items-center justify-center rounded-lg 
-                             border-2 border-purple-400 dark:border-purple-500 
-                             hover:shadow-xl hover:border-purple-600 dark:hover:border-purple-400
-                             transition-all duration-200 ease-in-out cursor-pointer group transform hover:-translate-y-1 
-                             bg-purple-500 hover:bg-purple-600 dark:bg-purple-600 dark:hover:bg-purple-700 text-center"
+                  onClick={() => handleCategoryClick(buttonInfo)}
+                  className="relative overflow-hidden rounded-xl shadow-lg border-2 border-purple-400 dark:border-purple-500 
+                             hover:shadow-2xl hover:border-purple-300 dark:hover:border-purple-400 
+                             transition-all duration-300 ease-in-out cursor-pointer group transform hover:-translate-y-1.5 
+                             bg-gray-700 h-36 sm:h-40 md:h-44" // Adjusted height and rounded-xl
                 >
-                  <span className="block text-sm sm:text-base md:text-lg font-bold text-white group-hover:text-purple-100 transition-colors duration-300">
-                    {buttonInfo.label}
-                  </span>
-                  <span className="block text-[0.7rem] sm:text-xs text-purple-100 group-hover:text-white transition-colors duration-300 mt-0.5 sm:mt-1 ">
-                    Accesso Gratuito in 1 Min!
-                  </span>
+                  <Image
+                    src={buttonInfo.imageSrc}
+                    alt={buttonInfo.label}
+                    layout="fill"
+                    objectFit="cover"
+                    className="absolute inset-0 transition-transform duration-300 ease-in-out group-hover:scale-105" // slightly less scale
+                  />
+                  <div // Overlay for all content
+                    className="absolute inset-0 bg-black/50 group-hover:bg-black/40 transition-colors duration-300 
+                               flex flex-col justify-around items-center text-center p-2 sm:p-2.5 z-10" // justify-around, reduced padding slightly
+                  >
+                    {/* Top content: Category name + Emoji */}
+                    <div className="text-white text-base sm:text-lg md:text-xl font-bold group-hover:text-yellow-300 transition-colors duration-300 leading-tight px-1">
+                      {categoryEmojis[buttonInfo.id] || '➡️'} {buttonInfo.label}
+                    </div>
+
+                    {/* Middle content: "Clicca" button with SVG icon */}
+                    <div className="inline-flex items-center justify-center bg-yellow-400 hover:bg-yellow-500 text-gray-900 
+                                   py-2 px-3 sm:py-2 sm:px-4 rounded-lg shadow-lg 
+                                   group-hover:scale-110 transform transition-all duration-200 ease-in-out" // more prominent scale
+                    >
+                      <span className="text-sm sm:text-base font-semibold">Clicca</span>
+                      <ClickIcon className="w-4 h-4 sm:w-5 sm:h-5 ml-1.5 sm:ml-2 text-gray-900 group-hover:animate-ping" />
+                    </div>
+
+                    {/* Bottom content: Sub-text */}
+                    <div className="text-xs sm:text-sm text-gray-100 group-hover:text-yellow-200 transition-colors duration-300 font-medium px-1">
+                      {cityName ? `Profili Verificati da ${cityName} ✅` : 'Profili Verificati ✅'}
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>
           </>
         )}
 
-        {step === 'confirmation' && (
+        {step === 'confirmation' && selectedButtonInfo && (
           <Card className="max-w-md mx-auto shadow-xl bg-white dark:bg-gray-800">
             <CardHeader>
-              <CardTitle className="text-3xl font-bold text-purple-600 dark:text-purple-300">Accesso Gratuito!</CardTitle>
+              <CardTitle className="text-3xl font-bold text-purple-600 dark:text-purple-400">Conferma l'Accesso! ✅</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-lg text-gray-700 dark:text-gray-300 mb-6">
-                È gratuito e devi solo inserire la tua email!
+              <p className="text-lg text-gray-700 dark:text-gray-200 mb-8 leading-relaxed">
+                {`Stai per scoprire profili di ${categoryDisplayNames[selectedButtonInfo.id] || 'Scelti'} 100% reali e verificati `}
+                {cityName ? `a ${cityName}` : 'vicino a te'}!
+                {` L'iscrizione è gratuita, richiede solo la tua email e meno di 1 minuto. Accettiamo solo profili autentici.`}
               </p>
               <Button
                 onClick={handleConfirmation}
-                size="lg"
-                className="w-full py-4 text-xl bg-green-500 hover:bg-green-600 text-white dark:bg-green-600 dark:hover:bg-green-700 transition-all duration-300 ease-in-out transform hover:scale-105"
+                size="lg" // size="lg" might conflict with explicit py- an text- settings. Let's test.
+                className="w-full py-3 sm:py-4 text-lg sm:text-xl font-semibold bg-green-500 hover:bg-green-600 text-white dark:bg-green-600 dark:hover:bg-green-700 transition-all duration-300 ease-in-out transform hover:scale-105"
               >
-                Sì, Continua!
+                Sì, Portami agli Incontri! 🔥
               </Button>
             </CardContent>
           </Card>
