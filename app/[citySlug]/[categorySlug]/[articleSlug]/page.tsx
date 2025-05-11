@@ -2,8 +2,12 @@ import fs from 'fs/promises';
 import path from 'path';
 import { notFound } from 'next/navigation';
 import matter from 'gray-matter'; // For parsing frontmatter
-import { remark } from 'remark';   // For parsing markdown
-import html from 'remark-html';  // For converting remark output to HTML
+import { unified } from 'unified';
+import remarkParse from 'remark-parse';
+import remarkGfm from 'remark-gfm';
+import remarkRehype from 'remark-rehype';
+import rehypeSlug from 'rehype-slug';
+import rehypeStringify from 'rehype-stringify'; // Added for HTML output
 
 interface ArticleFrontmatter {
   title?: string;
@@ -14,52 +18,78 @@ interface ArticleFrontmatter {
   // Add any other frontmatter fields you expect
 }
 
-interface PageProps {
-  params: {
-    citySlug: string;
-    categorySlug: string;
-    articleSlug: string; // New parameter for the specific article
-  };
+// Interface for the resolved params object
+interface ResolvedPageParams {
+  citySlug: string;
+  categorySlug: string;
+  articleSlug: string;
 }
 
-export async function generateStaticParams() {
-  // This function will need to list all possible combinations of 
-  // citySlug, categorySlug, and articleSlug.
-  // You would typically scan all category folders, then city subfolders, then md files.
-  // Example: content/articles/gay/atri/index.md -> { citySlug: 'atri', categorySlug: 'gay', articleSlug: 'index' }
+// PageProps is no longer used directly by SpecificArticlePage if params are typed inline.
+// It might still be useful if/when generateMetadata is uncommented and used.
+// For now, to resolve the ESLint error, we can comment it out or remove it if generateMetadata remains unused.
+// Let's comment it out for now.
+// interface PageProps {
+//   params: {
+//     citySlug: string;
+//     categorySlug: string;
+//     articleSlug: string; // New parameter for the specific article
+//   };
+// }
+
+export async function generateStaticParams(): Promise<{ citySlug: string; categorySlug: string; articleSlug: string; }[]> {
+  const rootArticlesDir = path.join(process.cwd(), 'content', 'articles');
+  const paramsList: { citySlug: string; categorySlug: string; articleSlug: string; }[] = [];
+
+  try {
+    const categoryDirs = await fs.readdir(rootArticlesDir, { withFileTypes: true });
+
+    for (const categoryDir of categoryDirs) {
+      if (categoryDir.isDirectory()) {
+        const categorySlug = categoryDir.name;
+        const cityDirsPath = path.join(rootArticlesDir, categorySlug);
+        
+        try {
+          const cityDirs = await fs.readdir(cityDirsPath, { withFileTypes: true });
+          for (const cityDir of cityDirs) {
+            if (cityDir.isDirectory()) {
+              const citySlug = cityDir.name;
+              const articleFilesPath = path.join(cityDirsPath, citySlug);
+              try {
+                const articleFiles = await fs.readdir(articleFilesPath, { withFileTypes: true });
+                for (const articleFile of articleFiles) {
+                  if (articleFile.isFile() && articleFile.name.endsWith('.md')) {
+                    const articleSlug = articleFile.name.replace('.md', '');
+                    // Ensure no duplicates, though less likely here with specific file paths
+                    if (!paramsList.some(p => p.citySlug === citySlug && p.categorySlug === categorySlug && p.articleSlug === articleSlug)) {
+                        paramsList.push({ citySlug, categorySlug, articleSlug });
+                    }
+                  }
+                }
+              } catch (articleReadError) {
+                console.warn(`Could not read article files in ${articleFilesPath}:`, articleReadError instanceof Error ? articleReadError.message : articleReadError);
+              }
+            }
+          }
+        } catch (cityError) {
+          console.warn(`Could not read city directories in ${cityDirsPath}:`, cityError instanceof Error ? cityError.message : cityError);
+        }
+      }
+    }
+  } catch (rootError) {
+    console.error(`Could not read root articles directory ${rootArticlesDir}:`, rootError instanceof Error ? rootError.message : rootError);
+  }
   
-  // Placeholder - needs proper implementation
-  // const rootArticlesDir = path.join(process.cwd(), 'content', 'articles');
-  // const categoryDirs = await fs.readdir(rootArticlesDir);
-  // const paramsList = [];
-  // for (const catSlug of categoryDirs) {
-  //   const cityDirsPath = path.join(rootArticlesDir, catSlug);
-  //   try {
-  //      const citySubDirs = await fs.readdir(cityDirsPath);
-  //      for (const cSlug of citySubDirs) {
-  //        const articleFilesPath = path.join(cityDirsPath, cSlug);
-  //        try {
-  //          const articleFiles = await fs.readdir(articleFilesPath);
-  //          for (const articleFile of articleFiles) {
-  //            if (articleFile.endsWith('.md')) {
-  //              paramsList.push({ 
-  //                citySlug: cSlug, 
-  //                categorySlug: catSlug, 
-  //                articleSlug: articleFile.replace('.md', '')
-  //              });
-  //            }
-  //          }
-  //        } catch (e) { /* ignore if not a directory or no files */ }
-  //      }
-  //   } catch (e) { /* ignore if not a directory */ }
-  // }
-  // return paramsList;
-  return []; 
+  if (paramsList.length === 0) {
+    console.warn("[generateStaticParams for SpecificArticlePage] No city/category/article paths found. Article pages might not be pre-rendered correctly.");
+  }
+  // console.log("[generateStaticParams for SpecificArticlePage] Generated params:", paramsList);
+  return paramsList; 
 }
 
 
-export default async function SpecificArticlePage({ params }: PageProps) {
-  const { citySlug, categorySlug, articleSlug } = params;
+export default async function SpecificArticlePage({ params }: { params: Promise<ResolvedPageParams> }) {
+  const { citySlug, categorySlug, articleSlug }: ResolvedPageParams = await params;
   
   // Updated file path construction to match new directory structure
   // content/articles/[categorySlug]/[citySlug]/[articleSlug].md
@@ -77,7 +107,13 @@ export default async function SpecificArticlePage({ params }: PageProps) {
   const { data, content: markdownBody } = matter(fileContent);
   const frontmatter = data as ArticleFrontmatter;
 
-  const processedContent = await remark().use(html).process(markdownBody);
+  const processedContent = await unified()
+    .use(remarkParse)
+    .use(remarkGfm)
+    .use(remarkRehype, { allowDangerousHtml: true }) // Keep raw HTML if any
+    .use(rehypeSlug)
+    .use(rehypeStringify)
+    .process(markdownBody);
   const contentHtml = processedContent.toString();
 
   return (
