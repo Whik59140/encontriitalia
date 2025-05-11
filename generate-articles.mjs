@@ -6,7 +6,7 @@ import { fileURLToPath } from 'url';
 
 // --- Configuration ---
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-const modelName = "gemini-1.5-flash-latest"; // Or your preferred model
+const modelName = "gemini-2.0-flash-lite"; // Or your preferred model
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const outputBaseDir = path.join(__dirname, 'content', 'articles');
@@ -224,12 +224,12 @@ async function generateArticles() {
         console.log(`
 [City ${i + 1}/${cities.length}] Processing city: ${cityName} (slug: ${city.slug}) for category: ${categoryDisplayName}`);
 
-        // For now, we generate one article per city/category, let's call its slug "index"
-        const articleSlug = "index"; 
-        const targetFileName = `${articleSlug}.md`; 
+        // New article slug and filename format
+        const articleSlug = `incontri-${categorySlug}-in-${city.slug}`;
+        const targetFileName = `${articleSlug}.md`;
         const targetFilePath = path.join(cityInCategoryDir, targetFileName);
 
-        console.log(`  Preparing for: ${articleSlug} in ${categoryDisplayName}/${cityName}, Filename: ${targetFileName} at ${targetFilePath}`);
+        console.log(`  Preparing for: ${articleSlug}, Filename: ${targetFileName} at ${targetFilePath}`);
 
         // Check if file already exists
         try {
@@ -252,24 +252,30 @@ async function generateArticles() {
         try {
             const generationConfig = { temperature: 0.7, topK: 1, topP: 1, maxOutputTokens: maxOutputTokens };
 
-            // Placeholder for actual API call - Replace with your Gemini SDK usage
-            // const result = await model.generateContentStream(prompt); // Your example used stream
-            // let articleText = \'\';
-            // console.log(\'      Receiving stream...\');
-            // for await (const chunk of result.stream) {\n                //     const chunkText = chunk.text();\n                //     process.stdout.write(\'.\'); // Indicate progress\n                //     articleText += chunkText;\n                // }\n                // console.log(\'\\n      Stream finished.\');
+            // Actual Gemini API call using generateContentStream
+            const request = {
+                contents: [{ role: "user", parts: [{text: prompt}] }],
+                generationConfig: generationConfig,
+            };
 
-            // --- !!! THIS IS A CRITICAL PLACEHOLDER !!! ---
-            // --- !!! YOU NEED TO INTEGRATE YOUR GEMINI API CALL HERE !!! ---
-            // --- !!! The following is just for testing the file structure ---
-            console.warn("      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            console.warn("      !!! GEMINI API CALL IS CURRENTLY A PLACEHOLDER IN THIS SCRIPT !!!");
-            console.warn("      !!! You must integrate your actual API call to generate content.!!!");
-            console.warn("      !!! This run will create dummy files.                         !!!");
-            console.warn("      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            let articleText = `## Dummy Article for ${categoryDisplayName} in ${cityName}\\n\\nThis is placeholder content. Replace this with the actual Gemini API call.\\n\\nPrompt used would have been based on: Category Slug - ${categorySlug}, City - ${cityName}.`;
-            // --- End of Placeholder ---
+            const result = await model.generateContentStream(request);
+            
+            let articleText = '';
+            console.log('      Receiving stream...');
+            for await (const chunk of result.stream) {
+                try {
+                    const chunkText = chunk.text();
+                    process.stdout.write('.'); // Indicate progress
+                    articleText += chunkText;
+                } catch (streamError) {
+                    console.error('\n      Error processing stream chunk:', streamError);
+                    // Decide if you want to continue with partial text or throw
+                    // For now, we log and continue, potentially resulting in partial content
+                }
+            }
+            console.log('\n      Stream finished.');
 
-            articleText = articleText.trim().replace(/^```(?:\\w*\\s*\\n)?/, '');
+            articleText = articleText.trim().replace(/^```(?:\w*\s*\n)?/, '');
 
             let finalTitle = `${categoryDisplayName} a ${cityName}: Guida Essenziale`;
             let finalDescription = `Scopri tutto su ${categoryDisplayName.toLowerCase()} a ${cityName}.`;

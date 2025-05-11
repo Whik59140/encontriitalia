@@ -7,7 +7,15 @@ import remarkParse from 'remark-parse';
 import remarkGfm from 'remark-gfm';
 import remarkRehype from 'remark-rehype';
 import rehypeSlug from 'rehype-slug';
-import rehypeStringify from 'rehype-stringify'; // Added for HTML output
+import { visit } from 'unist-util-visit'; // To traverse HAST
+import type { Root as HastRoot, Element as HastElement, ElementContent as HastElementContent, Text as HastText } from 'hast';
+import type { Root as MdastRootType } from 'mdast';
+
+// Shadcn UI Accordion components - will be used by the client component
+// We still define the structure here, but rendering moves to client component
+
+// Import the new client component that will handle actual rendering
+import ArticleContentRenderer from '@/components/common/article-content-renderer'; // Adjust path as needed
 
 interface ArticleFrontmatter {
   title?: string;
@@ -15,40 +23,106 @@ interface ArticleFrontmatter {
   city?: string;
   category?: string;
   date?: string;
-  // Add any other frontmatter fields you expect
+  articleSlug: string;
 }
 
-// Interface for the resolved params object
 interface ResolvedPageParams {
   citySlug: string;
   categorySlug: string;
   articleSlug: string;
 }
 
-// PageProps is no longer used directly by SpecificArticlePage if params are typed inline.
-// It might still be useful if/when generateMetadata is uncommented and used.
-// For now, to resolve the ESLint error, we can comment it out or remove it if generateMetadata remains unused.
-// Let's comment it out for now.
-// interface PageProps {
-//   params: {
-//     citySlug: string;
-//     categorySlug: string;
-//     articleSlug: string; // New parameter for the specific article
-//   };
-// }
+// Interface for individual heading, to be used by Table of Contents
+export interface HeadingData {
+  id: string;
+  text: string;
+  level: number;
+}
+
+// This interface will be passed to the client component
+export interface AccordionSectionData {
+  id: string;
+  title: string;
+  level: number;
+  contentHastNodes: HastElementContent[]; // Raw HAST nodes
+}
+
+export interface ArticleRenderData {
+  leadingHastNodes: HastElementContent[]; // Raw HAST nodes
+  accordionSections: AccordionSectionData[];
+  frontmatter: ArticleFrontmatter;
+  headings: HeadingData[]; // Added headings for TOC
+}
+
+// Helper function to extract text from a HAST element
+function getElementText(node: HastElement): string {
+  let text = '';
+  visit(node, 'text', (textNode: HastText) => {
+    text += textNode.value;
+  });
+  return text.trim();
+}
+
+// Function to transform HAST into leading content and accordion sections with HAST nodes
+function prepareArticleRenderData(hast: HastRoot, frontmatter: ArticleFrontmatter): ArticleRenderData {
+  const leadingHastNodes: HastElementContent[] = [];
+  const accordionSections: AccordionSectionData[] = [];
+  const headings: HeadingData[] = []; // Initialize headings array
+  
+  let currentAccordionSectionData: AccordionSectionData | null = null;
+  let sectionCounter = 0;
+  let inLeadingContent = true;
+
+  hast.children.forEach((node) => {
+    if (node.type === 'element' && (node.tagName === 'h2' || node.tagName === 'h3')) {
+      inLeadingContent = false;
+      sectionCounter++;
+      const title = getElementText(node);
+      let id = node.properties?.id?.toString() || title.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]+/g, '') || `section-${sectionCounter}`;
+      id = id.replace(/^-+|-+$/g, '');
+      id = id || `section-${sectionCounter}`; 
+
+      const headingLevel = node.tagName === 'h2' ? 2 : 3;
+      headings.push({ id, text: title, level: headingLevel }); // Populate headings
+
+      currentAccordionSectionData = {
+        id: id,
+        title: title || 'Untitled Section',
+        level: headingLevel,
+        contentHastNodes: [],
+      };
+      accordionSections.push(currentAccordionSectionData);
+    } else if (currentAccordionSectionData && !inLeadingContent) {
+      if (node.type === 'element' || node.type === 'text' || node.type === 'comment') {
+        currentAccordionSectionData.contentHastNodes.push(node);
+      }
+    } else if (inLeadingContent) {
+       if (node.type === 'element' || node.type === 'text' || node.type === 'comment') {
+        leadingHastNodes.push(node);
+      }
+    }
+  });
+
+  const filteredAccordionSections = accordionSections.filter(section => section.contentHastNodes.length > 0);
+  const filteredLeadingHastNodes = leadingHastNodes.filter(node => node.type === 'text' ? node.value.trim() !== '' : true);
+  
+  return {
+    leadingHastNodes: filteredLeadingHastNodes,
+    accordionSections: filteredAccordionSections,
+    frontmatter,
+    headings, // Return headings
+  };
+}
 
 export async function generateStaticParams(): Promise<{ citySlug: string; categorySlug: string; articleSlug: string; }[]> {
   const rootArticlesDir = path.join(process.cwd(), 'content', 'articles');
   const paramsList: { citySlug: string; categorySlug: string; articleSlug: string; }[] = [];
-
   try {
     const categoryDirs = await fs.readdir(rootArticlesDir, { withFileTypes: true });
-
     for (const categoryDir of categoryDirs) {
       if (categoryDir.isDirectory()) {
         const categorySlug = categoryDir.name;
         const cityDirsPath = path.join(rootArticlesDir, categorySlug);
-        
         try {
           const cityDirs = await fs.readdir(cityDirsPath, { withFileTypes: true });
           for (const cityDir of cityDirs) {
@@ -59,41 +133,31 @@ export async function generateStaticParams(): Promise<{ citySlug: string; catego
                 const articleFiles = await fs.readdir(articleFilesPath, { withFileTypes: true });
                 for (const articleFile of articleFiles) {
                   if (articleFile.isFile() && articleFile.name.endsWith('.md')) {
-                    const articleSlug = articleFile.name.replace('.md', '');
-                    // Ensure no duplicates, though less likely here with specific file paths
-                    if (!paramsList.some(p => p.citySlug === citySlug && p.categorySlug === categorySlug && p.articleSlug === articleSlug)) {
-                        paramsList.push({ citySlug, categorySlug, articleSlug });
+                    const articleSlugFromFile = articleFile.name.replace('.md', '');
+                    if (!paramsList.some(p => p.citySlug === citySlug && p.categorySlug === categorySlug && p.articleSlug === articleSlugFromFile)) {
+                        paramsList.push({ citySlug, categorySlug, articleSlug: articleSlugFromFile });
                     }
                   }
                 }
-              } catch (articleReadError) {
-                console.warn(`Could not read article files in ${articleFilesPath}:`, articleReadError instanceof Error ? articleReadError.message : articleReadError);
-              }
+              } catch { console.warn(`Could not read files in ${articleFilesPath}`); }
             }
           }
-        } catch (cityError) {
-          console.warn(`Could not read city directories in ${cityDirsPath}:`, cityError instanceof Error ? cityError.message : cityError);
-        }
+        } catch { console.warn(`Could not read city dirs in ${cityDirsPath}`); }
       }
     }
-  } catch (rootError) {
-    console.error(`Could not read root articles directory ${rootArticlesDir}:`, rootError instanceof Error ? rootError.message : rootError);
-  }
-  
+  } catch { console.error(`Could not read root articles dir ${rootArticlesDir}`); }
   if (paramsList.length === 0) {
-    console.warn("[generateStaticParams for SpecificArticlePage] No city/category/article paths found. Article pages might not be pre-rendered correctly.");
+    console.warn("[generateStaticParams SpecificArticlePage] No params found.");
   }
-  // console.log("[generateStaticParams for SpecificArticlePage] Generated params:", paramsList);
   return paramsList; 
 }
 
 
 export default async function SpecificArticlePage({ params }: { params: Promise<ResolvedPageParams> }) {
-  const { citySlug, categorySlug, articleSlug }: ResolvedPageParams = await params;
+  const resolvedParams = await params;
+  const { citySlug, categorySlug, articleSlug } = resolvedParams;
   
-  // Updated file path construction to match new directory structure
-  // content/articles/[categorySlug]/[citySlug]/[articleSlug].md
-  const expectedFilename = `${articleSlug}.md`; // Assuming articleSlug from URL is the filename
+  const expectedFilename = `${articleSlug}.md`;
   const filePath = path.join(process.cwd(), 'content', 'articles', categorySlug, citySlug, expectedFilename);
 
   let fileContent;
@@ -104,44 +168,49 @@ export default async function SpecificArticlePage({ params }: { params: Promise<
     notFound(); 
   }
 
-  const { data, content: markdownBody } = matter(fileContent);
-  const frontmatter = data as ArticleFrontmatter;
+  const { data: frontmatterData, content: markdownBody } = matter(fileContent);
+  const frontmatter = frontmatterData as ArticleFrontmatter;
 
-  const processedContent = await unified()
+  const processor = unified()
     .use(remarkParse)
     .use(remarkGfm)
-    .use(remarkRehype, { allowDangerousHtml: true }) // Keep raw HTML if any
-    .use(rehypeSlug)
-    .use(rehypeStringify)
-    .process(markdownBody);
-  const contentHtml = processedContent.toString();
+    .use(remarkRehype, { allowDangerousHtml: true })
+    .use(rehypeSlug);
+
+  const mdastNode = processor.parse(markdownBody) as MdastRootType;
+  const hastNode = await processor.run(mdastNode) as HastRoot;
+
+  const articleRenderData = prepareArticleRenderData(hastNode, frontmatter);
+
+  // Fallback if no content could be structured - this also needs to be rethought 
+  // as dangerouslySetInnerHTML will not work with client component rendering HAST
+  // For now, we'll pass the raw markdownBody to the client component for fallback.
+  if (articleRenderData.leadingHastNodes.length === 0 && articleRenderData.accordionSections.length === 0) {
+    return (
+        <ArticleContentRenderer 
+            leadingHastNodes={[]} 
+            accordionSections={[]} 
+            frontmatter={articleRenderData.frontmatter}
+            headings={[]} // Pass empty headings for fallback
+            fallbackMarkdownBody={markdownBody} // Pass raw markdown for client-side fallback processing
+        />
+    );
+  }
 
   return (
-    <article className="prose lg:prose-xl mx-auto p-4">
-      <header className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">{frontmatter.title || 'Article Title'}</h1>
-        {frontmatter.city && frontmatter.category && (
-          <p className="text-sm text-gray-600">
-            In {frontmatter.city} / {frontmatter.category}
-            {/* You might want to display the specific article sub-topic here if available in frontmatter */}
-          </p>
-        )}
-        {frontmatter.date && (
-          <p className="text-sm text-gray-500">
-            Published on: {new Date(frontmatter.date).toLocaleDateString()}
-          </p>
-        )}
-      </header>
-      
-      <div dangerouslySetInnerHTML={{ __html: contentHtml }} />
-    </article>
+    <ArticleContentRenderer 
+        leadingHastNodes={articleRenderData.leadingHastNodes} 
+        accordionSections={articleRenderData.accordionSections} 
+        frontmatter={articleRenderData.frontmatter}
+        headings={articleRenderData.headings} // Pass populated headings
+        // fallbackMarkdownBody is not needed if we have sections
+    />
   );
 }
 
-// Optional: Add metadata generation
-// export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-//   const { citySlug, categorySlug, articleSlug } = params;
-//   const expectedFilename = `${articleSlug}.md`; 
-//   const filePath = path.join(process.cwd(), 'content', 'articles', categorySlug, citySlug, expectedFilename);
-//   // ... rest of metadata fetching logic ...
+// Optional: Metadata generation (can remain largely the same, using frontmatter)
+// export async function generateMetadata({ params }: { params: ResolvedPageParams }): Promise<Metadata> {
+//   // ... logic to fetch frontmatter ...
+//   return { title: frontmatter.title, description: frontmatter.description };
+// } 
 // } 
