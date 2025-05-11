@@ -9,6 +9,15 @@ export function Footer() {
         <p className="mb-2">
           &copy; {currentYear} Incontri Italia. Tutti i diritti riservati.
         </p>
+        <p className="mb-2">
+          Per contatti commerciali:{' '}
+          <a 
+            href="mailto:whiknat@gmail.com"
+            className="text-purple-600 dark:text-purple-400 hover:underline"
+          >
+            whiknat@gmail.com
+          </a>
+        </p>
         <p>
           Realizzato da{' '}
           <Link 
