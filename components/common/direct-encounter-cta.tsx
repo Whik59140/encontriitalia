@@ -30,13 +30,13 @@ const encounterButtons: EncounterButton[] = [
     id: 'trans',
     label: 'Incontri Trans 18+',
     imageSrc: '/buttons/trans.webp',
-    affiliateUrl: 'https://t.mbdaad.link/345641/7052?bo=2753,2754,2755,2756&popUnder=true&aff_sub5=SF_006OG000004lmDN',
+    affiliateUrl: 'https://t.mbdaad.link/345641/6497?bo=2753,2754,2755,2756&popUnder=true&aff_sub5=SF_006OG000004lmDN',
   },
   {
     id: 'trav',
     label: 'Incontri Trav 18+',
     imageSrc: '/buttons/trans.webp', // Reusing trans image for now
-    affiliateUrl: 'https://t.mbdaad.link/345641/7052?bo=2753,2754,2755,2756&popUnder=true&aff_sub5=SF_006OG000004lmDN', // Same as trans
+    affiliateUrl: 'https://t.mbdaad.link/345641/6497?bo=2753,2754,2755,2756&popUnder=true&aff_sub5=SF_006OG000004lmDN', // Updated Trav link (same as Trans for now)
   },
   {
     id: 'milf',

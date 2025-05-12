@@ -1,11 +1,10 @@
 import { CitySearchAndDisplay } from '@/components/common/city-search-display';
-import { getGeoData } from '@/lib/utils/geo';
+import { getAllCities } from '@/lib/utils/geo';
 import { DirectEncounterCTA } from "@/components/common/direct-encounter-cta";
 // Types will be implicitly handled or can be imported from @/types/geo if needed explicitly
 
 export default async function HomePage() {
-  const geoData = await getGeoData();
-  const cities = geoData.cities || [];
+  const cities = await getAllCities();
 
   return (
     <div className="bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50 dark:from-gray-800 dark:via-gray-900 dark:to-black min-h-screen">

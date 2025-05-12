@@ -1,7 +1,7 @@
 ---
 title: "Gay a Atri: Guida Essenziale"
 description: "Scopri i migliori bar, hotel, club ed eventi per incontri gay a Atri. Guida completa alla scena gay con consigli pratici!"
-articleSlug: "incontri-gay-in-atri"
+articleSlug: "incontri-gay-in-atri" 
 categorySlug: "gay"
 citySlug: "atri"
 date: "2025-05-12"

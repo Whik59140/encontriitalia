@@ -289,7 +289,7 @@ async function generateMainImage(articleTitle, imageFilePath, cityName, category
     }
     
     return { success: false, altText: "" };
-  } catch (error) {
+    } catch (error) {
     console.error(`    ❌ Error during image generation for title "${articleTitle}":`, error.message || error);
     if (error.response) {
       console.error('       API Error Response:', JSON.stringify(error.response, null, 2));
@@ -349,22 +349,22 @@ async function processSingleCity(city, targetCategoryObject, allCities, model) {
   // Define paths
   const categorySpecificDir = path.join(outputBaseDir, categorySlug);
   const cityInCategoryDir = path.join(categorySpecificDir, city.slug);
-  const articleSlug = `incontri-${categorySlug}-in-${city.slug}`;
-  const targetFileName = `${articleSlug}.md`;
-  const targetFilePath = path.join(cityInCategoryDir, targetFileName);
+        const articleSlug = `incontri-${categorySlug}-in-${city.slug}`;
+        const targetFileName = `${articleSlug}.md`;
+        const targetFilePath = path.join(cityInCategoryDir, targetFileName);
 
   try {
     // Ensure city-specific directory exists within the category directory
     await fs.mkdir(cityInCategoryDir, { recursive: true });
 
-    // Check if file already exists
-    try {
-      await fs.access(targetFilePath);
+        // Check if file already exists
+        try {
+            await fs.access(targetFilePath);
       console.log(`  [SKIP] ${cityName} (${categoryName}) - File already exists.`);
       return { status: 'skipped', value: `${cityName} (${categoryName}) - Skipped: File exists` };
-    } catch (error) {
-      // File doesn't exist, proceed
-    }
+        } catch (error) {
+            // File doesn't exist, proceed
+        }
 
     // Get Prompt
     const articlePrompt = getPromptForCategory(categorySlug, cityName, categoryName, relatedCitiesData);
@@ -376,21 +376,21 @@ async function processSingleCity(city, targetCategoryObject, allCities, model) {
     console.log(`    Generating article content for ${cityName} (${categoryName})...`);
     
     // Generate Article Content
-    const generationConfig = { temperature: 0.7, topK: 1, topP: 1, maxOutputTokens: maxOutputTokens };
-    const request = {
+            const generationConfig = { temperature: 0.7, topK: 1, topP: 1, maxOutputTokens: maxOutputTokens };
+            const request = {
       contents: [{ role: "user", parts: [{ text: articlePrompt }] }],
-      generationConfig: generationConfig,
-    };
+                generationConfig: generationConfig,
+            };
     const resultStream = await model.generateContentStream(request);
-
-    let articleText = '';
+            
+            let articleText = '';
     // process.stdout.write(`      Receiving stream for ${cityName}: `); // Less noisy logging
     for await (const chunk of resultStream.stream) {
-        try {
-            const chunkText = chunk.text();
+                try {
+                    const chunkText = chunk.text();
             // process.stdout.write('.'); // Indicate progress per city might be too noisy
-            articleText += chunkText;
-        } catch (streamError) {
+                    articleText += chunkText;
+                } catch (streamError) {
             console.error(`\n      Error processing stream chunk for ${cityName}:`, streamError);
         }
     }
@@ -403,15 +403,15 @@ async function processSingleCity(city, targetCategoryObject, allCities, model) {
     let finalDescription = `Scopri tutto su ${categoryName.toLowerCase()} a ${cityName}.`;
     // (Keep the title/desc extraction logic as before)
     const titleMatch = articleText.match(/^\*\*Titolo(?: SEO)?:\*\*\s*(.+)/im);
-      if (titleMatch && titleMatch[1]) {
-          finalTitle = titleMatch[1].trim();
-          articleText = articleText.replace(titleMatch[0], '').trim();
-      }
+            if (titleMatch && titleMatch[1]) {
+                finalTitle = titleMatch[1].trim();
+                articleText = articleText.replace(titleMatch[0], '').trim();
+            }
       const metaDescMatch = articleText.match(/^\*\*Meta Description(?: \(\d+-\d+ caratteri\))?:\*\*\s*(.+)/im);
-      if (metaDescMatch && metaDescMatch[1]) {
-          finalDescription = metaDescMatch[1].trim();
-          articleText = articleText.replace(metaDescMatch[0], '').trim();
-      }
+            if (metaDescMatch && metaDescMatch[1]) {
+                finalDescription = metaDescMatch[1].trim();
+                articleText = articleText.replace(metaDescMatch[0], '').trim();
+            }
       articleText = articleText.replace(/^\*Keywords:.*$/gim, '');
       articleText = articleText.replace(/\n{3,}/g, '\\n\\n').trim();
 
@@ -441,10 +441,10 @@ async function processSingleCity(city, targetCategoryObject, allCities, model) {
     }
 
     // Construct Markdown
-    const markdownContent = `---
+            const markdownContent = `---
 title: "${finalTitle.replace(/"/g, '\\"')}"
 description: "${finalDescription.replace(/"/g, '\\"')}"
-articleSlug: "${articleSlug}"
+articleSlug: "${articleSlug}" 
 categorySlug: "${categorySlug}"
 citySlug: "${city.slug}"
 date: "${new Date().toISOString().split('T')[0]}"
@@ -457,11 +457,11 @@ ${imagePathForFrontmatter ? `![${imageAltText.replace(/"/g, '\\"')}](${imagePath
 `;
 
     // Save File
-    await fs.writeFile(targetFilePath, markdownContent);
+            await fs.writeFile(targetFilePath, markdownContent);
     console.log(`  [SUCCESS] ${cityName} (${categoryName}) - Saved: ${targetFileName}`);
     return { status: 'fulfilled', value: `${cityName} (${categoryName}) - Completed` };
 
-  } catch (error) {
+        } catch (error) {
     console.error(`  [FAIL] ${cityName} (${categoryName}) - Error:`, error.message || error);
     // Optionally log the full error stack: console.error(error);
     return { status: 'rejected', reason: `${cityName} (${categoryName}) - Failed: ${error.message}` };

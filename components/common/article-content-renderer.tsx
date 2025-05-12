@@ -1,6 +1,6 @@
 'use client';
 
-import React, { Fragment } from 'react';
+import React, { Fragment, useCallback, useMemo } from 'react';
 import { jsx, jsxs } from 'react/jsx-runtime';
 import { unified } from 'unified';
 import rehypeReact, { Options as RehypeReactOptions } from 'rehype-react';
@@ -8,12 +8,14 @@ import type { Root as HastRoot, ElementContent as HastElementContent } from 'has
 import { ChevronRight, CheckCircle } from 'lucide-react';
 
 // Shadcn UI Accordion components
+/*
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion'; // Ensure this path is correct
+*/
 
 // Import interfaces from the server component (if they are exported and paths are correct)
 // Alternatively, redefine them here if preferred for strict separation
@@ -78,28 +80,28 @@ const ArticleContentRenderer: React.FC<ArticleContentRendererProps> = ({
   fallbackMarkdownBody,
 }) => {
 
-  // --- Custom Components for Markdown Elements ---
-  const CustomH3 = ({ children, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => (
+  // --- Custom Components for Markdown Elements (Wrapped in useCallback) ---
+  const CustomH3 = useCallback(({ children, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => (
     <h3 {...props} className="flex items-center mt-6 mb-3 text-xl font-semibold">
       <ChevronRight className="mr-2 h-5 w-5 text-primary flex-shrink-0" />
       {children}
     </h3>
-  );
+  ), []);
 
-  const CustomUl = ({ children, ...props }: React.HTMLAttributes<HTMLUListElement>) => (
+  const CustomUl = useCallback(({ children, ...props }: React.HTMLAttributes<HTMLUListElement>) => (
     <ul {...props} className="list-none pl-0 mb-4 space-y-2">
       {children}
     </ul>
-  );
+  ), []);
 
-  const CustomLi = ({ children, ...props }: React.HTMLAttributes<HTMLLIElement>) => (
+  const CustomLi = useCallback(({ children, ...props }: React.HTMLAttributes<HTMLLIElement>) => (
     <li {...props} className="flex items-start">
       <CheckCircle className="mr-3 h-5 w-5 text-green-500 mt-1 flex-shrink-0" />
       <span className="flex-1">{children}</span>
     </li>
-  );
+  ), []);
 
-  const CustomBlockquote = ({ children, ...props }: React.HTMLAttributes<HTMLQuoteElement>) => (
+  const CustomBlockquote = useCallback(({ children, ...props }: React.HTMLAttributes<HTMLQuoteElement>) => (
     <blockquote
       {...props}
       className="my-6 rounded-md border-l-4 border-primary bg-primary/10 p-4 italic"
@@ -107,26 +109,26 @@ const ArticleContentRenderer: React.FC<ArticleContentRendererProps> = ({
       {/* <QuoteIcon className="inline-block h-4 w-4 mr-2 opacity-50"/> */}
       {children}
     </blockquote>
-  );
+  ), []);
 
-  const CustomInlineCode = ({ children, ...props }: React.HTMLAttributes<HTMLElement>) => (
+  const CustomInlineCode = useCallback(({ children, ...props }: React.HTMLAttributes<HTMLElement>) => (
     <code
       {...props}
       className="relative rounded bg-muted px-[0.4rem] py-[0.2rem] font-mono text-sm font-semibold text-foreground/80"
     >
       {children}
     </code>
-  );
+  ), []);
   
-  const CustomP = ({ children, ...props }: React.HTMLAttributes<HTMLParagraphElement>) => (
+  const CustomP = useCallback(({ children, ...props }: React.HTMLAttributes<HTMLParagraphElement>) => (
     <p {...props} className="my-4 leading-relaxed">
       {children}
     </p>
-  );
+  ), []);
 
 
   // Configure rehypeReact options - now memoized
-  const rehypeReactOpts: RehypeReactOptions = React.useMemo(() => ({
+  const rehypeReactOpts: RehypeReactOptions = useMemo(() => ({
     Fragment: Fragment,
     jsx: jsx,
     jsxs: jsxs,
@@ -145,7 +147,7 @@ const ArticleContentRenderer: React.FC<ArticleContentRendererProps> = ({
 
   // Memoize the processor to avoid re-creating it on every render,
   // unless rehypeReactOpts changes.
-  const contentProcessor = React.useMemo(() => unified().use(rehypeReact, rehypeReactOpts), [rehypeReactOpts]);
+  const contentProcessor = useMemo(() => unified().use(rehypeReact, rehypeReactOpts), [rehypeReactOpts]);
 
   const renderHastToReact = (nodes: HastElementContent[] | undefined): React.ReactNode => {
     if (!nodes || nodes.length === 0) return null;
@@ -161,7 +163,7 @@ const ArticleContentRenderer: React.FC<ArticleContentRendererProps> = ({
   };
 
   // Moved useMemo for fallbackHtml to top level
-  const fallbackHtml = React.useMemo(() => {
+  const fallbackHtml = useMemo(() => {
     if (!(leadingHastNodes.length === 0 && accordionSections.length === 0 && fallbackMarkdownBody)) {
       return null; // Don't compute if not in fallback mode
     }
