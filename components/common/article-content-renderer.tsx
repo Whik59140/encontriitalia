@@ -29,6 +29,8 @@ interface ArticleFrontmatter {
   city?: string;
   category?: string;
   date?: string;
+  categorySlug?: string;
+  cityName?: string;
 }
 
 interface AccordionSectionData {
@@ -51,6 +53,8 @@ interface ArticleRenderData {
   headings: HeadingData[]; // Added to accept headings for TOC
 }
 
+// Import SectionCTA
+import { SectionCTA } from './section-cta';
 
 // For fallback processing (if markdown body is passed)
 import remarkParse from 'remark-parse';
@@ -200,6 +204,10 @@ const ArticleContentRenderer: React.FC<ArticleContentRendererProps> = ({
   }
 
   const tocHeadings = headings.filter(h => h.level === 2);
+  
+  // Get the city name from frontmatter for the CTA
+  const cityName = frontmatter.cityName || frontmatter.city || '';
+  const categorySlug = frontmatter.categorySlug || '';
 
   return (
     <div className="container mx-auto px-4 py-8 flex flex-col lg:flex-row lg:space-x-8">
@@ -232,22 +240,28 @@ const ArticleContentRenderer: React.FC<ArticleContentRendererProps> = ({
           </div>
         )}
 
-        {accordionSections.length > 0 && (
-          <Accordion type="multiple" className="w-full">
-            {accordionSections.map((section) => {
-              return (
-                <AccordionItem value={section.id} key={section.id}>
-                  <AccordionTrigger className={`text-left hover:no-underline ${section.level === 2 ? 'text-2xl font-semibold py-4' : 'text-xl font-medium py-3'}`}>
-                    {section.title}
-                  </AccordionTrigger>
-                  <AccordionContent className="prose prose-lg lg:prose-xl dark:prose-invert max-w-none pt-2 pb-4 pl-2">
-                    {renderHastToReact(section.contentHastNodes)}
-                  </AccordionContent>
-                </AccordionItem>
-              );
-            })}
-          </Accordion>
-        )}
+        {/* Display sections as normal content with CTAs between sections */}
+        <div className="prose prose-lg lg:prose-xl dark:prose-invert max-w-none">
+          {accordionSections.map((section, index) => (
+            <React.Fragment key={section.id}>
+              <div id={section.id} className="mb-8">
+                <h2 className={`${section.level === 2 ? 'text-2xl font-semibold mb-4' : 'text-xl font-medium mb-3'}`}>
+                  {section.title}
+                </h2>
+                <div className="mt-2">
+                  {renderHastToReact(section.contentHastNodes)}
+                </div>
+              </div>
+              
+              {/* Render CTA after the first section and then after every 2 sections */}
+              {cityName && (
+                (index === 0 || (index > 0 && (index + 1) % 2 === 0)) && (
+                  <SectionCTA cityName={cityName} categorySlug={categorySlug} />
+                )
+              )}
+            </React.Fragment>
+          ))}
+        </div>
       </article>
     </div>
   );

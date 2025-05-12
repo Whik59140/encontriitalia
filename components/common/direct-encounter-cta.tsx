@@ -33,6 +33,12 @@ const encounterButtons: EncounterButton[] = [
     affiliateUrl: 'https://t.mbdaad.link/345641/7052?bo=2753,2754,2755,2756&popUnder=true&aff_sub5=SF_006OG000004lmDN',
   },
   {
+    id: 'trav',
+    label: 'Incontri Trav 18+',
+    imageSrc: '/buttons/trans.webp', // Reusing trans image for now
+    affiliateUrl: 'https://t.mbdaad.link/345641/7052?bo=2753,2754,2755,2756&popUnder=true&aff_sub5=SF_006OG000004lmDN', // Same as trans
+  },
+  {
     id: 'milf',
     label: 'Incontri MILF 40+',
     imageSrc: '/buttons/milf.webp',
@@ -57,6 +63,7 @@ const categoryEmojis: { [key: string]: string } = {
   gay: '🏳️‍🌈',
   donne: '💃',
   trans: '⚧️',
+  trav: '👗',
   milf: '💋',
   ragazze: '✨',
   studentesse: '🎓',
@@ -67,6 +74,7 @@ const categoryDisplayNames: { [key: string]: string } = {
   gay: 'Gay',
   donne: 'Donne',
   trans: 'Trans',
+  trav: 'Trav',
   milf: 'MILF',
   ragazze: 'Ragazze',
   studentesse: 'Studentesse',

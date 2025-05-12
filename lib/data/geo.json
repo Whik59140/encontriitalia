@@ -1,5 +1,5 @@
 {
-  "cities": [
+  "Abruzzo": [
     { "slug": "atri", "name": "Atri" },
     { "slug": "avezzano", "name": "Avezzano" },
     { "slug": "chieti", "name": "Chieti" },
@@ -9,16 +9,22 @@
     { "slug": "pescara", "name": "Pescara" },
     { "slug": "sulmona", "name": "Sulmona" },
     { "slug": "teramo", "name": "Teramo" },
-    { "slug": "vasto", "name": "Vasto" },
+    { "slug": "vasto", "name": "Vasto" }
+  ],
+  "Basilicata": [
     { "slug": "matera", "name": "Matera" },
     { "slug": "melfi", "name": "Melfi" },
     { "slug": "potenza", "name": "Potenza" },
-    { "slug": "venosa", "name": "Venosa" },
+    { "slug": "venosa", "name": "Venosa" }
+  ],
+  "Calabria": [
     { "slug": "catanzaro", "name": "Catanzaro" },
     { "slug": "cosenza", "name": "Cosenza" },
     { "slug": "crotone", "name": "Crotone" },
     { "slug": "reggio-di-calabria", "name": "Reggio di Calabria" },
-    { "slug": "vibo-valentia", "name": "Vibo Valentia" },
+    { "slug": "vibo-valentia", "name": "Vibo Valentia" }
+  ],
+  "Campania": [
     { "slug": "amalfi", "name": "Amalfi" },
     { "slug": "ariano-irpino", "name": "Ariano Irpino" },
     { "slug": "avellino", "name": "Avellino" },
@@ -42,7 +48,9 @@
     { "slug": "sessa-aurunca", "name": "Sessa Aurunca" },
     { "slug": "sorrento", "name": "Sorrento" },
     { "slug": "torre-annunziata", "name": "Torre Annunziata" },
-    { "slug": "torre-del-greco", "name": "Torre del Greco" },
+    { "slug": "torre-del-greco", "name": "Torre del Greco" }
+  ],
+  "Emilia-Romagna": [
     { "slug": "argenta", "name": "Argenta" },
     { "slug": "bobbio", "name": "Bobbio" },
     { "slug": "bologna", "name": "Bologna" },
@@ -61,13 +69,17 @@
     { "slug": "piacenza", "name": "Piacenza" },
     { "slug": "ravenna", "name": "Ravenna" },
     { "slug": "reggio-nell-emilia", "name": "Reggio nell'Emilia" },
-    { "slug": "rimini", "name": "Rimini" },
+    { "slug": "rimini", "name": "Rimini" }
+  ],
+  "Friuli-Venezia Giulia": [
     { "slug": "aquileia", "name": "Aquileia" },
     { "slug": "cividale-del-friuli", "name": "Cividale del Friuli" },
     { "slug": "gorizia", "name": "Gorizia" },
     { "slug": "monfalcone", "name": "Monfalcone" },
     { "slug": "trieste", "name": "Trieste" },
-    { "slug": "udine", "name": "Udine" },
+    { "slug": "udine", "name": "Udine" }
+  ],
+  "Lazio": [
     { "slug": "alatri", "name": "Alatri" },
     { "slug": "anagni", "name": "Anagni" },
     { "slug": "anzio", "name": "Anzio" },
@@ -96,7 +108,9 @@
     { "slug": "terracina", "name": "Terracina" },
     { "slug": "tivoli", "name": "Tivoli" },
     { "slug": "tuscania", "name": "Tuscania" },
-    { "slug": "viterbo", "name": "Viterbo" },
+    { "slug": "viterbo", "name": "Viterbo" }
+  ],
+  "Liguria": [
     { "slug": "bordighera", "name": "Bordighera" },
     { "slug": "chiavari", "name": "Chiavari" },
     { "slug": "genova", "name": "Genova" },
@@ -107,7 +121,9 @@
     { "slug": "san-remo", "name": "Sanremo" },
     { "slug": "sarzana", "name": "Sarzana" },
     { "slug": "savona", "name": "Savona" },
-    { "slug": "ventimiglia", "name": "Ventimiglia" },
+    { "slug": "ventimiglia", "name": "Ventimiglia" }
+  ],
+  "Lombardia": [
     { "slug": "belgioioso", "name": "Belgioioso" },
     { "slug": "bergamo", "name": "Bergamo" },
     { "slug": "brescia", "name": "Brescia" },
@@ -130,7 +146,9 @@
     { "slug": "sondrio", "name": "Sondrio" },
     { "slug": "varese", "name": "Varese" },
     { "slug": "vigevano", "name": "Vigevano" },
-    { "slug": "voghera", "name": "Voghera" },
+    { "slug": "voghera", "name": "Voghera" }
+  ],
+  "Marche": [
     { "slug": "ancona", "name": "Ancona" },
     { "slug": "ascoli-piceno", "name": "Ascoli Piceno" },
     { "slug": "civitanova-marche", "name": "Civitanova Marche" },
@@ -142,9 +160,13 @@
     { "slug": "macerata", "name": "Macerata" },
     { "slug": "pesaro", "name": "Pesaro" },
     { "slug": "senigallia", "name": "Senigallia" },
-    { "slug": "urbino", "name": "Urbino" },
+    { "slug": "urbino", "name": "Urbino" }
+  ],
+  "Molise": [
     { "slug": "campobasso", "name": "Campobasso" },
-    { "slug": "isernia", "name": "Isernia" },
+    { "slug": "isernia", "name": "Isernia" }
+  ],
+  "Piemonte": [
     { "slug": "alba", "name": "Alba" },
     { "slug": "alessandria", "name": "Alessandria" },
     { "slug": "asti", "name": "Asti" },
@@ -165,7 +187,9 @@
     { "slug": "torino", "name": "Torino" },
     { "slug": "varallo", "name": "Varallo" },
     { "slug": "verbania", "name": "Verbania" },
-    { "slug": "vercelli", "name": "Vercelli" },
+    { "slug": "vercelli", "name": "Vercelli" }
+  ],
+  "Puglia": [
     { "slug": "altamura", "name": "Altamura" },
     { "slug": "andria", "name": "Andria" },
     { "slug": "bari", "name": "Bari" },
@@ -194,7 +218,9 @@
     { "slug": "san-giovanni-rotondo", "name": "San Giovanni Rotondo" },
     { "slug": "san-severo", "name": "San Severo" },
     { "slug": "taranto", "name": "Taranto" },
-    { "slug": "trani", "name": "Trani" },
+    { "slug": "trani", "name": "Trani" }
+  ],
+  "Sardegna": [
     { "slug": "alghero", "name": "Alghero" },
     { "slug": "cagliari", "name": "Cagliari" },
     { "slug": "carloforte", "name": "Carloforte" },
@@ -203,7 +229,9 @@
     { "slug": "olbia", "name": "Olbia" },
     { "slug": "oristano", "name": "Oristano" },
     { "slug": "porto-torres", "name": "Porto Torres" },
-    { "slug": "sassari", "name": "Sassari" },
+    { "slug": "sassari", "name": "Sassari" }
+  ],
+  "Sicilia": [
     { "slug": "acireale", "name": "Acireale" },
     { "slug": "adrano", "name": "Adrano" },
     { "slug": "agrigento", "name": "Agrigento" },
@@ -242,12 +270,16 @@
     { "slug": "taormina", "name": "Taormina" },
     { "slug": "termini-imerese", "name": "Termini Imerese" },
     { "slug": "trapani", "name": "Trapani" },
-    { "slug": "vittoria", "name": "Vittoria" },
+    { "slug": "vittoria", "name": "Vittoria" }
+  ],
+  "Trentino-Alto Adige": [
     { "slug": "bolzano", "name": "Bolzano" },
     { "slug": "bressanone", "name": "Bressanone" },
     { "slug": "merano", "name": "Merano" },
     { "slug": "rovereto", "name": "Rovereto" },
-    { "slug": "trento", "name": "Trento" },
+    { "slug": "trento", "name": "Trento" }
+  ],
+  "Toscana": [
     { "slug": "arezzo", "name": "Arezzo" },
     { "slug": "capannori", "name": "Capannori" },
     { "slug": "carrara", "name": "Carrara" },
@@ -273,7 +305,9 @@
     { "slug": "siena", "name": "Siena" },
     { "slug": "vallombrosa", "name": "Vallombrosa" },
     { "slug": "viareggio", "name": "Viareggio" },
-    { "slug": "volterra", "name": "Volterra" },
+    { "slug": "volterra", "name": "Volterra" }
+  ],
+  "Umbria": [
     { "slug": "assisi", "name": "Assisi" },
     { "slug": "citta-di-castello", "name": "Città di Castello" },
     { "slug": "foligno", "name": "Foligno" },
@@ -283,8 +317,12 @@
     { "slug": "perugia", "name": "Perugia" },
     { "slug": "spoleto", "name": "Spoleto" },
     { "slug": "terni", "name": "Terni" },
-    { "slug": "todi", "name": "Todi" },
-    { "slug": "aosta", "name": "Aosta" },
+    { "slug": "todi", "name": "Todi" }
+  ],
+  "Valle d'Aosta": [
+    { "slug": "aosta", "name": "Aosta" }
+  ],
+  "Veneto": [
     { "slug": "adria", "name": "Adria" },
     { "slug": "bassano-del-grappa", "name": "Bassano del Grappa" },
     { "slug": "belluno", "name": "Belluno" },
@@ -308,16 +346,5 @@
     { "slug": "verona", "name": "Verona" },
     { "slug": "vicenza", "name": "Vicenza" },
     { "slug": "vittorio-veneto", "name": "Vittorio Veneto" }
-  ],
-  "categories": [
-    { "slug": "gay", "name": "Gay" },
-    { "slug": "milf", "name": "Milf" },
-    { "slug": "donne", "name": "Donne" },
-    { "slug": "ragazze", "name": "Ragazze" },
-    { "slug": "trans", "name": "Trans" },
-    { "slug": "trav", "name": "Trav" },
-    { "slug": "escort", "name": "Escort" },
-    { "slug": "studentessa", "name": "Studentessa" },
-    { "slug": "adulti", "name": "Adulti" }
   ]
 } 
