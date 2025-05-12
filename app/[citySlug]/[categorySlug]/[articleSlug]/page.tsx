@@ -11,12 +11,17 @@ import { visit } from 'unist-util-visit'; // To traverse HAST
 import type { Root as HastRoot, Element as HastElement, ElementContent as HastElementContent, Text as HastText } from 'hast';
 import type { Root as MdastRootType } from 'mdast';
 
+// Import constants and the new CTA component
+import { categoryAffiliateLinks } from '@/lib/constants';
+import { TopArticleCTA } from '@/components/common/top-article-cta';
+
 // Shadcn UI Accordion components - will be used by the client component
 // We still define the structure here, but rendering moves to client component
 
 // Import the new client component that will handle actual rendering
 import ArticleContentRenderer from '@/components/common/article-content-renderer'; // Adjust path as needed
-import { DirectEncounterCTA } from '@/components/common/direct-encounter-cta'; // Added import for CTA
+
+// Force dynamic rendering for this page to allow for per-request randomness
 
 interface ArticleFrontmatter {
   title?: string;
@@ -54,7 +59,7 @@ export interface ArticleRenderData {
   leadingHastNodes: HastElementContent[]; // Raw HAST nodes
   accordionSections: AccordionSectionData[];
   frontmatter: ArticleFrontmatter;
-  headings: HeadingData[]; // Added headings for TOC
+  headings: HeadingData[]; // Return headings
 }
 
 // Helper function to extract text from a HAST element
@@ -155,7 +160,6 @@ export async function generateStaticParams(): Promise<{ citySlug: string; catego
   return paramsList; 
 }
 
-
 export default async function SpecificArticlePage({ params }: { params: Promise<ResolvedPageParams> }) {
   const resolvedParams = await params;
   const { citySlug, categorySlug, articleSlug } = resolvedParams;
@@ -185,17 +189,24 @@ export default async function SpecificArticlePage({ params }: { params: Promise<
 
   const articleRenderData = prepareArticleRenderData(hastNode, frontmatter);
 
+  // Determine affiliate URL and names for the CTA
+  const categoryName = frontmatter.category || categorySlug;
+  const cityName = frontmatter.cityName || frontmatter.city || '';
+  const affiliateUrl = categorySlug ? categoryAffiliateLinks[categorySlug] : '';
+
   // Fallback if no content could be structured - this also needs to be rethought 
   // as dangerouslySetInnerHTML will not work with client component rendering HAST
   // For now, we'll pass the raw markdownBody to the client component for fallback.
   if (articleRenderData.leadingHastNodes.length === 0 && articleRenderData.accordionSections.length === 0) {
     return (
       <>
-        {/* Add CTA here as well for fallback cases, if cityName is available */}
-        {frontmatter.cityName && (
-          <div className="container mx-auto px-4 py-8">
-            <DirectEncounterCTA cityName={frontmatter.cityName} />
-          </div>
+        {/* Render Top CTA in fallback case as well */}
+        {affiliateUrl && (
+          <TopArticleCTA
+            categoryName={categoryName}
+            cityName={cityName}
+            affiliateUrl={affiliateUrl}
+          />
         )}
         <ArticleContentRenderer 
             leadingHastNodes={[]} 
@@ -210,19 +221,20 @@ export default async function SpecificArticlePage({ params }: { params: Promise<
 
   return (
     <>
-      {/* Add CTA at the top of the main content */}
-      {frontmatter.cityName && (
-        <div className="container mx-auto px-4 py-8">
-          <DirectEncounterCTA cityName={frontmatter.cityName} />
-        </div>
+      {/* Render the new Top Article CTA */}
+      {affiliateUrl && (
+        <TopArticleCTA
+          categoryName={categoryName}
+          cityName={cityName}
+          affiliateUrl={affiliateUrl}
+        />
       )}
-    <ArticleContentRenderer 
-        leadingHastNodes={articleRenderData.leadingHastNodes} 
-        accordionSections={articleRenderData.accordionSections} 
-        frontmatter={articleRenderData.frontmatter}
-        headings={articleRenderData.headings} // Pass populated headings
-        // fallbackMarkdownBody is not needed if we have sections
-    />
+      <ArticleContentRenderer 
+          leadingHastNodes={articleRenderData.leadingHastNodes} 
+          accordionSections={articleRenderData.accordionSections} 
+          frontmatter={articleRenderData.frontmatter}
+          headings={articleRenderData.headings} // Pass populated headings
+      />
     </>
   );
 }

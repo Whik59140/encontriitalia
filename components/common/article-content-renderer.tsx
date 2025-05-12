@@ -1,11 +1,12 @@
 'use client';
 
-import React, { Fragment, useCallback, useMemo } from 'react';
+import React, { Fragment, useCallback, useMemo, useState, useEffect } from 'react';
 import { jsx, jsxs } from 'react/jsx-runtime';
 import { unified } from 'unified';
 import rehypeReact, { Options as RehypeReactOptions } from 'rehype-react';
 import type { Root as HastRoot, ElementContent as HastElementContent } from 'hast';
 import { ChevronRight, CheckCircle } from 'lucide-react';
+import Image from 'next/image'; // Make sure Next Image is imported
 
 // Shadcn UI Accordion components
 /*
@@ -68,9 +69,21 @@ import rehypeStringify from 'rehype-stringify'; // For very basic fallback to HT
 // Import the Table of Contents component
 import { PostTableOfContents } from './post-table-of-contents'; // Adjust path if necessary
 
+// Import affiliate links from the central location
+import { categoryAffiliateLinks } from '@/lib/constants';
+
 interface ArticleContentRendererProps extends ArticleRenderData {
   fallbackMarkdownBody?: string;
 }
+
+// Helper function (can be moved outside if needed)
+const getRandomImageIndices = (): [number, number] => {
+  const indices = new Set<number>();
+  while (indices.size < 2) {
+    indices.add(Math.floor(Math.random() * 10) + 1); // Generates 1-10
+  }
+  return Array.from(indices) as [number, number];
+};
 
 const ArticleContentRenderer: React.FC<ArticleContentRendererProps> = ({
   leadingHastNodes,
@@ -79,6 +92,20 @@ const ArticleContentRenderer: React.FC<ArticleContentRendererProps> = ({
   headings, // Destructure headings
   fallbackMarkdownBody,
 }) => {
+  // State to hold random indices for each CTA instance { sectionIndex: [num1, num2] }
+  // Initialize to null to handle server render vs client render
+  const [ctaImageIndices, setCtaImageIndices] = useState<{ [key: number]: [number, number] } | null>(null);
+
+  // Calculate and set random indices on client mount
+  useEffect(() => {
+    const neededIndices: { [key: number]: [number, number] } = {};
+    accordionSections.forEach((_, index) => {
+      if (index === 0 || (index > 0 && (index + 1) % 2 === 0)) {
+        neededIndices[index] = getRandomImageIndices();
+      }
+    });
+    setCtaImageIndices(neededIndices);
+  }, [accordionSections]); // Re-run if sections change (though unlikely)
 
   // --- Custom Components for Markdown Elements (Wrapped in useCallback) ---
   const CustomH3 = useCallback(({ children, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => (
@@ -207,9 +234,12 @@ const ArticleContentRenderer: React.FC<ArticleContentRendererProps> = ({
 
   const tocHeadings = headings.filter(h => h.level === 2);
   
-  // Get the city name from frontmatter for the CTA
+  // Get the city name and category from frontmatter for the CTA
   const cityName = frontmatter.cityName || frontmatter.city || '';
   const categorySlug = frontmatter.categorySlug || '';
+  const categoryName = frontmatter.category || categorySlug; // Use category name if available, else slug
+  // Get the affiliate link for the current category
+  const affiliateUrl = categorySlug ? categoryAffiliateLinks[categorySlug] : undefined;
 
   return (
     <div className="container mx-auto px-4 py-8 flex flex-col lg:flex-row lg:space-x-8">
@@ -223,9 +253,15 @@ const ArticleContentRenderer: React.FC<ArticleContentRendererProps> = ({
       {/* Article Content Column */} 
       <article className={`w-full ${tocHeadings.length > 0 ? 'lg:w-3/4' : 'lg:w-full'} max-w-3xl mx-auto lg:mx-0`}>
         <header className="mb-8">
-          <h1 className="text-4xl font-bold mb-2 text-gray-800 dark:text-gray-100">{frontmatter.title || 'Article Title'}</h1>
+          {/* Title and Subtitles Block */} 
+          <div> 
+            <h1 className="inline-block text-4xl font-bold mb-1 pb-2 text-gray-800 dark:text-gray-100 border-b-4 border-yellow-400">
+              ✨ {frontmatter.title || 'Article Title'} ✨
+            </h1>
+            {/* Subtitle information */} 
+            <div> 
           {frontmatter.city && frontmatter.category && (
-            <p className="text-md text-gray-600 dark:text-gray-400">
+                <p className="text-md text-gray-600 dark:text-gray-400 mt-1">
               In {frontmatter.city} / {frontmatter.category}
             </p>
           )}
@@ -233,6 +269,28 @@ const ArticleContentRenderer: React.FC<ArticleContentRendererProps> = ({
             <p className="text-sm text-gray-500 dark:text-gray-400">
               Published on: {new Date(frontmatter.date).toLocaleDateString()}
             </p>
+              )}
+            </div>
+          </div>
+
+          {/* Category Image Block (Moved Below Title) */} 
+          {frontmatter.categorySlug && (
+            <div className="mt-4"> {/* Add margin-top to space it from title/subtitles */} 
+              <Image 
+                src={`/titles/${frontmatter.categorySlug}.webp`}
+                alt={`${frontmatter.title || 'Article'} - ${frontmatter.category || frontmatter.categorySlug} category image`}
+                width={600} // Adjusted width for below-title display
+                height={400} // Adjusted height (maintain aspect ratio of your source image!)
+                className="rounded-md object-cover shadow-md" // Added shadow
+              />
+            </div>
+          )}
+
+          {/* Render Section CTA once, below the main image */}
+          {cityName && categorySlug && categoryName && (
+            <div className="mt-6"> { /* Add some margin above the CTA */}
+              <SectionCTA cityName={cityName} categoryName={categoryName} categorySlug={categorySlug} />
+            </div>
           )}
         </header>
         
@@ -248,18 +306,86 @@ const ArticleContentRenderer: React.FC<ArticleContentRendererProps> = ({
             <React.Fragment key={section.id}>
               <div id={section.id} className="mb-8">
                 <h2 className={`${section.level === 2 ? 'text-2xl font-semibold mb-4' : 'text-xl font-medium mb-3'}`}>
-                  {section.title}
+                    {section.title}
                 </h2>
                 <div className="mt-2">
-                  {renderHastToReact(section.contentHastNodes)}
+                    {renderHastToReact(section.contentHastNodes)}
                 </div>
               </div>
               
-              {/* Render CTA after the first section and then after every 2 sections */}
-              {cityName && (
-                (index === 0 || (index > 0 && (index + 1) % 2 === 0)) && (
-                  <SectionCTA cityName={cityName} categorySlug={categorySlug} />
-                )
+              {/* Render CTA component AND CTA images after the first section and then after every 2 sections */}
+              {(index === 0 || (index > 0 && (index + 1) % 2 === 0)) && (
+                <>
+                  {/* New CTA Images Section */}
+                  {categorySlug && affiliateUrl && (
+                    <div className="not-prose my-8 flex flex-wrap justify-center gap-4 sm:gap-6"> {/* Use not-prose and flex-wrap */}
+                      {(() => {
+                        // Get indices for this specific CTA instance from state, default to [1, 2] if not ready
+                        const [imgNum1, imgNum2] = ctaImageIndices?.[index] ?? [1, 2]; 
+                        return (
+                          <>
+                            {/* Image 1 Wrapper - Should be always visible */}
+                            <a href={affiliateUrl} target="_blank" rel="noopener noreferrer sponsored" className="group relative block w-[45%] max-w-[300px] sm:w-auto hover:opacity-90 transition-opacity overflow-hidden rounded-lg shadow-md">
+                              <Image
+                                src={`/blog/${categorySlug}/${imgNum1}.webp`}
+                                alt={`CTA Image 1 for ${categoryName} in ${cityName}`}
+                                width={300} // Adjust size as needed
+                                height={150} // Adjust size based on image aspect ratio
+                                className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105" // Hover effect
+                              />
+                              {/* Overlay Button */}
+                              <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/90 via-black/70 to-transparent p-3 text-center">
+                                {/* Badges Container */}
+                                <div className="flex justify-center items-center gap-1.5 mb-1.5">
+                                  <span className="inline-block bg-red-500 text-white text-[9px] sm:text-xs font-semibold px-2 py-0.5 rounded-full">Gratis</span>
+                                  <span className="inline-block bg-yellow-400 text-black text-[9px] sm:text-xs font-semibold px-2 py-0.5 rounded-full">18+</span>
+                                  <span className="inline-block bg-green-500 text-white text-[9px] sm:text-xs font-semibold px-2 py-0.5 rounded-full">Profili Veri</span>
+                                </div>
+                                {/* Main Text */}
+                                <span className="text-white text-sm sm:text-base font-bold leading-tight drop-shadow-md">
+                                  Incontri {categoryName} a {cityName} 🔥👀
+                                  <br/>
+                                  {/* Button-like CTA */}
+                                  <span className="inline-block mt-1 px-2 py-0.5 sm:px-3 sm:py-1 bg-pink-500 hover:bg-pink-600 transition-colors rounded-md text-sm sm:text-lg font-extrabold shadow-sm">
+                                    Clicca Qui! 👉
+                                  </span>
+                                </span>
+                              </div>
+                            </a>
+                            {/* Image 2 Wrapper - Show on all sizes, adjust layout via parent flex */}
+                            <a href={affiliateUrl} target="_blank" rel="noopener noreferrer sponsored" className="group relative block w-[45%] max-w-[300px] sm:w-auto hover:opacity-90 transition-opacity overflow-hidden rounded-lg shadow-md">
+                              <Image
+                                src={`/blog/${categorySlug}/${imgNum2}.webp`}
+                                alt={`CTA Image 2 for ${categoryName} in ${cityName}`}
+                                width={300} // Adjust size as needed
+                                height={150} // Adjust size based on image aspect ratio
+                                className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105" // Hover effect
+                              />
+                               {/* Overlay Button - Centered content with choices */}
+                               <div className="absolute inset-0 flex flex-col justify-center items-center p-3 text-center bg-gradient-to-t from-black/80 via-black/60 to-transparent">
+                                 {/* Title */}
+                                 <span className="text-white text-base sm:text-lg font-bold mb-2 drop-shadow-md">
+                                   Incontri {categoryName} a {cityName}
+                                 </span>
+                                 {/* Button Choices Container */}
+                                 <div className="flex flex-col sm:flex-row gap-2 mt-1">
+                                   {/* Button 1: Serious */}
+                                   <span className="inline-block px-3 py-1 bg-blue-500 text-white rounded-md text-xs sm:text-sm font-semibold shadow-sm cursor-pointer transition-transform duration-200 ease-in-out hover:scale-105">
+                                     Qualcosa di Serio? 👉
+                                   </span>
+                                   {/* Button 2: Casual */}
+                                   <span className="inline-block px-3 py-1 bg-red-500 text-white rounded-md text-xs sm:text-sm font-semibold shadow-sm cursor-pointer transition-transform duration-200 ease-in-out hover:scale-105">
+                                     Solo Sesso? 👉
+                                   </span>
+                                 </div>
+                               </div>
+                            </a>
+                          </>
+                        );
+                      })()}
+                    </div>
+                  )}
+                </>
               )}
             </React.Fragment>
           ))}

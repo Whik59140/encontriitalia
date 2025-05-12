@@ -14,7 +14,7 @@ const __dirname = path.dirname(__filename);
 const outputBaseDir = path.join(__dirname, 'content', 'articles');
 const geoJsonPath = path.join(__dirname, 'lib', 'data', 'geo.json');
 const maxOutputTokens = 8192;
-const CONCURRENCY_LIMIT = 5; // Number of cities to process in parallel
+const CONCURRENCY_LIMIT = 15; // Number of cities to process in parallel
 
 // --- Location for Vertex AI ---
 const vertexAILocation = 'us-central1'; // Required for image generation
@@ -22,7 +22,7 @@ const vertexAILocation = 'us-central1'; // Required for image generation
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // !! IMPORTANT: SET THIS TO THE CATEGORY SLUG YOU WANT TO GENERATE FOR ALL CITIES !!
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-const TARGET_CATEGORY_SLUG_FOR_ALL_CITIES = 'gay'; // IMPORTANT: Set this to the desired category slug.
+const TARGET_CATEGORY_SLUG_FOR_ALL_CITIES = 'trans'; // IMPORTANT: Set this to the desired category slug.
 const TARGET_CITY_SLUG = ''; // Optional: Set to a specific city slug to generate only for that city, or empty for all.
 
 // Define all available categories statically
@@ -106,65 +106,167 @@ function getPromptForCategory(categorySlug, cityName, categoryDisplayName, relat
     ? `\n\n## Esplora Altre Città nella Regione\nScrivi un breve paragrafo che incoraggi i lettori a esplorare altre città vicine nella stessa regione per incontri ${categoryDisplayName}, menzionando e linkando le seguenti guide: ${relatedCitiesData.map(c => `[${c.name}](/${c.slug}/${categorySlug}/incontri-${categorySlug}-in-${c.slug})`).join(', ')}.`
     : ''; // Empty string if no related cities
 
-  if (categorySlug === 'gay') {
+  if (categorySlug === 'trans') {
     return `
-change our current prompt with this one : Write an SEO-optimized, comprehensive, and detailed italian article (approximately 10,000 characters total) for a blog focused on the gay-friendly scene in the city of ${cityName}. The article must be well-structured, easy to read, and packed with practical, up-to-date information for individuals seeking gay-friendly encounters and experiences in ${cityName}. Use an welcoming, inclusive, and engaging tone to appeal to a diverse audience.
+ 
 
-Key Instructions:
+    Write a 10,000-character SEO-optimized italian article about dating trans individuals in ${cityName}. The article must:
 
-Search for Real Data: Use your capabilities to search the web and X posts for current, reliable information about gay-friendly bars, clubs, hotels, events, and dating apps relevant to ${cityName}. If specific venues or events are mentioned in search results, include them with accurate details (e.g., names, addresses, vibes, events).
-Handle Sparse Data: If limited information is available for ${cityName} (e.g., smaller cities with fewer gay-friendly venues), supplement with general recommendations (e.g., nearby cities like Pescara for Chieti, or online communities) and focus on creating a vibrant narrative. Acknowledge the developing nature of the scene and suggest ways to connect (e.g., local LGBTQ+ groups, social media).
-Authenticity: Replace placeholders like "[Nome Bar 1]" with real venue names and details based on search results. If no specific venues are found, describe plausible gay-friendly spaces (e.g., cafes known for inclusivity) based on regional trends, but note the speculative nature transparently.
-SEO Optimization: Naturally integrate keywords like "incontri gay ${cityName}", "bar gay-friendly ${cityName}", "eventi gay ${cityName}", "hotel gay-friendly ${cityName}", and "app incontri gay ${cityName}" throughout the article. Do NOT include a "Keywords" list.
-Structure: Follow the exact H2/H3 structure provided below. Do not omit any sections. Each section should be detailed, practical, and engaging.
-Tone and Style: Maintain an inclusive, friendly, and conversational tone. Avoid overly formal language and make the reader feel welcome and excited to explore ${cityName}.
-Output Format: Provide the article directly in Markdown format. Do NOT use code fences . Ensure the output is clean and ready for publication.
-Length: Aim for approximately 10,000 characters, including spaces, to ensure depth and comprehensiveness.
-No Placeholder Content: Avoid generic placeholders (e.g., "[Nome Bar 1]"). Use real or reasonably inferred names and details based on research.
-Article Structure and Content:
 
-Title (H1): Incontri Gay a ${cityName}: La Guida Definitiva ai Migliori Luoghi ed Eventi
 
-Meta Description (150-160 characters): Scopri i migliori bar, hotel, club ed eventi per incontri gay a ${cityName}. Guida completa alla scena gay con consigli pratici!
 
-Perché ${cityName} è una Meta Ideale per gli Incontri Gay?
-Introduce ${cityName} as a welcoming destination for the LGBTQ+ community. Highlight its cultural, historical, or social aspects that make it appealing for gay travelers or locals. Mention any known inclusivity efforts (e.g., pride events, progressive policies) or the general vibe of the city. If ${cityName} has a developing gay scene, acknowledge it positively and suggest its potential for authentic connections.
 
-I Migliori Bar Gay-Friendly a ${cityName} per Socializzare
-Provide an overview of the gay-friendly bar scene in ${cityName}. Use search results to identify at least 2–3 specific bars (if available). For each bar, include its name, address, atmosphere, offerings (e.g., drinks, events), and why it's great for meeting people. If no specific bars are found, describe inclusive cafes or bars in ${cityName} known for welcoming diverse crowds, or suggest nearby cities.
-
-[Real Bar Name 1]: L'Icona della Scena Gay di ${cityName}
-Describe the first bar in detail (e.g., vibe, clientele, events like karaoke or drag shows, drink specialties). Include practical info like address, hours, and social media for event updates. Explain why it's a must-visit for gay visitors or locals.
-
-[Real Bar Name 2]: Atmosfera Rilassata per Nuove Connessioni
-Detail the second bar, focusing on its unique features (e.g., cozy setting, themed nights, outdoor seating). Highlight how it fosters connections and any special events. Include practical details and tips for visiting.
-
-I Migliori Club per la Vita Notturna Gay a ${cityName}
-List and describe gay-friendly clubs or nightlife venues in ${cityName} based on search results. Focus on dance clubs, cruising bars, or inclusive nightlife spots. Include details like music genres, cover charges, and event schedules. If no clubs are found, mention nightlife in nearby cities or alternative social spaces (e.g., bars with late-night vibes).
-
-Hotel Gay-Friendly a ${cityName}: Dove Soggiornare
-Recommend 2–3 gay-friendly hotels or accommodations in ${cityName} based on search results (e.g., from sites like misterb&b). Include details like location, amenities, price range, and why they're welcoming to LGBTQ+ guests. If specific gay-friendly hotels are unavailable, suggest inclusive boutique hotels or Airbnb options with positive reviews for diversity.
-
-Eventi e Festival Gay a ${cityName}: Quando Partecipare
-Highlight key LGBTQ+ events in ${cityName} (e.g., pride parades, film festivals, community gatherings) based on search results. Include dates, locations, and what to expect. If no events are found, mention regional events (e.g., Abruzzo Pride for Chieti) or suggest checking local LGBTQ+ group pages for pop-up events.
-
-App e Piattaforme per Incontri Gay a ${cityName}
-Discuss popular dating apps and platforms (e.g., Grindr, Scruff, Hornet) used in ${cityName}. Explain their features, user base, and tips for safe usage. Mention local online communities or forums (e.g., Arcigay groups) if available. Include any city-specific platforms or social media groups found in search results.
-
-Consigli Pratici per Incontri Gay Sicuri e Divertenti a ${cityName}
-Offer practical tips for safe and enjoyable gay encounters in ${cityName}. Cover topics like meeting in public spaces, respecting local culture, using verified apps, and staying aware of surroundings. Include advice on navigating smaller cities if ${cityName} has a limited scene.
-
-Risorse Locali per Esplorare la Scena Gay di ${cityName}
-Highlight local LGBTQ+ organizations, community centers, or social media groups in ${cityName} (e.g., Arcigay Chieti). Explain how they support the community and help visitors connect. If no local groups exist, suggest regional or national resources and online communities.
-${internalLinksSection}
-In Conclusione: ${cityName}, il Tuo Punto di Riferimento per Incontri Gay
-Summarize why ${cityName} is a great destination for gay encounters, recapping key venues, events, and tips. Encourage readers to explore the city, connect with the community, and share their experiences. Include a call-to-action (e.g., "Visit ${cityName} and discover its vibrant gay scene!").
-
-**LUNGHEZZA:** Circa 10.000 caratteri.
-**FORMATO MARKDOWN:** Output diretto in Markdown.
-**NO CODE FENCES:** Non iniziare l'output con \`\`\`markdown.
-**STRUTTURA CRUCIALE:** Seguire ESATTAMENTE la struttura H2/H3 specificata. Non omettere sezioni.
-**KEYWORDS:** Integrare keywords naturalmente. NON includere le liste "Keywords: ...".
+    Start with a captivating introduction that highlights the unique appeal of the trans dating scene in ${cityName}. Use a strong hook to draw readers in and showcase what makes this city special for trans dating.
+    
+    
+    
+    Include a detailed section on the best places to meet trans singles in ${cityName}. List specific local bars, clubs, LGBTQ+ events, or popular online dating platforms. Where possible, include names of venues or events to make the advice actionable and locally relevant.
+    
+    
+    
+    Provide practical, actionable tips for successful trans dating, emphasizing respect, communication, and understanding trans experiences. Include relatable examples or scenarios to illustrate these tips.
+    
+    
+    
+    Explore common challenges in trans dating (e.g., societal stigma, pronoun navigation) and offer specific, practical solutions to address them.
+    
+    
+    
+    Feature at least two success stories or testimonials reflecting positive trans dating experiences in ${cityName}. These should feel authentic and inspiring, highlighting the city’s welcoming vibe.
+    
+    
+    
+    Conclude with a tailored list of resources for ${cityName}, such as local LGBTQ+ organizations, support groups, or online communities, to add value and encourage engagement.
+    
+    Throughout the article:
+    
+    
+    
+    
+    
+    Seamlessly integrate long-tail keywords, such as:
+    
+    
+    
+    
+    
+    "best trans dating spots in ${cityName}"
+    
+    
+    
+    "how to date trans singles in ${cityName}"
+    
+    
+    
+    "trans dating tips ${cityName}"
+    
+    
+    
+    Use both singular and plural forms (e.g., "trans date" and "trans dates").
+    
+    
+    
+    Incorporate respectful variations of 'trans' (e.g., "transgender," "trans woman," "trans man," "trans person") naturally to broaden search query coverage and ensure inclusivity. Avoid forced repetition or unnatural phrasing.
+    
+    
+    
+    Use emojis sparingly (e.g., ❤️, 🌈, 😊) to enhance relatability and fun without overwhelming the text.
+    
+    
+    
+    Adopt a natural, conversational tone—like advice from a trusted friend—to keep the article warm, approachable, and humanized.
+    
+    
+    
+    Engage readers with rhetorical questions (e.g., "Ready to explore love in ${cityName}?") and teasers (e.g., "Curious about ${cityName}’s top trans dating spot? Keep reading!") to maintain interest.
+    
+    
+    
+    Incorporate specific ${cityName} details, such as:
+    
+    
+    
+    
+    
+    Notable LGBTQ+ venues
+    
+    
+    
+    Annual events (e.g., Pride celebrations, trans-focused gatherings)
+    
+    
+    
+    Cultural or social factors shaping the trans dating scene
+    
+    
+    
+    Cite credible, Google-sourced information (e.g., statistics, expert quotes, or studies) to boost trust and authority.
+    
+    
+    
+    Add a section on ${cityName}’s cultural or social climate regarding trans acceptance and its impact on dating, providing valuable context.
+    
+    
+    
+    Address dual perspectives: trans individuals seeking partners and those interested in dating trans individuals, ensuring inclusivity and broad appeal.
+    
+    
+    
+    Optionally, include a FAQ section at the end to tackle common questions or concerns about trans dating in ${cityName}, enhancing reader value.
+    
+    The article should be entertaining, insightful, and leave readers excited to dive into trans dating in ${cityName}.
+    
+    
+    
+    10 SEO-Optimized Titles for ${cityName}
+    
+    
+    
+    
+    
+    "Dating Trans in ${cityName}: Your Ultimate Guide to Love and Connection"
+    
+    
+    
+    "Best Places to Meet Trans Singles in ${cityName} – Discover Now!"
+    
+    
+    
+    "Trans Dating Tips for ${cityName} Locals: Expert Secrets Unveiled"
+    
+    
+    
+    "What’s the Trans Dating Scene Like in ${cityName}? Find Out Here"
+    
+    
+    
+    "Top Apps for Finding Trans Dates in ${cityName} – Start Swiping!"
+    
+    
+    
+    "Trans Dating Etiquette in ${cityName}: How to Shine on Every Date"
+    
+    
+    
+    "Real Trans Dating Stories from ${cityName} That Inspire"
+    
+    
+    
+    "Beginner’s Guide to Dating Trans Individuals in ${cityName}"
+    
+    
+    
+    "Trans Dating Events in ${cityName} You Can’t Miss"
+    
+    
+    
+    "Why ${cityName} is Perfect for Trans Dating Adventures"
+    
+    **Lenght** 10.000 characters approximately.
+    **FORMATO MARKDOWN:** Output direct in Markdown.
+    **NO CODE FENCES:** do not initiate output with \`\`\`markdown.
+    **CRUCIAL STRUCTURE:** Follow EXACTLY the specified H2/H3 structure. Do not omit sections.
+    **KEYWORDS:** Integrate keywords of course. Do NOT include “Keywords” lists. 
 `;
   } else if (categorySlug === 'milf') {
     console.warn(`      --> Placeholder prompt for 'milf' category. IMPLEMENT THIS! Include internal links.`);
@@ -192,136 +294,6 @@ function delay(ms) {
 }
 
 /**
- * Generates a main image for the article using Vertex AI and Gemini model.
- * @param {string} articleTitle - The title of the article to base the image on.
- * @param {string} imageFilePath - The full path where the image should be saved.
- * @param {string} cityName - The city name for the article.
- * @param {string} categoryName - The category name for the article.
- * @returns {Promise<{success: boolean, altText: string}>} Object with success status and alt text if successful
- */
-async function generateMainImage(articleTitle, imageFilePath, cityName, categoryName) {
-  try {
-    if (!GOOGLE_CLOUD_PROJECT_ID) {
-      console.error(`    ❌ GOOGLE_CLOUD_PROJECT_ID not found in environment variables. Required for image generation.`);
-      return { success: false, altText: "" };
-    }
-    
-    console.log(`    🖼️ Initializing Vertex AI with project: ${GOOGLE_CLOUD_PROJECT_ID} in location: ${vertexAILocation}`);
-    
-    // Initialize Vertex AI with the required project and location
-    const vertexAI = new VertexAI({
-      project: GOOGLE_CLOUD_PROJECT_ID, 
-      location: vertexAILocation
-    });
-    
-    // The model to use - based on user's recommendation
-    const imageModelName = "gemini-2.0-flash-preview-image-generation";
-    console.log(`    📝 Using model: ${imageModelName} in ${vertexAILocation}`);
-    
-    // Create the generative model
-    const generativeModel = vertexAI.getGenerativeModel({
-      model: imageModelName,
-      generationConfig: {
-        temperature: 0.9,
-        maxOutputTokens: 2048
-      }
-    });
-    
-    // Prepare a prompt for image generation with city, category, and Donald Trump
-    const imagePrompt = `Generate a visually appealing, horizontal image for a blog article about ${categoryName} in ${cityName} with Donald Trump. The image should be professional and appropriate for a blog. Avoid any text in the image.`;
-    console.log(`    📋 Sending image generation prompt: "${imagePrompt}"`);
-    
-    // Generate content with responseModalities to get image output
-    const result = await generativeModel.generateContent({
-      contents: [{ role: "user", parts: [{ text: imagePrompt }] }],
-      generationConfig: {
-        temperature: 0.9,
-        maxOutputTokens: 2048,
-        responseModalities: ["TEXT", "IMAGE"]
-      }
-    });
-    
-    console.log("    ✅ Response received from Vertex AI");
-    const response = result.response;
-    
-    // Default alt text in case we don't get a description
-    let altText = `Featured image for article: ${articleTitle}`;
-    
-    // Process the response for images
-    if (response.candidates && response.candidates.length > 0) {
-      const candidate = response.candidates[0];
-      if (candidate.content && candidate.content.parts) {
-        console.log(`      Found ${candidate.content.parts.length} parts in the response`);
-        
-        for (const part of candidate.content.parts) {
-          // Use text from response as alt text if available
-          if (part.text) {
-            // Extract a concise alt text from the description (first sentence or up to 150 chars)
-            const textDescription = part.text.trim();
-            // Get first sentence or first 150 chars for alt text
-            const firstSentenceMatch = textDescription.match(/^.*?[.!?](?:\s|$)/);
-            if (firstSentenceMatch) {
-              altText = firstSentenceMatch[0].trim();
-            } else {
-              altText = textDescription.substring(0, 150);
-              if (textDescription.length > 150) altText += '...';
-            }
-            console.log(`      Using alt text: "${altText.substring(0, 100)}${altText.length > 100 ? '...' : ''}"`);
-          }
-          
-          // Handle image output
-          if (part.inlineData && part.inlineData.data) {
-            console.log(`      Found image data with MIME type: ${part.inlineData.mimeType || "unspecified"}`);
-            const base64Image = part.inlineData.data;
-            
-            // Save the image to the specified file path
-            await fs.writeFile(imageFilePath, Buffer.from(base64Image, 'base64'));
-            console.log(`      ✅ Image successfully saved to: ${imageFilePath}`);
-            return { success: true, altText };
-          }
-        }
-        console.warn(`      ⚠️ No image data found in the response parts.`);
-      } else {
-        console.warn(`      ⚠️ No content parts found in the response candidate.`);
-      }
-    } else {
-      console.warn(`      ⚠️ No candidates found in the response.`);
-    }
-    
-    return { success: false, altText: "" };
-    } catch (error) {
-    console.error(`    ❌ Error during image generation for title "${articleTitle}":`, error.message || error);
-    if (error.response) {
-      console.error('       API Error Response:', JSON.stringify(error.response, null, 2));
-    }
-    return { success: false, altText: "" };
-  }
-}
-
-// Function to list available models (temporary for debugging)
-/*
-async function listAvailableModels(genAI) {
-  console.log("\n--- Listing Available Models ---");
-  try {
-    const { models } = await genAI.listModels();
-    for (const m of models) {
-      if (m.supportedGenerationMethods.includes('generateContent')) { // Check if it supports the method we use
-        console.log(`Model: ${m.name} - Display Name: ${m.displayName} - Supports generateContent`);
-        console.log(`  Supported Generation Methods: ${m.supportedGenerationMethods.join(', ')}`);
-        // We are particularly interested in models that might indicate image generation capabilities by name or description
-        if (m.name.includes('image') || m.name.includes('vision') || m.displayName.toLowerCase().includes('image')) {
-            console.log(`  ^^^ This model might be relevant for image generation.`);
-        }
-      }
-    }
-  } catch (error) {
-    console.error("Error listing models:", error);
-  }
-  console.log("--- Finished Listing Models ---\n");
-}
-*/
-
-/**
  * Processes the generation for a single city.
  * @param {object} city - The city object from geo.json (including region).
  * @param {object} targetCategoryObject - The category object { slug, name }.
@@ -347,8 +319,8 @@ async function processSingleCity(city, targetCategoryObject, allCities, model) {
   }
 
   // Define paths
-  const categorySpecificDir = path.join(outputBaseDir, categorySlug);
-  const cityInCategoryDir = path.join(categorySpecificDir, city.slug);
+        const categorySpecificDir = path.join(outputBaseDir, categorySlug);
+        const cityInCategoryDir = path.join(categorySpecificDir, city.slug);
         const articleSlug = `incontri-${categorySlug}-in-${city.slug}`;
         const targetFileName = `${articleSlug}.md`;
         const targetFilePath = path.join(cityInCategoryDir, targetFileName);
@@ -414,31 +386,9 @@ async function processSingleCity(city, targetCategoryObject, allCities, model) {
             }
       articleText = articleText.replace(/^\*Keywords:.*$/gim, '');
       articleText = articleText.replace(/\n{3,}/g, '\\n\\n').trim();
-
-
-    // Generate Image
-    let imagePathForFrontmatter = '';
-    let imageAltText = '';
-    const imageFileName = `${articleSlug}-main.webp`;
-    const publicImageDir = path.join(process.cwd(), 'public', 'content', 'articles', categorySlug, city.slug);
-    const fullImageFilePath = path.join(publicImageDir, imageFileName);
-    imagePathForFrontmatter = `/content/articles/${categorySlug}/${city.slug}/${imageFileName}`;
-
-    try {
-      await fs.mkdir(publicImageDir, { recursive: true });
-      console.log(`    Generating image for ${cityName} (${categoryName})...`);
-      const imageResult = await generateMainImage(finalTitle, fullImageFilePath, cityName, categoryName);
-      if (imageResult.success) {
-        imageAltText = imageResult.altText;
-        console.log(`      ✅ Image generated for ${cityName}`);
-      } else {
-        imagePathForFrontmatter = ''; // Don't link to a failed image
-        console.log(`      ⚠️ Image generation failed for ${cityName}`);
-      }
-    } catch (imgError) {
-      console.error(`    ❌ Error during image generation/saving for ${cityName}:`, imgError.message || imgError);
-      imagePathForFrontmatter = '';
-    }
+           
+    // Image generation is removed.
+    const imagePathForFrontmatter = ''; // Set to empty for frontmatter
 
     // Construct Markdown
             const markdownContent = `---
@@ -453,7 +403,7 @@ categoryName: "${categoryName}"
 image: "${imagePathForFrontmatter}"
 ---
 
-${imagePathForFrontmatter ? `![${imageAltText.replace(/"/g, '\\"')}](${imagePathForFrontmatter})\n\n` : ''}${articleText}
+${articleText}
 `;
 
     // Save File
