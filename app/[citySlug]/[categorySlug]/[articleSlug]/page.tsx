@@ -16,6 +16,7 @@ import type { Root as MdastRootType } from 'mdast';
 
 // Import the new client component that will handle actual rendering
 import ArticleContentRenderer from '@/components/common/article-content-renderer'; // Adjust path as needed
+import { DirectEncounterCTA } from '@/components/common/direct-encounter-cta'; // Added import for CTA
 
 interface ArticleFrontmatter {
   title?: string;
@@ -24,6 +25,8 @@ interface ArticleFrontmatter {
   category?: string;
   date?: string;
   articleSlug: string;
+  cityName?: string; // Added to ensure we have it
+  image?: string; // Added from previous integration
 }
 
 interface ResolvedPageParams {
@@ -187,6 +190,13 @@ export default async function SpecificArticlePage({ params }: { params: Promise<
   // For now, we'll pass the raw markdownBody to the client component for fallback.
   if (articleRenderData.leadingHastNodes.length === 0 && articleRenderData.accordionSections.length === 0) {
     return (
+      <>
+        {/* Add CTA here as well for fallback cases, if cityName is available */}
+        {frontmatter.cityName && (
+          <div className="container mx-auto px-4 py-8">
+            <DirectEncounterCTA cityName={frontmatter.cityName} />
+          </div>
+        )}
         <ArticleContentRenderer 
             leadingHastNodes={[]} 
             accordionSections={[]} 
@@ -194,10 +204,18 @@ export default async function SpecificArticlePage({ params }: { params: Promise<
             headings={[]} // Pass empty headings for fallback
             fallbackMarkdownBody={markdownBody} // Pass raw markdown for client-side fallback processing
         />
+      </>
     );
   }
 
   return (
+    <>
+      {/* Add CTA at the top of the main content */}
+      {frontmatter.cityName && (
+        <div className="container mx-auto px-4 py-8">
+          <DirectEncounterCTA cityName={frontmatter.cityName} />
+        </div>
+      )}
     <ArticleContentRenderer 
         leadingHastNodes={articleRenderData.leadingHastNodes} 
         accordionSections={articleRenderData.accordionSections} 
@@ -205,6 +223,7 @@ export default async function SpecificArticlePage({ params }: { params: Promise<
         headings={articleRenderData.headings} // Pass populated headings
         // fallbackMarkdownBody is not needed if we have sections
     />
+    </>
   );
 }
 
