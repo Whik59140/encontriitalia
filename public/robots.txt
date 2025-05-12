@@ -1,0 +1,9 @@
+# Allow all ethical crawlers access to the entire site
+User-agent: *
+Allow: /
+
+# Disallow access to Next.js internal directories (optional but good practice)
+Disallow: /_next/
+
+# Point crawlers to the main sitemap index file
+Sitemap: https://www.incontri-italia.it/sitemap.xml 
