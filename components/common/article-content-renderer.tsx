@@ -80,7 +80,7 @@ interface ArticleContentRendererProps extends ArticleRenderData {
 const getRandomImageIndices = (): [number, number] => {
   const indices = new Set<number>();
   while (indices.size < 2) {
-    indices.add(Math.floor(Math.random() * 10) + 1); // Generates 1-10
+    indices.add(Math.floor(Math.random() * 50) + 1); // Generates 1-50
   }
   return Array.from(indices) as [number, number];
 };
@@ -316,64 +316,56 @@ const ArticleContentRenderer: React.FC<ArticleContentRendererProps> = ({
               {/* Render CTA component AND CTA images after the first section and then after every 2 sections */}
               {(index === 0 || (index > 0 && (index + 1) % 2 === 0)) && (
                 <>
-                  {/* New CTA Images Section */}
-                  {categorySlug && affiliateUrl && (
-                    <div className="not-prose my-8 flex flex-wrap justify-center gap-4 sm:gap-6"> {/* Use not-prose and flex-wrap */}
+                  {/* Restored and Updated CTA Images Section with new naming convention */}
+                  {categorySlug && affiliateUrl && ctaImageIndices && ctaImageIndices[index] && (
+                    <div className="not-prose my-8 flex flex-wrap justify-center gap-4 sm:gap-6"> 
                       {(() => {
-                        // Get indices for this specific CTA instance from state, default to [1, 2] if not ready
-                        const [imgNum1, imgNum2] = ctaImageIndices?.[index] ?? [1, 2]; 
+                        const [imgNum1, imgNum2] = ctaImageIndices[index]; 
                         return (
                           <>
-                            {/* Image 1 Wrapper - Should be always visible */}
+                            {/* Image 1 Wrapper */}
                             <a href={affiliateUrl} target="_blank" rel="noopener noreferrer sponsored" className="group relative block w-[45%] max-w-[300px] sm:w-auto hover:opacity-90 transition-opacity overflow-hidden rounded-lg shadow-md">
                               <Image
-                                src={`/blog/${categorySlug}/${imgNum1}.webp`}
+                                src={`/blog/${categorySlug}/${categorySlug} (${imgNum1}).webp`} // New path
                                 alt={`CTA Image 1 for ${categoryName} in ${cityName}`}
-                                width={300} // Adjust size as needed
-                                height={150} // Adjust size based on image aspect ratio
-                                className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105" // Hover effect
+                                width={300}
+                                height={150} 
+                                className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
+                                priority={index < 2}
                               />
-                              {/* Overlay Button */}
                               <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/90 via-black/70 to-transparent p-3 text-center">
-                                {/* Badges Container */}
                                 <div className="flex justify-center items-center gap-1.5 mb-1.5">
                                   <span className="inline-block bg-red-500 text-white text-[9px] sm:text-xs font-semibold px-2 py-0.5 rounded-full">Gratis</span>
                                   <span className="inline-block bg-yellow-400 text-black text-[9px] sm:text-xs font-semibold px-2 py-0.5 rounded-full">18+</span>
                                   <span className="inline-block bg-green-500 text-white text-[9px] sm:text-xs font-semibold px-2 py-0.5 rounded-full">Profili Veri</span>
                                 </div>
-                                {/* Main Text */}
                                 <span className="text-white text-sm sm:text-base font-bold leading-tight drop-shadow-md">
                                   Incontri {categoryName} a {cityName} 🔥👀
                                   <br/>
-                                  {/* Button-like CTA */}
                                   <span className="inline-block mt-1 px-2 py-0.5 sm:px-3 sm:py-1 bg-pink-500 hover:bg-pink-600 transition-colors rounded-md text-sm sm:text-lg font-extrabold shadow-sm">
                                     Clicca Qui! 👉
                                   </span>
                                 </span>
                               </div>
                             </a>
-                            {/* Image 2 Wrapper - Show on all sizes, adjust layout via parent flex */}
+                            {/* Image 2 Wrapper */}
                             <a href={affiliateUrl} target="_blank" rel="noopener noreferrer sponsored" className="group relative block w-[45%] max-w-[300px] sm:w-auto hover:opacity-90 transition-opacity overflow-hidden rounded-lg shadow-md">
                               <Image
-                                src={`/blog/${categorySlug}/${imgNum2}.webp`}
+                                src={`/blog/${categorySlug}/${categorySlug} (${imgNum2}).webp`} // New path
                                 alt={`CTA Image 2 for ${categoryName} in ${cityName}`}
-                                width={300} // Adjust size as needed
-                                height={150} // Adjust size based on image aspect ratio
-                                className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105" // Hover effect
+                                width={300} 
+                                height={150}
+                                className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
+                                priority={index < 2} 
                               />
-                               {/* Overlay Button - Centered content with choices */}
                                <div className="absolute inset-0 flex flex-col justify-center items-center p-3 text-center bg-gradient-to-t from-black/80 via-black/60 to-transparent">
-                                 {/* Title */}
                                  <span className="text-white text-base sm:text-lg font-bold mb-2 drop-shadow-md">
                                    Incontri {categoryName} a {cityName}
                                  </span>
-                                 {/* Button Choices Container */}
                                  <div className="flex flex-col sm:flex-row gap-2 mt-1">
-                                   {/* Button 1: Serious */}
                                    <span className="inline-block px-3 py-1 bg-blue-500 text-white rounded-md text-xs sm:text-sm font-semibold shadow-sm cursor-pointer transition-transform duration-200 ease-in-out hover:scale-105">
                                      Qualcosa di Serio? 👉
                                    </span>
-                                   {/* Button 2: Casual */}
                                    <span className="inline-block px-3 py-1 bg-red-500 text-white rounded-md text-xs sm:text-sm font-semibold shadow-sm cursor-pointer transition-transform duration-200 ease-in-out hover:scale-105">
                                      Solo Sesso? 👉
                                    </span>
@@ -385,6 +377,24 @@ const ArticleContentRenderer: React.FC<ArticleContentRendererProps> = ({
                       })()}
                     </div>
                   )}
+                  {/* End New CTA Images Section */}
+
+                  {/* Separator Line - This can be kept or removed based on your preference */}
+                  <hr className="my-8 border-gray-300 dark:border-gray-600" />
+
+                  {/* Existing SectionCTA component (if you still want it here) */}
+                  {/* You might want to remove this if the image CTAs are sufficient */}
+                  {/* Or keep it if it serves a different purpose */}
+                  {/* 
+                  {cityName && categorySlug && categoryName && affiliateUrl && (
+                    <SectionCTA 
+                      cityName={cityName} 
+                      categoryName={categoryName} 
+                      categorySlug={categorySlug} 
+                      affiliateLink={affiliateUrl} 
+                    />
+                  )}
+                  */}
                 </>
               )}
             </React.Fragment>

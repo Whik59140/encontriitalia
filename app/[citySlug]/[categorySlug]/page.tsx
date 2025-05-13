@@ -146,6 +146,17 @@ export default async function CategoryListingPage({ params }: { params: Promise<
         <h1 className="text-3xl font-bold mb-6">
           {pageTitle}
         </h1>
+
+        {/* Link to the new Annunci CHOOSER page */}
+        <div className="my-8 text-center"> 
+          <Link 
+            href={`/${citySlug}/${categorySlug}/annunci`}
+            className="inline-block bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-semibold py-3 px-8 rounded-lg shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 text-lg sm:text-xl"
+          >
+            🔞 Vedi TUTTI gli Annunci {displayNameForCategory} a {displayNameForCity} 🔞
+          </Link>
+        </div>
+
         {articles.length === 0 ? (
           <p className="text-center text-gray-600 py-8">Nessun articolo specifico trovato per questa categoria. Torna presto a trovarci!</p>
         ) : (
@@ -179,6 +190,7 @@ export default async function CategoryListingPage({ params }: { params: Promise<
           isExternalLink={true}
           linkTarget="_blank"
         />
+
       </main>
       <Footer 
         currentCitySlug={citySlug} 

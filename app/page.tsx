@@ -2,7 +2,9 @@ import { CitySearchAndDisplay } from '@/components/common/city-search-display';
 import { getAllCities } from '@/lib/utils/geo';
 // Import the category links and types
 import { categoryAffiliateLinks } from '@/lib/constants';
-import Link from 'next/link'; // Import Link for navigation
+// import Link from 'next/link'; // No longer directly using Link for these CTAs
+import { CategoryCtaButtonWithModal } from '@/components/common/category-cta-button-with-modal'; // Added
+import { capitalizeSlug } from '@/lib/utils/string'; // Assuming it's in string.ts
 // Types will be implicitly handled or can be imported from @/types/geo if needed explicitly
 
 // Simple mapping for category slugs to display names (adjust as needed)
@@ -36,15 +38,13 @@ export default async function HomePage() {
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {Object.entries(categoryAffiliateLinks).map(([slug, url]) => (
-              <Link
+              <CategoryCtaButtonWithModal
                 key={slug}
-                href={url ?? '#'} // Use '#' as fallback if URL is somehow undefined
-                target="_blank"
-                rel="noopener noreferrer sponsored"
+                affiliateUrl={url ?? '#'}
+                buttonText={`Sto cercando ${categoryDisplayNames[slug] || capitalizeSlug(slug)} 👉`}
+                categoryName={categoryDisplayNames[slug] || capitalizeSlug(slug)}
                 className="block w-full px-6 py-4 bg-gradient-to-r from-pink-500 to-red-500 text-white text-lg font-semibold rounded-lg shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200 ease-in-out"
-              >
-                Sto cercando {categoryDisplayNames[slug] || slug} 👉
-              </Link>
+              />
             ))}
           </div>
         </section>
