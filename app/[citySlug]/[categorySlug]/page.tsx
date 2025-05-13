@@ -174,7 +174,7 @@ export default async function CategoryListingPage({ params }: { params: Promise<
             )}
                 </div>
                 <Link href={article.url} className="text-blue-500 hover:underline text-sm mt-auto self-start">
-                  {cityCategoryPageStrings.readMoreLink}
+                  {cityCategoryPageStrings.readMoreButtonText}
             </Link>
           </div>
         ))}
