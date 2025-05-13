@@ -4,6 +4,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { InterstitialModal } from './interstitial-modal';
 import { MessageSquare, Smile } from 'lucide-react';
+import { fakeChatInterfaceStrings } from '@/app/translations'; // Import translations
 
 interface Message {
   id: string;
@@ -30,7 +31,7 @@ export function FakeChatInterface({
   categoryDisplayName,
   affiliateLink,
   initialMessagesConfig,
-  chatCtaButtonText = "Entra e Chatta Subito!",
+  chatCtaButtonText = fakeChatInterfaceStrings.defaultCtaButtonText, // Use translated default
 }: FakeChatInterfaceProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [displayedMessages, setDisplayedMessages] = useState<Message[]>([]);
@@ -93,9 +94,6 @@ export function FakeChatInterface({
     window.open(affiliateLink, '_blank', 'noopener,noreferrer');
     setIsModalOpen(false);
   };
-  
-  const modalTitle = `Conferma Accesso Chat! 💖`;
-  const modalDescription = `Stai per entrare nella chat ${categoryDisplayName} di ${cityDisplayName}! L'iscrizione è rapida e GRATUITA. Preparati a conoscere persone fantastiche!`;
 
   return (
     <>
@@ -107,13 +105,13 @@ export function FakeChatInterface({
           </div>
           <div>
             <p className="text-sm font-semibold text-gray-800 dark:text-white">
-              Assistente {categoryDisplayName}
+              {fakeChatInterfaceStrings.assistantNamePrefix} {categoryDisplayName}
             </p>
             <div className="flex items-center space-x-1.5">
-              <p className="text-xs text-green-500">Online</p>
+              <p className="text-xs text-green-500">{fakeChatInterfaceStrings.statusOnline}</p>
               <span className="text-xs text-gray-400 dark:text-gray-500">•</span>
               <p className="text-xs text-gray-500 dark:text-gray-400">
-                <span className="font-medium text-green-600 dark:text-green-400">{onlineUsersCount}</span> utenti online
+                <span className="font-medium text-green-600 dark:text-green-400">{onlineUsersCount}</span> {fakeChatInterfaceStrings.usersOnlineSuffix}
               </p>
             </div>
           </div>
@@ -182,12 +180,12 @@ export function FakeChatInterface({
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onConfirm={handleModalConfirm}
-        categoryName={categoryDisplayName}
-        cityName={cityDisplayName}
-        title={modalTitle}
-        description={modalDescription}
-        confirmButtonText="Sì, Entra Ora!"
-        warningText="Attenzione: Stai per accedere a contenuti per adulti. Prosegui solo se maggiorenne."
+        categoryName={categoryDisplayName} // categoryName is dynamic, from props
+        cityName={cityDisplayName} // cityName is dynamic, from props
+        title={fakeChatInterfaceStrings.modalTitle} // Use translated title
+        description={fakeChatInterfaceStrings.modalDescription(categoryDisplayName, cityDisplayName)} // Use translated description
+        confirmButtonText={fakeChatInterfaceStrings.modalConfirmButton} // Use translated button text
+        warningText={fakeChatInterfaceStrings.modalWarningAdult} // Use translated warning text
       />
     </>
   );

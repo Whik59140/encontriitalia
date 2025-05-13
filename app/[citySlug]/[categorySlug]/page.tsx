@@ -7,6 +7,7 @@ import { Footer } from '@/components/common/footer'; // Changed to named import
 import { getRegionalCities } from '@/lib/utils/geo'; // Import getRegionalCities
 import { WebcamCtaButton } from '@/components/common/webcam-cta-button'; // Import the new component
 import { categoryAffiliateLinks } from '@/lib/constants'; // <<< IMPORT THE CENTRALIZED MAP
+import { homePageStrings, cityCategoryPageStrings } from '@/app/translations'; // Import translations
 
 // --- REMOVE Configuration for Affiliate Link --- 
 // const AFFILIATE_LINK_TEMPLATE = 'https://affiliate.example.com/register?campaign={categorySlug}&location={citySlug}&tracking_id=your_id';
@@ -17,18 +18,7 @@ function capitalizeCityName(slug: string): string { // Restored
   return slug.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
 }
 
-const CATEGORY_DISPLAY_NAMES: { [slug: string]: string } = { // Restored
-  gay: 'Gay',
-  milf: 'MILF',
-  donne: 'Donne',
-  ragazze: 'Ragazze',
-  trans: 'Trans',
-  trav: 'Trav',
-  escort: 'Escort',
-  studentessa: 'Studentesse',
-  adulti: 'Adulti',
-};
-// --- End Helper Functions & Data ---
+// CATEGORY_DISPLAY_NAMES is now taken from homePageStrings.categoryDisplayNames
 
 interface ArticleEntry {
   title: string;
@@ -96,6 +86,7 @@ export default async function CategoryListingPage({ params }: { params: Promise<
   // Updated directory path to scan for articles for this specific city/category combination
   const articlesParentDirectory = path.join(process.cwd(), 'content', 'articles', categorySlug, citySlug);
   const articles: ArticleEntry[] = [];
+  const CATEGORY_DISPLAY_NAMES = homePageStrings.categoryDisplayNames; // Use from translations
 
   try {
     const filenames = await fs.readdir(articlesParentDirectory);
@@ -108,7 +99,7 @@ export default async function CategoryListingPage({ params }: { params: Promise<
         const { data } = matter(fileContent);
         
         articles.push({
-          title: data.title || 'Untitled Article',
+          title: data.title || cityCategoryPageStrings.untitledArticle,
           description: data.description,
           url: `/${citySlug}/${categorySlug}/${articleSlugFromFile}`,
           city: data.cityName || capitalizeCityName(citySlug),
@@ -130,19 +121,19 @@ export default async function CategoryListingPage({ params }: { params: Promise<
   const displayNameForCity = capitalizeCityName(citySlug);
   const displayNameForCategory = CATEGORY_DISPLAY_NAMES[categorySlug] || capitalizeCityName(categorySlug);
 
-  const pageTitle = `Articoli per: ${displayNameForCity} / ${displayNameForCategory}`;
+  const pageTitleText = cityCategoryPageStrings.pageTitle(displayNameForCity, displayNameForCategory);
 
   // Construct dynamic affiliate link from the centralized map
-  const dynamicAffiliateLink = categoryAffiliateLinks[categorySlug] || 'https://defaultfallback.link'; // Fallback if slug not in map
+  const dynamicAffiliateLink = categoryAffiliateLinks[categorySlug] || cityCategoryPageStrings.defaultFallbackLink; // Fallback if slug not in map
 
-  const ctaTitle = `Cerchi Incontri ${displayNameForCategory} a ${displayNameForCity}? 🤔`;
-  const ctaSubtitle = `Registrazione Gratuita ✅ con Profili Veri ✅.\nConferma la tua email per iniziare subito!`;
+  const ctaTitleText = cityCategoryPageStrings.ctaTitle(displayNameForCategory, displayNameForCity);
+  const ctaSubtitleText = cityCategoryPageStrings.ctaSubtitle;
 
     return (
     <div className="container mx-auto p-4 flex flex-col min-h-screen">
       <main className="flex-grow">
         <h1 className="text-3xl font-bold mb-6">
-          {pageTitle}
+          {pageTitleText}
         </h1>
 
         {/* Webcam CTA Button added at the top */}
@@ -160,12 +151,12 @@ export default async function CategoryListingPage({ params }: { params: Promise<
             href={`/${citySlug}/${categorySlug}/annunci`}
             className="inline-block bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-semibold py-3 px-8 rounded-lg shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 text-lg sm:text-xl"
           >
-            🔞 Vedi TUTTI gli Annunci {displayNameForCategory} a {displayNameForCity} 🔞
+            {cityCategoryPageStrings.viewAllAdsLink(displayNameForCategory, displayNameForCity)}
           </Link>
       </div>
 
         {articles.length === 0 ? (
-          <p className="text-center text-gray-600 py-8">Nessun articolo specifico trovato per questa categoria. Torna presto a trovarci!</p>
+          <p className="text-center text-gray-600 py-8">{cityCategoryPageStrings.noArticlesFound}</p>
         ) : (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {articles.map((article) => (
@@ -181,7 +172,7 @@ export default async function CategoryListingPage({ params }: { params: Promise<
             )}
                 </div>
                 <Link href={article.url} className="text-blue-500 hover:underline text-sm mt-auto self-start">
-                  Leggi di più &rarr;
+                  {cityCategoryPageStrings.readMoreLink}
             </Link>
           </div>
         ))}
@@ -189,10 +180,10 @@ export default async function CategoryListingPage({ params }: { params: Promise<
         )}
         {/* CtaSection Restored with user-specified props */}
         <CtaSection 
-          title={ctaTitle}
-          subtitle={ctaSubtitle}
-          description="Trova profili verificati e inizia la tua avventura. La registrazione è veloce e richiede solo la tua email."
-          buttonText="💕 Inizia Subito!"
+          title={ctaTitleText}
+          subtitle={ctaSubtitleText}
+          description={cityCategoryPageStrings.ctaSectionDescription}
+          buttonText={cityCategoryPageStrings.ctaSectionButtonText}
           buttonLink={dynamicAffiliateLink}
           isExternalLink={true}
           linkTarget="_blank"

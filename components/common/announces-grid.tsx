@@ -1,6 +1,7 @@
 import fs from 'fs/promises';
 import path from 'path';
 import { AnnounceCard } from './announce-card'; // Assuming AnnounceCard is in the same directory or adjust path
+import { announcesGridStrings } from '@/app/translations';
 
 interface AnnouncesGridProps {
   categorySlug: string;
@@ -38,53 +39,7 @@ async function getRandomImageUrls(categorySlug: string, count: number): Promise<
   return urls;
 }
 
-// Update text generation templates to be an object keyed by subCategoryType
-const subCategoryTitleTemplates: { [key: string]: string[] } = {
-  default: [
-    "Incontri {category} a {city}: Nuovi Annunci!",
-    "Passione e Divertimento a {city} - Annunci {category}",
-    "{category} a {city}: Scopri i Profili Più Caldi!",
-  ],
-  gratis: [
-    "Annunci {category} Gratis a {city}: Inizia Subito!",
-    "{city}: {category} Gratuiti da Non Perdere!",
-    "Accesso Gratuito: Annunci {category} a {city}",
-  ],
-  sesso: [
-    "Annunci Sesso {category} a {city}: Passione Garantita!",
-    "{city} Hot: Incontri Sesso {category} Esplosivi!",
-    "Desideri {category} Sesso a {city}? Ecco gli Annunci!",
-  ],
-  seri: [
-    "Incontri Seri {category} a {city}: Trova l'Anima Gemella!",
-    "{city}: Relazioni Serie con {category} Speciali.",
-    "Cerchi Amore Vero? Annunci {category} Seri a {city}",
-  ],
-  incontri: [ // Added for 'incontri'
-    "Annunci Incontri {category} a {city}: Connessioni Autentiche!",
-    "{city}: Scopri Nuovi Incontri {category} Oggi Stesso!",
-    "Incontri {category} a {city}: Profili Verificati Ti Aspettano!",
-  ],
-};
-
-const subCategoryDescriptionTemplates: { [key: string]: string[] } = {
-  default: [
-    "Profili verificati e pronti a connettersi. La tua prossima avventura {category} a {city} inizia qui.",
-    "Discrezione e divertimento assicurati. Esplora i migliori annunci {category} di {city}.",
-  ],
-  gratis: [
-    "Registrazione 100% gratuita per annunci {category} a {city}. Inizia a chattare senza costi!",
-    "Scopri profili {category} a {city} con accesso totalmente gratuito. Facile e veloce!",
-  ],
-  sesso: [
-    "Vivi momenti di pura passione con gli annunci sesso {category} a {city}. Massima discrezione.",
-    "Incontri piccanti e senza impegno. Esplora gli annunci sesso {category} più hot di {city}.",
-  ],
-  seri: [
-    "Trova una relazione stabile e significativa. Annunci per incontri seri {category} a {city}. Profili autentici.",
-    "Se cerchi l'amore vero e incontri {category} seri a {city}, sei nel posto giusto. Iscriviti ora.",
-  ],
-};
+// Text generation templates are now in announcesGridStrings
 
 function generateAnnounceText(
   category: string, 
@@ -93,8 +48,8 @@ function generateAnnounceText(
   subType?: 'gratis' | 'sesso' | 'seri' | 'incontri'
 ): { title: string; description: string } {
   const typeKey = subType || 'default';
-  const currentTitleTemplates = subCategoryTitleTemplates[typeKey] || subCategoryTitleTemplates.default;
-  const currentDescriptionTemplates = subCategoryDescriptionTemplates[typeKey] || subCategoryDescriptionTemplates.default;
+  const currentTitleTemplates = announcesGridStrings.subCategoryTitleTemplates[typeKey] || announcesGridStrings.subCategoryTitleTemplates.default;
+  const currentDescriptionTemplates = announcesGridStrings.subCategoryDescriptionTemplates[typeKey] || announcesGridStrings.subCategoryDescriptionTemplates.default;
 
   const title = currentTitleTemplates[index % currentTitleTemplates.length]
     .replace('{category}', category)
@@ -113,9 +68,9 @@ function generateRandomUserStatus(): { isOnline: boolean; registrationTime: stri
   const hoursAgo = Math.floor(Math.random() * 10) + 1; // Up to 10 hours for more "recent" feel
 
   if (Math.random() < 0.7) { // 70% chance for minutes
-    registrationTime = `${minutesAgo} minut${minutesAgo === 1 ? 'o' : 'i'} fa`;
+    registrationTime = announcesGridStrings.registrationTimeMinutesAgo(minutesAgo);
   } else {
-    registrationTime = `${hoursAgo} or${hoursAgo === 1 ? 'a' : 'e'} fa`;
+    registrationTime = announcesGridStrings.registrationTimeHoursAgo(hoursAgo);
   }
 
   return { isOnline, registrationTime };
@@ -136,12 +91,23 @@ export async function AnnouncesGrid({
     return null; // Or a fallback message
   }
 
-  // Construct dynamic grid title
-  let gridTitle = `Annunci ${categoryDisplayName} a ${cityDisplayName}`;
-  if (subCategoryType === 'gratis') gridTitle = `Annunci Gratis ${categoryDisplayName} a ${cityDisplayName}`;
-  if (subCategoryType === 'sesso') gridTitle = `Annunci Sesso ${categoryDisplayName} a ${cityDisplayName}`;
-  if (subCategoryType === 'seri') gridTitle = `Annunci Incontri Seri ${categoryDisplayName} a ${cityDisplayName}`;
-  if (subCategoryType === 'incontri') gridTitle = `Annunci Incontri ${categoryDisplayName} a ${cityDisplayName}`; // Added for 'incontri'
+  let gridTitle: string;
+  switch (subCategoryType) {
+    case 'gratis':
+      gridTitle = announcesGridStrings.gridTitleGratis(categoryDisplayName, cityDisplayName);
+      break;
+    case 'sesso':
+      gridTitle = announcesGridStrings.gridTitleSesso(categoryDisplayName, cityDisplayName);
+      break;
+    case 'seri':
+      gridTitle = announcesGridStrings.gridTitleSeri(categoryDisplayName, cityDisplayName);
+      break;
+    case 'incontri':
+      gridTitle = announcesGridStrings.gridTitleIncontri(categoryDisplayName, cityDisplayName);
+      break;
+    default:
+      gridTitle = announcesGridStrings.gridTitleDefault(categoryDisplayName, cityDisplayName);
+  }
 
   return (
     <div className="py-8 sm:py-12 bg-gray-50 dark:bg-gray-900">
@@ -153,14 +119,14 @@ export async function AnnouncesGrid({
           {imageUrls.map((url, index) => {
             const { title, description } = generateAnnounceText(categoryDisplayName, cityDisplayName, index, subCategoryType);
             const { isOnline, registrationTime } = generateRandomUserStatus(); // Generate random status
-            const altText = `${title} - Annuncio ${index + 1}`;
+            const altText = announcesGridStrings.announceCardAltText(title, index);
             return (
               <AnnounceCard
                 key={url} // Using URL as key, assuming they are unique enough for this context
                 imageUrl={url}
                 title={title}
                 description={description}
-                ctaText="Scopri Profilo e Chatta" // Updated CTA text
+                ctaText={announcesGridStrings.announceCardCtaText}
                 ctaLink={affiliateLink}
                 altText={altText}
                 categoryDisplayName={categoryDisplayName}

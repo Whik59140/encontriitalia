@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import type { City } from '@/types/geo'; // Assuming City type is in @/types/geo
+import { footerStrings, globalSiteStrings } from '@/app/translations';
 
 interface FooterProps {
   currentCitySlug?: string;
@@ -24,7 +25,9 @@ export function Footer({
         {regionalCities && regionalCities.length > 0 && regionName && (
           <div className="mb-6 text-center">
             <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-3">
-              {currentArticleSlug ? `Leggi questo articolo in altre città del ${regionName}:` : `Altre città in ${regionName}:`}
+              {currentArticleSlug 
+                ? footerStrings.regionalCitiesHeadingArticle(regionName) 
+                : footerStrings.regionalCitiesHeadingGeneric(regionName)}
             </h3>
             <ul className="flex flex-wrap justify-center gap-x-4 gap-y-2">
               {regionalCities.map((city) => {
@@ -59,10 +62,10 @@ export function Footer({
         )}
         <div className="text-center"> {/* Ensure copyright and other links remain centered */}
           <p className="mb-2">
-            &copy; {currentYear} Incontri Italia. Tutti i diritti riservati.
+            {footerStrings.copyrightPrefix} {currentYear} {globalSiteStrings.siteName}. {footerStrings.copyrightSuffix}
           </p>
           <p className="mb-2">
-            Per contatti commerciali:{' '}
+            {footerStrings.contactCommercialText}{' '}
             <a 
               href="mailto:whiknat@gmail.com"
               className="text-purple-600 dark:text-purple-400 hover:underline"
@@ -71,7 +74,7 @@ export function Footer({
             </a>
           </p>
           <p>
-            Realizzato da{' '}
+            {footerStrings.madeByText}{' '}
             <Link 
               href="https://dolcedigital.xyz"
               target="_blank" 

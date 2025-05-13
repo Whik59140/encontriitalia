@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { cityPaginationStrings } from '@/app/translations';
 
 interface City {
   slug: string;
@@ -32,7 +33,7 @@ export function CityPagination({ cities, itemsPerPage }: CityPaginationProps) {
   }
 
   if (!cities || cities.length === 0) {
-    return <p className='text-center text-gray-500 dark:text-gray-400'>Nessuna città da mostrare.</p>;
+    return <p className='text-center text-gray-500 dark:text-gray-400'>{cityPaginationStrings.noCitiesMessage}</p>;
   }
 
   return (
@@ -63,17 +64,17 @@ export function CityPagination({ cities, itemsPerPage }: CityPaginationProps) {
             disabled={currentPage === 1}
             variant="outline"
           >
-            Precedente
+            {cityPaginationStrings.previousButtonText}
           </Button>
           <span className="text-gray-700 dark:text-gray-300">
-            Pagina {currentPage} di {totalPages}
+            {cityPaginationStrings.pageIndicatorText(currentPage, totalPages)}
           </span>
           <Button 
             onClick={handleNextPage} 
             disabled={currentPage === totalPages}
             variant="outline"
           >
-            Successiva
+            {cityPaginationStrings.nextButtonText}
           </Button>
         </div>
       )}

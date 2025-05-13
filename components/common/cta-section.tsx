@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { ctaSectionStrings } from '@/app/translations'; // Import translations
 
 interface CtaSectionProps {
   title?: string;
@@ -11,10 +12,10 @@ interface CtaSectionProps {
 }
 
 export function CtaSection({
-  title = "Ready to Dive In?",
+  title = ctaSectionStrings.defaultTitle, // Use translated default
   subtitle,
-  description = "Explore more articles and find exactly what you're looking for in your city.",
-  buttonText = "Explore Now",
+  description = ctaSectionStrings.defaultDescription, // Use translated default
+  buttonText = ctaSectionStrings.defaultButtonText, // Use translated default
   buttonLink = "/",
   isExternalLink = false,
   linkTarget = '_self',

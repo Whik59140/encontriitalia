@@ -1,6 +1,6 @@
 import fs from 'fs/promises';
 import path from 'path';
-import type { City, Category } from '@/types/geo'; // Import types
+import type { City } from '@/types/geo'; // Import City type only, Category is not used here directly anymore
 
 // Define interfaces for better type safety - REMOVED
 // interface City { ... }
@@ -11,18 +11,6 @@ interface GeoJsonData {
 }
 
 const geoJsonPath = path.join(process.cwd(), 'lib', 'data', 'geo.json');
-
-// Define categories statically (matching generate-articles.mjs) - Use Category type
-const ALL_CATEGORIES: Category[] = [
-  { slug: 'gay', name: 'Gay' },
-  { slug: 'milf', name: 'Milf' },
-  { slug: 'donne', name: 'Donne' },
-  { slug: 'ragazze', name: 'Ragazze' },
-  { slug: 'trans', name: 'Trans' },
-  { slug: 'trav', name: 'Trav' },
-  { slug: 'escort', name: 'Escort' },
- 
-];
 
 // Cached data to avoid re-reading the file multiple times per request
 let cachedCities: City[] | null = null;
@@ -62,18 +50,6 @@ export async function getCityBySlug(slug: string): Promise<City | undefined> {
   return cities.find(city => city.slug === slug);
 }
 
-// Function to get all categories (returns the static list) - Use imported Category type
-export async function getAllCategories(): Promise<Category[]> {
-  // No need for async, but keep it consistent with others
-  return ALL_CATEGORIES;
-}
-
-// Function to get a specific category by its slug - Use imported Category type
-export async function getCategoryBySlug(slug: string): Promise<Category | undefined> {
-  // No need for async
-  return ALL_CATEGORIES.find(category => category.slug === slug);
-}
-
 // Function to get other cities from the same region - Use imported City type
 export async function getRegionalCities(currentCitySlug: string): Promise<{ cities: City[], regionName: string | null }> {
   const cities = await loadGeoData();
@@ -92,9 +68,4 @@ export async function getRegionalCities(currentCitySlug: string): Promise<{ citi
 export async function getAllCitySlugs(): Promise<string[]> {
   const cities = await loadGeoData();
   return cities.map(city => city.slug);
-}
-
-export async function getAllCategorySlugs(): Promise<string[]> {
-  const categories = await getAllCategories(); // This existing function returns Category[]
-  return categories.map(category => category.slug);
 } 

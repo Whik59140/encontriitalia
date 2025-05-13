@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { InterstitialModal } from './interstitial-modal'; // Adjust path as needed
+import { globalSiteStrings } from '@/app/translations'; // Import global translations
 
 interface CategoryCtaButtonWithModalProps {
   affiliateUrl: string;
@@ -46,7 +47,7 @@ export function CategoryCtaButtonWithModal({
         onClose={handleModalClose}
         onConfirm={handleModalConfirm}
         categoryName={categoryName} // Use passed categoryName
-        cityName={cityNameForModal || 'Italia'} // Use passed city name or default to 'Italia'
+        cityName={cityNameForModal || globalSiteStrings.defaultCityFallback} // Use translated fallback
       />
     </>
   );

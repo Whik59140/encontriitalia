@@ -5,20 +5,12 @@ import { categoryAffiliateLinks } from '@/lib/constants';
 // import Link from 'next/link'; // No longer directly using Link for these CTAs
 import { CategoryCtaButtonWithModal } from '@/components/common/category-cta-button-with-modal'; // Added
 import { capitalizeSlug } from '@/lib/utils/string'; // Assuming it's in string.ts
+import { homePageStrings } from '@/app/translations'; // Import translations
 // Types will be implicitly handled or can be imported from @/types/geo if needed explicitly
-
-// Simple mapping for category slugs to display names (adjust as needed)
-const categoryDisplayNames: { [key: string]: string } = {
-  'incontri': 'Incontri',
-  'trans': 'Trans',
-  'bakeca': 'Bakeca',
-  'milf': 'Milf',
-  'massaggi': 'Massaggi',
-  // Add other categories as defined in categoryAffiliateLinks
-};
 
 export default async function HomePage() {
   const cities = await getAllCities();
+  const categoryDisplayNames = homePageStrings.categoryDisplayNames; // Use from translations
 
   return (
     <div className="bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50 dark:from-gray-800 dark:via-gray-900 dark:to-black min-h-screen">
@@ -28,20 +20,20 @@ export default async function HomePage() {
         {/* New Category CTA Section */}
         <section className="w-full max-w-3xl mb-12 text-center">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800 dark:text-gray-100 mb-6">
-            Trova quello che cerchi nella tua città!
+            {homePageStrings.mainHeading}
           </h1>
           <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">
-            Seleziona la categoria di tuo interesse per iniziare.
+            {homePageStrings.subHeading}
           </p>
           <p className="text-md font-medium text-green-600 dark:text-green-400 mb-8">
-            ✨ È Gratis, Senza Numero di Telefono, Registrazione in 30 Secondi! ✨
+            {homePageStrings.highlightText}
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {Object.entries(categoryAffiliateLinks).map(([slug, url]) => (
               <CategoryCtaButtonWithModal
                 key={slug}
                 affiliateUrl={url ?? '#'}
-                buttonText={`Sto cercando ${categoryDisplayNames[slug] || capitalizeSlug(slug)} 👉`}
+                buttonText={`${homePageStrings.categoryButtonPrefix}${categoryDisplayNames[slug] || capitalizeSlug(slug)}${homePageStrings.categoryButtonSuffix}`}
                 categoryName={categoryDisplayNames[slug] || capitalizeSlug(slug)}
                 className="block w-full px-6 py-4 bg-gradient-to-r from-pink-500 to-red-500 text-white text-lg font-semibold rounded-lg shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200 ease-in-out"
               />
@@ -52,7 +44,7 @@ export default async function HomePage() {
         {/* City Search and Display Section */}
         <section className="w-full mt-8 flex flex-col items-center">
           <h2 className="text-2xl sm:text-3xl font-semibold text-gray-700 dark:text-gray-200 mb-6">
-            Oppure, esplora per città:
+            {homePageStrings.exploreByCityHeading}
           </h2>
           <CitySearchAndDisplay allCities={cities} itemsPerPage={15} />
         </section>

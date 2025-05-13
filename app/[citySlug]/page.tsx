@@ -1,12 +1,15 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import Image from 'next/image';
-import { getCityBySlug, getAllCategories, getAllCities, getRegionalCities } from '@/lib/utils/geo';
+// Image and Card, CardTitle will be removed or unused if we replace the old category display
+import { getCityBySlug, getAllCities, getRegionalCities } from '@/lib/utils/geo';
+import { getAllCategories } from '@/lib/utils/category-utils';
 // import type { City } from '@/types/geo'; // Removed unused import
-import { Card, CardTitle } from '@/components/ui/card';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
+import { ChevronRightCircle } from 'lucide-react'; // Import the icon
 import { DirectEncounterCTA } from '@/components/common/direct-encounter-cta';
 import { Footer } from '@/components/common/footer';
+import { citySlugPageStrings } from '@/app/translations'; // Import translations
+import { Button } from '@/components/ui/button'; // Import Button for categories
 
 interface CityPageProps {
   params: Promise<{ citySlug: string }>;
@@ -28,14 +31,13 @@ export async function generateMetadata(props: CityPageProps) {
   const city = await getCityBySlug(citySlug);
   if (!city) {
     return {
-      title: 'Città Non Trovata',
-      description: 'La città che stai cercando non esiste.',
+      title: citySlugPageStrings.notFoundTitle,
+      description: citySlugPageStrings.notFoundDescription,
     };
   }
   return {
-    title: `Incontri a ${city.name} - Annunci e Articoli per Adulti`,
-    description: `Esplora categorie come gay, milf, donne, trans, escort a ${city.name}. Trova i migliori annunci e articoli. `,
-    // Consider adding keywords or OpenGraph data here
+    title: citySlugPageStrings.generateMetadataTitle(city.name),
+    description: citySlugPageStrings.generateMetadataDescription(city.name),
   };
 }
 
@@ -46,17 +48,7 @@ export default async function CityPage(props: CityPageProps) {
   const categories = await getAllCategories();
   const { cities: regionalCities, regionName } = await getRegionalCities(citySlug);
 
-  const categoryImageMap: { [key: string]: string } = {
-    gay: '/buttons/gays.webp',
-    milf: '/buttons/milf.webp',
-    donne: '/buttons/donne.webp',
-    ragazze: '/buttons/ragazze.webp',
-    trans: '/buttons/trans.webp',
-    trav: '/buttons/trans.webp', // Assuming trav uses the same image as trans
-    escort: '/buttons/escort.webp',
-    studentessa: '/buttons/studentessa.webp',
-    adulti: '/buttons/adulti.webp',
-  };
+  // categoryImageMap will be removed as images are no longer used for categories
 
   if (!city) {
     notFound(); // Triggers the 404 page
@@ -65,11 +57,10 @@ export default async function CityPage(props: CityPageProps) {
   return (
     <div className="bg-gradient-to-br from-slate-50 via-gray-100 to-stone-200 dark:from-gray-800 dark:via-gray-900 dark:to-black min-h-screen flex flex-col">
       <main className="container mx-auto px-4 py-8 sm:py-12 flex-grow">
-        <DirectEncounterCTA cityName={city.name} />
         <Breadcrumb className="mb-8">
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbLink href="/">Home</BreadcrumbLink>
+              <BreadcrumbLink href="/">{citySlugPageStrings.breadcrumbHome}</BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
@@ -78,57 +69,47 @@ export default async function CityPage(props: CityPageProps) {
           </BreadcrumbList>
         </Breadcrumb>
 
-        <header className="mb-12 text-center">
+        <header className="mb-8 text-center"> {/* Reduced bottom margin from mb-12 to mb-8 */}
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold 
                          bg-clip-text text-transparent 
                          bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 
                          dark:from-pink-400 dark:via-purple-400 dark:to-blue-400 mb-4">
-            Incontri a {city.name}
+            {citySlugPageStrings.headerTitle(city.name)}
           </h1>
-          <p className="text-lg text-gray-600 dark:text-gray-300">
-            Esplora le categorie disponibili per {city.name} e trova quello che cerchi.
+          <p className="text-lg text-gray-600 dark:text-gray-300 mb-6"> {/* Added bottom margin to separate from new buttons */}
+            {citySlugPageStrings.headerDescription(city.name)}
           </p>
         </header>
 
-        <section>
-          <h2 className="text-2xl sm:text-3xl font-semibold text-center mb-8 text-gray-800 dark:text-white">
-            Categorie Popolari a {city.name}
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {categories.map((category) => {
-              const imagePath = categoryImageMap[category.slug];
-              return (
-                <Link 
-                  href={`/${city.slug}/${category.slug}`} 
-                  key={category.slug} 
-                  className="block hover:no-underline focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 rounded-lg group"
-                >
-                  <Card className="relative aspect-square overflow-hidden transition-all duration-300 ease-in-out group-hover:shadow-xl group-hover:border-purple-500 dark:group-hover:border-purple-400 bg-gray-800 border-transparent hover:border-gray-300 dark:hover:border-gray-700 rounded-lg">
-                    {imagePath && (
-                      <Image 
-                        src={imagePath} 
-                        alt={`${category.name} background`} 
-                        layout="fill" 
-                        objectFit="cover"
-                        className="transition-transform duration-300 ease-in-out group-hover:scale-105"
-                      />
-                    )}
-                    <div className="absolute inset-0 bg-black/10 group-hover:bg-black/5 transition-opacity duration-300 ease-in-out flex flex-col justify-end">
-                      <div className="p-4 bg-gradient-to-t from-black/60 via-black/30 to-transparent">
-                        <CardTitle className="text-xl text-center font-bold text-white group-hover:text-purple-300 transition-colors duration-300">
-                          Incontri {category.name}
-                        </CardTitle>
-                        <p className="text-xs text-center text-purple-200 group-hover:text-purple-100 transition-colors duration-300 mt-1">
-                          Scopri di più
-                        </p>
-                      </div>
-                    </div>
-                  </Card>
-                </Link>
-              );
-            })}
-          </div>
-        </section>
+        {/* New section for category buttons */}
+        <div className="flex flex-row flex-wrap justify-center items-center gap-4 mb-12">
+          {categories.map((category) => (
+            <Link href={`/${city.slug}/${category.slug}`} key={category.slug} passHref>
+              <Button 
+                variant="outline" 
+                className="px-6 py-4 text-lg font-semibold rounded-lg // Adjusted padding slightly for icon
+                           flex items-center justify-center space-x-3 // Added flex for alignment and space
+                           bg-white/80 dark:bg-gray-800/80 backdrop-blur-md
+                           border-2 border-pink-500/70 dark:border-pink-400/70
+                           text-pink-600 dark:text-pink-300 
+                           hover:bg-pink-100 dark:hover:bg-pink-900/50
+                           hover:text-pink-700 dark:hover:text-pink-200
+                           hover:border-pink-600 dark:hover:border-pink-500
+                           shadow-md hover:shadow-lg
+                           transition-all duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105">
+                <span className="text-2xl">{citySlugPageStrings.categoryEmojis[category.slug] || '✨'}</span> {/* Emoji with fallback */}
+                <span>{category.name}</span>
+                <ChevronRightCircle className="h-6 w-6 opacity-70 group-hover:opacity-100 transition-opacity" /> {/* Icon */}
+              </Button>
+            </Link>
+          ))}
+        </div>
+
+        {/* MOVED DirectEncounterCTA HERE, below category buttons and above the removed popular categories comment */}
+        <DirectEncounterCTA cityName={city.name} />
+
+        {/* Removed old popular categories section with images */}
+
       </main>
       <Footer 
         currentCitySlug={citySlug} 

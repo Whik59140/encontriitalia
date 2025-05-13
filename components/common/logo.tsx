@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { globalSiteStrings } from '@/app/translations'; // Import translations
 
 // Peach color (e.g., a lighter, softer peach)
 const PEACH_COLOR = '#FFE5B4';
@@ -8,7 +9,7 @@ export function Logo() {
     <Link
       href="/"
       className="inline-block text-3xl font-sans group focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 rounded py-3"
-      aria-label="Incontri Italia - Home"
+      aria-label={globalSiteStrings.logoAriaLabel} // Use translated string
     >
       <span className="font-semibold tracking-tight text-slate-800 dark:text-slate-100 group-hover:text-slate-600 dark:group-hover:text-slate-200 transition-colors duration-200">
         Incontri

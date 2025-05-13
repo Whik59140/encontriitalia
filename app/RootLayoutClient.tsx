@@ -6,6 +6,9 @@ import Link from 'next/link';
 import { MessagesSquare } from 'lucide-react';
 import { SiteHeaderCtas } from '@/components/common/SiteHeaderCtas';
 import { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
+import { getCategoryBySlug } from '@/lib/utils/category-utils';
+import { rootLayoutStrings } from '@/app/translations';
 
 // Font definitions moved here
 const geistSans = Geist({
@@ -20,6 +23,15 @@ const geistMono = Geist_Mono({
 
 const HEADER_HEIGHT_THRESHOLD = 64; // Approx height of the header (h-16 = 4rem = 64px)
 
+// Helper function to capitalize city slugs for display (simple version)
+function capitalizeSlug(slug: string): string {
+  if (!slug) return '';
+  return slug
+    .split('-')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+}
+
 export function RootLayoutClient({
   children,
 }: Readonly<{
@@ -27,21 +39,53 @@ export function RootLayoutClient({
 }>) {
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const params = useParams();
+
+  const [cityName, setCityName] = useState<string | null>(null);
+  const [categoryName, setCategoryName] = useState<string | null>(null);
+  const [chatButtonText, setChatButtonText] = useState(rootLayoutStrings.chatLiveText);
+
+  useEffect(() => {
+    if (params.citySlug && typeof params.citySlug === 'string') {
+      setCityName(capitalizeSlug(params.citySlug as string));
+    } else {
+      setCityName(null);
+    }
+  }, [params.citySlug]);
+
+  useEffect(() => {
+    async function fetchCategoryName() {
+      if (params.categorySlug && typeof params.categorySlug === 'string') {
+        const category = getCategoryBySlug(params.categorySlug as string);
+        setCategoryName(category ? category.name : null);
+      } else {
+        setCategoryName(null);
+      }
+    }
+    fetchCategoryName();
+  }, [params.categorySlug]);
+
+  useEffect(() => {
+    if (cityName && categoryName) {
+      setChatButtonText(rootLayoutStrings.chatLiveInCategoryInCity(categoryName, cityName));
+    } else if (cityName) {
+      setChatButtonText(rootLayoutStrings.chatLiveInCity(cityName));
+    } else {
+      setChatButtonText(rootLayoutStrings.chatLiveText);
+    }
+  }, [cityName, categoryName]);
 
   useEffect(() => {
     function controlHeader() {
       if (typeof window !== 'undefined') {
         if (window.scrollY > lastScrollY && window.scrollY > HEADER_HEIGHT_THRESHOLD) {
-          // Scrolling Down
           setIsHeaderVisible(false);
         } else {
-          // Scrolling Up or at the top
           setIsHeaderVisible(true);
         }
         setLastScrollY(window.scrollY);
       }
     }
-
     window.addEventListener('scroll', controlHeader);
     return () => {
       window.removeEventListener('scroll', controlHeader);
@@ -51,7 +95,7 @@ export function RootLayoutClient({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen relative`}
       >
         <SiteHeaderCtas />
         <header 
@@ -61,21 +105,7 @@ export function RootLayoutClient({
             <Logo />
             <nav>
               <ul className="flex items-center space-x-6">
-                <li>
-                  <Link 
-                    href="/chat" 
-                    className="relative group flex items-center px-3 py-2 text-sm font-semibold text-pink-600 hover:text-pink-700 dark:text-pink-400 dark:hover:text-pink-500 bg-pink-50 dark:bg-pink-900/30 hover:bg-pink-100 dark:hover:bg-pink-800/50 rounded-md transition-all duration-200 ease-in-out shadow-sm hover:shadow-md"
-                  >
-                    <MessagesSquare size={20} className="mr-2 group-hover:scale-110 transition-transform" />
-                    <span className="group-hover:tracking-wide transition-all">Chat Live</span>
-                    {/* Pulsating dot for "live" effect */}
-                    <span className="absolute top-1.5 right-1.5 flex h-2.5 w-2.5">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
-                    </span>
-                  </Link>
-                </li>
-                {/* Other navigation items can be added here */}
+                {/* CHAT LIVE BUTTON REMOVED FROM HERE */}
               </ul>
             </nav>
           </div>
@@ -83,6 +113,25 @@ export function RootLayoutClient({
         <main className="flex-grow">
           {children}
         </main>
+
+        {/* Floating Chat Button Added Here */}
+        <Link 
+          href="/chat" 
+          className="fixed top-[4.75rem] sm:top-[4rem] md:top-[5.75rem] right-6 group flex items-center px-4 py-3 text-base font-semibold text-white 
+                     bg-pink-600 hover:bg-pink-700 
+                     rounded-full shadow-lg hover:shadow-xl 
+                     transition-all duration-300 ease-in-out 
+                     z-[100] transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-opacity-50"
+          aria-label={chatButtonText} // For accessibility
+        >
+          <MessagesSquare size={22} className="mr-2 group-hover:animate-pulse" />
+          <span>{chatButtonText}</span>
+          {/* Pulsating dot for "live" effect - adjusted position slightly if needed */}
+          <span className="absolute top-1 right-1 flex h-3 w-3">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-300 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-3 w-3 bg-red-400"></span>
+          </span>
+        </Link>
       </body>
     </html>
   );

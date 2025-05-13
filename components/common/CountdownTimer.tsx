@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { countdownTimerStrings } from '@/app/translations';
 
 interface CountdownTimerProps {
   targetDate: Date;
@@ -44,7 +45,7 @@ export function CountdownTimer({ targetDate, onTimerEnd }: CountdownTimerProps) 
   const formatTime = (time: number) => time.toString().padStart(2, '0');
 
   if (timeLeft.hours === 0 && timeLeft.minutes === 0 && timeLeft.seconds === 0 && (+targetDate - +new Date() <= 0)) {
-    return <span className="ml-1 rounded bg-red-600 px-1.5 py-0.5 text-xs font-semibold text-white">Offerta Scaduta!</span>;
+    return <span className="ml-1 rounded bg-red-600 px-1.5 py-0.5 text-xs font-semibold text-white">{countdownTimerStrings.offerExpiredText}</span>;
   }
 
   return (

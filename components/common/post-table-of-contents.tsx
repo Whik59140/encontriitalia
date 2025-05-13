@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { postTableOfContentsStrings } from '@/app/translations'; // Import translations
 
 export interface Heading { 
   id: string;
@@ -40,7 +41,9 @@ export function PostTableOfContents({ headings }: PostTableOfContentsProps) {
 
   return (
     <div className="mb-10 p-6 border rounded-lg bg-gray-50 dark:bg-gray-800 sticky top-24">
-      <h2 className="text-xl font-semibold mb-4 text-gray-700 dark:text-gray-200">Sommario</h2>
+      <h2 className="text-xl font-semibold mb-4 text-gray-700 dark:text-gray-200">
+        {postTableOfContentsStrings.title}
+      </h2>
       <ul className="space-y-2">
         {mainHeadings.map((heading) => (
           <li key={heading.id}>

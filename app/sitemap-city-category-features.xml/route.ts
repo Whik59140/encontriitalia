@@ -1,4 +1,5 @@
-import { getAllCitySlugs, getAllCategorySlugs } from '@/lib/utils/geo';
+import { getAllCitySlugs } from '@/lib/utils/geo';
+import { getAllCategorySlugs } from '@/lib/utils/category-utils';
 
 const URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.example.com';
 
@@ -28,7 +29,8 @@ function generateCityCategoryFeaturesSiteMap(citySlugs: string[], categorySlugs:
 
 export async function GET() {
   const citySlugs = await getAllCitySlugs();
-  const categorySlugs = await getAllCategorySlugs();
+  // Corrected: getAllCategorySlugs is not async and imported from category-utils
+  const categorySlugs = getAllCategorySlugs();
   const sitemap = generateCityCategoryFeaturesSiteMap(citySlugs, categorySlugs);
 
   return new Response(sitemap, {

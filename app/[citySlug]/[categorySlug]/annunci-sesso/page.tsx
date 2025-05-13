@@ -11,21 +11,9 @@ import { ChevronLeft } from 'lucide-react';
 import { FaqSection } from '@/components/common/faq-section';
 import { SeoTextSection } from '@/components/common/seo-text-section';
 import { WebcamCtaButton } from '@/components/common/webcam-cta-button';
+import { globalSiteStrings, annunciIncontriPageStrings, annunciSessoPageStrings } from '@/app/translations';
 
-const SUB_CATEGORY_DISPLAY_NAME = "Sesso";
 const SUB_CATEGORY_SLUG = "annunci-sesso";
-
-const CATEGORY_DISPLAY_NAMES: { [slug: string]: string } = {
-  gay: 'Gay',
-  milf: 'MILF',
-  donne: 'Donne',
-  ragazze: 'Ragazze',
-  trans: 'Trans',
-  trav: 'Trav',
-  escort: 'Escort',
-  studentessa: 'Studentesse',
-  adulti: 'Adulti',
-};
 
 interface AnnunciSubPageParams {
   citySlug: string;
@@ -69,19 +57,19 @@ export async function generateStaticParams(): Promise<AnnunciSubPageParams[]> {
 export async function generateMetadata({ params: paramsPromise }: AnnunciSessoPageProps): Promise<Metadata> {
   const { citySlug, categorySlug } = await paramsPromise; // Await the params
   const cityName = capitalizeSlug(citySlug);
-  const categoryName = CATEGORY_DISPLAY_NAMES[categorySlug] || capitalizeSlug(categorySlug);
-  const title = `Annunci ${SUB_CATEGORY_DISPLAY_NAME} ${categoryName} a ${cityName} - Incontri Piccanti`;
-  const description = `Esplora annunci ${SUB_CATEGORY_DISPLAY_NAME} ${categoryName} a ${cityName}. Incontri passionali e discreti. Registrati subito!`;
+  const categoryName = annunciIncontriPageStrings.categoryDisplayNames[categorySlug] || capitalizeSlug(categorySlug);
+  const title = annunciSessoPageStrings.generateMetadataTitle(annunciSessoPageStrings.subCategoryDisplayName, categoryName, cityName, annunciSessoPageStrings.metadataTitleSuffix);
+  const description = annunciSessoPageStrings.generateMetadataDescription(annunciSessoPageStrings.subCategoryDisplayName, categoryName, cityName);
   
   return {
     title,
     description,
-    keywords: [`annunci ${SUB_CATEGORY_DISPLAY_NAME} ${categoryName} ${cityName}`, `incontri ${SUB_CATEGORY_DISPLAY_NAME} ${categoryName} ${cityName}`, `sesso ${categoryName} ${cityName}`],
+    keywords: annunciSessoPageStrings.generateMetadataKeywords(annunciSessoPageStrings.subCategoryDisplayName, categoryName, cityName),
     openGraph: {
       title,
       description,
       url: `/${citySlug}/${categorySlug}/${SUB_CATEGORY_SLUG}`,
-      siteName: 'Incontri Italia',
+      siteName: globalSiteStrings.siteName,
       type: 'website',
     },
   };
@@ -92,7 +80,7 @@ export default async function AnnunciSessoPage({ params: paramsPromise }: Annunc
   const { cities: regionalCities, regionName } = await getRegionalCities(citySlug);
 
   const cityDisplayName = capitalizeSlug(citySlug);
-  const categoryDisplayName = CATEGORY_DISPLAY_NAMES[categorySlug] || capitalizeSlug(categorySlug);
+  const categoryDisplayName = annunciIncontriPageStrings.categoryDisplayNames[categorySlug] || capitalizeSlug(categorySlug);
   const affiliateLink = categoryAffiliateLinks[categorySlug] || categoryAffiliateLinks['default'] || '#';
 
   return (
@@ -101,7 +89,7 @@ export default async function AnnunciSessoPage({ params: paramsPromise }: Annunc
         <div className="container mx-auto px-4 flex items-center justify-between">
           <Link href={`/${citySlug}/${categorySlug}`} className="flex items-center text-pink-600 dark:text-pink-400 hover:underline">
             <ChevronLeft size={20} className="mr-1" />
-            Torna a {categoryDisplayName} a {cityDisplayName}
+            {annunciSessoPageStrings.backLinkText(categoryDisplayName, cityDisplayName)}
           </Link>
         </div>
       </header>

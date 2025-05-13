@@ -3,6 +3,7 @@
 import { useState, useMemo } from 'react';
 import { Input } from '@/components/ui/input';
 import { CityPagination } from '@/components/common/city-pagination';
+import { citySearchDisplayStrings } from '@/app/translations';
 
 interface City {
   slug: string;
@@ -32,7 +33,7 @@ export function CitySearchAndDisplay({ allCities, itemsPerPage = 15 }: CitySearc
       <div className="mb-8 md:mb-12 w-full max-w-lg relative">
         <Input 
           type="search" 
-          placeholder="Cerca la tua città... (es. Roma, Milano, Napoli)"
+          placeholder={citySearchDisplayStrings.searchInputPlaceholder}
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="w-full p-4 pr-12 rounded-full border-2 border-gray-300 dark:border-gray-600 \
