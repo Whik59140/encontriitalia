@@ -229,12 +229,12 @@ export default async function SpecificArticlePage({ params }: { params: Promise<
           affiliateUrl={affiliateUrl}
         />
       )}
-      <ArticleContentRenderer 
-          leadingHastNodes={articleRenderData.leadingHastNodes} 
-          accordionSections={articleRenderData.accordionSections} 
-          frontmatter={articleRenderData.frontmatter}
-          headings={articleRenderData.headings} // Pass populated headings
-      />
+    <ArticleContentRenderer 
+        leadingHastNodes={articleRenderData.leadingHastNodes} 
+        accordionSections={articleRenderData.accordionSections} 
+        frontmatter={articleRenderData.frontmatter}
+        headings={articleRenderData.headings} // Pass populated headings
+    />
     </>
   );
 }
