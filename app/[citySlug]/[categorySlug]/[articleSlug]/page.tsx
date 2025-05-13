@@ -19,6 +19,7 @@ import Link from 'next/link'; // Corrected import for Link
 import { CtaSection } from '@/components/common/cta-section'; // <<< ADD THIS IMPORT
 import { categoryAffiliateLinks } from '@/lib/constants'; // <<< IMPORT THE CENTRALIZED MAP
 import { capitalizeSlug } from '@/lib/utils/string';
+import { Metadata } from 'next';
 
 // Shadcn UI Accordion components - will be used by the client component
 // We still define the structure here, but rendering moves to client component
@@ -322,8 +323,28 @@ export default async function SpecificArticlePage({ params }: { params: Promise<
 }
 
 // Optional: Metadata generation (can remain largely the same, using frontmatter)
-// export async function generateMetadata({ params }: { params: ResolvedPageParams }): Promise<Metadata> {
-//   // ... logic to fetch frontmatter ...
-//   return { title: frontmatter.title, description: frontmatter.description };
-// } 
-// } 
+export async function generateMetadata({ params }: { params: ResolvedPageParams }): Promise<Metadata> {
+  const { citySlug, categorySlug, articleSlug } = params;
+  const expectedFilename = `${articleSlug}.md`;
+  const filePath = path.join(process.cwd(), 'content', 'articles', categorySlug, citySlug, expectedFilename);
+
+  try {
+    const fileContent = await fs.readFile(filePath, 'utf8');
+    const { data: frontmatter } = matter(fileContent);
+    
+    // Use the article title from frontmatter if available, otherwise generate one
+    const title = frontmatter.title || `${capitalizeSlug(categorySlug)} a ${capitalizeSlug(citySlug)}`;
+    const description = frontmatter.description || `Scopri tutto su ${categorySlug} a ${citySlug}.`;
+    
+    return { 
+      title, 
+      description 
+    };
+  } catch (error) {
+    // Fallback metadata if article file can't be read
+    return { 
+      title: `${capitalizeSlug(categorySlug)} a ${capitalizeSlug(citySlug)}`,
+      description: `Informazioni su ${categorySlug} a ${citySlug}.`
+    };
+  }
+} 

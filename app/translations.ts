@@ -71,8 +71,8 @@ export const chatPageStrings = {
 export const citySlugPageStrings = {
   notFoundTitle: 'Città Non Trovata',
   notFoundDescription: 'La città che stai cercando non esiste.',
-  generateMetadataTitle: (cityName: string) => `Incontri a ${cityName} - Annunci e Articoli per Adulti`,
-  generateMetadataDescription: (cityName: string) => `Esplora categorie come gay, milf, donne, trans, escort a ${cityName}. Trova i migliori annunci e articoli.`,
+  generateMetadataTitle: (cityName: string) => `Incontri a ${cityName} - Annunci per Adulti`,
+  generateMetadataDescription: (cityName: string) => `Esplora categorie come gay, milf, donne, trans, escort a ${cityName}. Trova i migliori annunci.`,
   breadcrumbHome: "Home",
   headerTitle: (cityName: string) => `Incontri a ${cityName}`,
   headerDescription: (cityName: string) => `Esplora le categorie disponibili per ${cityName} e trova quello che cerchi.`,
@@ -96,7 +96,7 @@ export const citySlugPageStrings = {
 
 export const cityCategoryPageStrings = {
   untitledArticle: "Articolo Senza Titolo",
-  pageTitle: (city: string, category: string) => `Articoli e Guide: ${category} a ${city}`,
+  pageTitle: (city: string, category: string) => `${category} a ${city}`,
   ctaTitle: (category: string, city: string) => `Cerchi ${category} a ${city}?`,
   ctaSubtitle: "Trova subito quello che cerchi!",
   readMoreButtonText: "✨ Leggi di più &rarr;",
