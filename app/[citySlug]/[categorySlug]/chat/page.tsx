@@ -57,7 +57,7 @@ export async function generateMetadata({
 const defaultMessagesConfig = [
   { sender: 'bot' as const, textTemplate: 'Ciao! Benvenuto/a nella chat {categoryName} di {cityName}. Pronto/a per iniziare? 😉', avatar: '👋', delay: 1000 },
   { sender: 'bot' as const, textTemplate: 'Qui troverai tanti profili interessanti di {categoryName} proprio da {cityName}!', avatar: '✨', delay: 2000 },
-  { sender: 'bot' as const, textTemplate: 'L&apos;iscrizione è gratuita e veloce. Bastano pochi istanti.', avatar: '🚀', delay: 1500 },
+  { sender: 'bot' as const, textTemplate: 'L\'iscrizione è gratuita e veloce. Bastano pochi istanti.', avatar: '🚀', delay: 1500 },
   { sender: 'bot' as const, textTemplate: 'Cosa aspetti? Clicca qui sotto per unirti alla conversazione! 👇', avatar: '💬', delay: 2000 },
 ];
 

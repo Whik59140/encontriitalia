@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import { X, CheckCircle, AlertTriangle } from 'lucide-react';
 
 interface InterstitialModalProps {
@@ -57,9 +58,22 @@ export function InterstitialModal({
             </p>
             
             <div className="space-y-3 text-left bg-green-50 dark:bg-green-900/30 p-4 rounded-lg border border-green-200 dark:border-green-700 w-full mb-6">
+              <div className="flex items-start">
+                <CheckCircle size={20} className="text-green-600 dark:text-green-400 mr-2 flex-shrink-0 mt-0.5" />
+                <span className="text-sm text-gray-700 dark:text-gray-200 flex items-center">
+                  <Image
+                    src="/images/secure-connection.png"
+                    alt="Secure Connection"
+                    width={20}
+                    height={20}
+                    className="mr-1.5"
+                  />
+                  Connessione Sicura e Discreta
+                </span>
+              </div>
               <p className="flex items-start">
                 <CheckCircle size={20} className="text-green-600 dark:text-green-400 mr-2 flex-shrink-0 mt-0.5" />
-                <span className="text-sm text-gray-700 dark:text-gray-200">L&apos;iscrizione è <strong className='font-semibold'>100% GRATUITA</strong>.</span>
+                <span className="text-sm text-gray-700 dark:text-gray-200">La registrazione è <strong className='font-semibold'>100% GRATUITA</strong>.</span>
               </p>
               <p className="flex items-start">
                 <CheckCircle size={20} className="text-green-600 dark:text-green-400 mr-2 flex-shrink-0 mt-0.5" />

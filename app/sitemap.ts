@@ -114,10 +114,10 @@ export default async function sitemap({ id }: { id: string }): Promise<MetadataR
     sitemapEntries.push(
       {
         url: BASE_URL,
-        lastModified: currentDate,
+      lastModified: currentDate,
         changeFrequency: 'daily',
-        priority: 1.0,
-      },
+      priority: 1.0,
+    },
       {
         url: `${BASE_URL}/chat`, // Add /chat hub page
         lastModified: currentDate,
@@ -127,12 +127,12 @@ export default async function sitemap({ id }: { id: string }): Promise<MetadataR
     );
     const allCitySlugs = await getAllCitySlugs();
     allCitySlugs.forEach(citySlug => {
-      sitemapEntries.push({
+    sitemapEntries.push({
         url: `${BASE_URL}/${citySlug}`,
-        lastModified: currentDate,
-        changeFrequency: 'weekly',
-        priority: 0.8,
-      });
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    });
     });
   } else {
     const currentCitySlug = id;
@@ -181,8 +181,8 @@ export default async function sitemap({ id }: { id: string }): Promise<MetadataR
         lastModified: article.lastModified ?? currentDate,
         changeFrequency: 'monthly',
         priority: 0.6, // Kept priority for articles
-      });
     });
+  });
   }
   console.log(`[Sitemap] Finished generating sitemap for ID: ${id}. Entries: ${sitemapEntries.length}`);
   return sitemapEntries;

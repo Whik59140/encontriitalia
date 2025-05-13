@@ -6,11 +6,10 @@ import { CtaSection } from '@/components/common/cta-section';
 import { Footer } from '@/components/common/footer'; // Changed to named import
 import { getRegionalCities } from '@/lib/utils/geo'; // Import getRegionalCities
 import { WebcamCtaButton } from '@/components/common/webcam-cta-button'; // Import the new component
+import { categoryAffiliateLinks } from '@/lib/constants'; // <<< IMPORT THE CENTRALIZED MAP
 
-// --- Configuration for Affiliate Link ---
-// ! IMPORTANT: Replace this with your actual affiliate link structure.
-// Use {citySlug} and {categorySlug} as placeholders where the slugs should be inserted.
-const AFFILIATE_LINK_TEMPLATE = 'https://affiliate.example.com/register?campaign={categorySlug}&location={citySlug}&tracking_id=your_id'; // Restored
+// --- REMOVE Configuration for Affiliate Link --- 
+// const AFFILIATE_LINK_TEMPLATE = 'https://affiliate.example.com/register?campaign={categorySlug}&location={citySlug}&tracking_id=your_id';
 
 // --- Helper Functions & Data ---
 function capitalizeCityName(slug: string): string { // Restored
@@ -133,13 +132,11 @@ export default async function CategoryListingPage({ params }: { params: Promise<
 
   const pageTitle = `Articoli per: ${displayNameForCity} / ${displayNameForCategory}`;
 
-  // Construct dynamic affiliate link - Restored
-  const dynamicAffiliateLink = AFFILIATE_LINK_TEMPLATE
-    .replace('{citySlug}', citySlug)
-    .replace('{categorySlug}', categorySlug);
+  // Construct dynamic affiliate link from the centralized map
+  const dynamicAffiliateLink = categoryAffiliateLinks[categorySlug] || 'https://defaultfallback.link'; // Fallback if slug not in map
 
-  const ctaTitle = `Cerchi Incontri ${displayNameForCategory} a ${displayNameForCity}? 🤔`; // Restored
-  const ctaSubtitle = `Registrazione Gratuita ✅ con Profili Veri ✅.\nConferma la tua email per iniziare subito!`; // Restored
+  const ctaTitle = `Cerchi Incontri ${displayNameForCategory} a ${displayNameForCity}? 🤔`;
+  const ctaSubtitle = `Registrazione Gratuita ✅ con Profili Veri ✅.\nConferma la tua email per iniziare subito!`;
 
     return (
     <div className="container mx-auto p-4 flex flex-col min-h-screen">

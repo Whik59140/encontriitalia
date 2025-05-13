@@ -21,8 +21,7 @@ const ALL_CATEGORIES: Category[] = [
   { slug: 'trans', name: 'Trans' },
   { slug: 'trav', name: 'Trav' },
   { slug: 'escort', name: 'Escort' },
-  { slug: 'studentessa', name: 'Studentessa' },
-  { slug: 'adulti', name: 'Adulti' },
+ 
 ];
 
 // Cached data to avoid re-reading the file multiple times per request
@@ -88,4 +87,14 @@ export async function getRegionalCities(currentCitySlug: string): Promise<{ citi
   const regionalCities = cities.filter(city => city.region === regionName && city.slug !== currentCitySlug);
   
   return { cities: regionalCities, regionName };
+}
+
+export async function getAllCitySlugs(): Promise<string[]> {
+  const cities = await loadGeoData();
+  return cities.map(city => city.slug);
+}
+
+export async function getAllCategorySlugs(): Promise<string[]> {
+  const categories = await getAllCategories(); // This existing function returns Category[]
+  return categories.map(category => category.slug);
 } 

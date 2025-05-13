@@ -16,9 +16,8 @@ import { RelatedContent } from '@/components/common/related-content'; // Import 
 import { TopArticleCTA } from '@/components/common/top-article-cta';
 import { WebcamCtaButton } from '@/components/common/webcam-cta-button'; // Import the Webcam CTA Button
 import Link from 'next/link'; // Corrected import for Link
-
-// Import constants and the new CTA component
-import { categoryAffiliateLinks } from '@/lib/constants';
+import { CtaSection } from '@/components/common/cta-section'; // <<< ADD THIS IMPORT
+import { categoryAffiliateLinks } from '@/lib/constants'; // <<< IMPORT THE CENTRALIZED MAP
 import { capitalizeSlug } from '@/lib/utils/string';
 
 // Shadcn UI Accordion components - will be used by the client component
@@ -233,6 +232,12 @@ export default async function SpecificArticlePage({ params }: { params: Promise<
   const displayCityName = frontmatter.cityName || capitalizeSlug(citySlug);
   const displayCategoryName = CATEGORY_DISPLAY_NAMES_FOR_RELATED[categorySlug] || capitalizeSlug(categorySlug);
 
+  const dynamicAffiliateLink = categoryAffiliateLinks[categorySlug] || 'https://defaultfallback.link';
+
+  const ctaTitle = `Cerchi Incontri ${displayCategoryName} a ${displayCityName}? 🤔`;
+  const ctaSubtitle = `Registrazione Gratuita ✅ con Profili Veri ✅.\nConferma la tua email per iniziare subito!`;
+  const ctaDescription = "Trova profili verificati e inizia la tua avventura. La registrazione è veloce e richiede solo la tua email.";
+
   const categoryPageData = {
     name: displayCategoryName,
     url: `/${citySlug}/${categorySlug}`,
@@ -241,11 +246,6 @@ export default async function SpecificArticlePage({ params }: { params: Promise<
     name: displayCityName,
     url: `/${citySlug}`,
   };
-
-  // Determine affiliate URL and names for the CTA
-  const ctaCategoryName = frontmatter.category || categorySlug;
-  const ctaCityName = frontmatter.cityName || frontmatter.city || '';
-  const affiliateUrl = categorySlug ? categoryAffiliateLinks[categorySlug] : '';
 
   // Fallback if no content could be structured
   if (articleRenderData.leadingHastNodes.length === 0 && articleRenderData.accordionSections.length === 0) {
@@ -270,38 +270,45 @@ export default async function SpecificArticlePage({ params }: { params: Promise<
         </div>
       )} */}
       <main className="container mx-auto px-4 pt-20 lg:px-24 xl:px-32 2xl:px-40 pb-24"> {/* Adjusted padding: pt-20 (for sticky header) and kept pb-24 (for sticky footer) */}
-        <TopArticleCTA 
-            // title={frontmatter.title || 'Scopri di più'} // title prop issue - commented out
-            categoryName={ctaCategoryName}
-            cityName={ctaCityName}
-            affiliateUrl={affiliateUrl}
-            // imageUrl={randomImageUrl} // randomImageUrl not defined - commented out
-        />
-        
-        {/* Webcam CTA Button moved here, below TopArticleCTA */}
-        <div className="my-8 flex justify-center">
-          <WebcamCtaButton 
-            cityDisplayName={displayCityName} 
-            categoryDisplayName={displayCategoryName}
-            categorySlug={categorySlug}
+        <div className="flex-grow">
+          {/* Top Article CTA (Serious/Sex) */}
+          <TopArticleCTA 
+            cityName={displayCityName} 
+            categoryName={displayCategoryName}
+            affiliateUrl={dynamicAffiliateLink}
           />
+
+          {/* Main Article Content - Renders H1, leading paragraphs, and accordion */}
+          <ArticleContentRenderer {...articleRenderData} />
+
+          {/* NEW CTA SECTION FOR CATEGORY AFFILIATE LINK */}
+          <CtaSection 
+            title={ctaTitle}
+            subtitle={ctaSubtitle}
+            description={ctaDescription}
+            buttonText="💕 Inizia Subito!"
+            buttonLink={dynamicAffiliateLink}
+            isExternalLink={true}
+            linkTarget="_blank"
+          />
+
+          {/* Webcam CTA Button - moved slightly lower, after article content but before related */}
+          <div className="my-8 flex justify-center">
+            <WebcamCtaButton 
+              cityDisplayName={displayCityName}
+              categoryDisplayName={displayCategoryName}
+              categorySlug={categorySlug}
+            />
+          </div>
+
+          {relatedArticleLinks.length > 0 && (
+            <RelatedContent 
+              relatedArticles={relatedArticleLinks} 
+              categoryPage={categoryPageData}
+              cityPage={cityPageData}
+            />
+          )}
         </div>
-
-        <ArticleContentRenderer 
-          leadingHastNodes={articleRenderData.leadingHastNodes}
-          accordionSections={articleRenderData.accordionSections}
-          frontmatter={articleRenderData.frontmatter}
-          headings={articleRenderData.headings}
-          fallbackMarkdownBody={markdownBody}
-        />
-
-        {relatedArticleLinks.length > 0 && (
-          <RelatedContent
-            relatedArticles={relatedArticleLinks}
-            categoryPage={categoryPageData}
-            cityPage={cityPageData}
-          />
-        )}
       </main>
       <Footer 
         currentCitySlug={citySlug}
