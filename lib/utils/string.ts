@@ -6,4 +6,14 @@ export function capitalizeSlug(slug: string): string {
     .join(' ');
 }
 
+export function capitalizeCityName(name: string): string {
+  if (!name) return '';
+  // Simple capitalization for single or multi-word city names not necessarily hyphenated
+  return name
+    .toLowerCase()
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+}
+
 // You can add other string utility functions here in the future. 

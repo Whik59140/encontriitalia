@@ -1,25 +1,14 @@
 import { MetadataRoute } from 'next';
 import fs from 'fs/promises';
 import path from 'path';
+import { getAllCategories as fetchAllCategoriesLib } from '@/lib/utils/geo'; // Renamed import to avoid conflict
 
 // --- Configuration ---
 const BASE_URL = 'https://www.incontri-italia.it';
 const ARTICLES_DIR = path.join(process.cwd(), 'content', 'articles');
 const GEO_JSON_PATH = path.join(process.cwd(), 'lib', 'data', 'geo.json');
 
-// Define all available categories (copied from generate-articles.mjs)
-// Removed as it's not used in the current logic
-// const ALL_CATEGORIES = [
-//   { slug: 'gay', name: 'Gay' },
-//   { slug: 'milf', name: 'Milf' },
-//   { slug: 'donne', name: 'Donne' },
-//   { slug: 'ragazze', name: 'Ragazze' },
-//   { slug: 'trans', name: 'Trans' },
-//   { slug: 'trav', name: 'Trav' },
-//   { slug: 'escort', name: 'Escort' },
-//   { slug: 'studentessa', name: 'Studentessa' },
-//   { slug: 'adulti', name: 'Adulti' },
-// ];
+const ANNUNCI_SUB_CATEGORIES = ['annunci-gratis', 'annunci-sesso', 'annunci-seri', 'annunci-incontri'];
 
 interface CityInfo {
   slug: string;
@@ -122,43 +111,76 @@ export default async function sitemap({ id }: { id: string }): Promise<MetadataR
   const sitemapEntries: MetadataRoute.Sitemap = [];
 
   if (id === 'global') {
-    sitemapEntries.push({
-      url: BASE_URL,
-      lastModified: currentDate,
-      changeFrequency: 'daily',
-      priority: 1.0,
-    });
-    const allCitySlugs = await getAllCitySlugs(); // Fetch cities specifically for global sitemap
+    sitemapEntries.push(
+      {
+        url: BASE_URL,
+        lastModified: currentDate,
+        changeFrequency: 'daily',
+        priority: 1.0,
+      },
+      {
+        url: `${BASE_URL}/chat`, // Add /chat hub page
+        lastModified: currentDate,
+        changeFrequency: 'weekly',
+        priority: 0.9,
+      }
+    );
+    const allCitySlugs = await getAllCitySlugs();
     allCitySlugs.forEach(citySlug => {
-    sitemapEntries.push({
+      sitemapEntries.push({
         url: `${BASE_URL}/${citySlug}`,
-      lastModified: currentDate,
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    });
+        lastModified: currentDate,
+        changeFrequency: 'weekly',
+        priority: 0.8,
+      });
     });
   } else {
     const currentCitySlug = id;
     const cityArticles = allArticles.filter(article => article.citySlug === currentCitySlug);
+    const allCategoriesForSitemap = await fetchAllCategoriesLib(); // Fetch all defined categories
 
-    const categoriesInThisCity = new Set<string>();
-    cityArticles.forEach(article => categoriesInThisCity.add(article.categorySlug));
-    
-    Array.from(categoriesInThisCity).sort().forEach(categorySlug => {
+    // Add category pages, chat pages, and annunci pages for all defined categories in this city
+    allCategoriesForSitemap.forEach(category => {
+      const categorySlug = category.slug;
+      // Category page
       sitemapEntries.push({
         url: `${BASE_URL}/${currentCitySlug}/${categorySlug}`,
         lastModified: currentDate,
         changeFrequency: 'weekly',
         priority: 0.7,
       });
+      // Chat page for this category
+      sitemapEntries.push({
+        url: `${BASE_URL}/${currentCitySlug}/${categorySlug}/chat`,
+        lastModified: currentDate,
+        changeFrequency: 'weekly',
+        priority: 0.65,
+      });
+      // Annunci chooser page
+      sitemapEntries.push({
+        url: `${BASE_URL}/${currentCitySlug}/${categorySlug}/annunci`,
+        lastModified: currentDate,
+        changeFrequency: 'weekly',
+        priority: 0.6,
+      });
+      // Annunci sub-category pages
+      ANNUNCI_SUB_CATEGORIES.forEach(subCatSlug => {
+        sitemapEntries.push({
+          url: `${BASE_URL}/${currentCitySlug}/${categorySlug}/${subCatSlug}`,
+          lastModified: currentDate,
+          changeFrequency: 'monthly',
+          priority: 0.55,
+        });
+      });
     });
 
+    // Add article pages for this city (ensure URL structure is correct)
     cityArticles.forEach(article => {
       sitemapEntries.push({
-        url: `${BASE_URL}/${article.categorySlug}/${currentCitySlug}/${article.articleSlug}`,
+        url: `${BASE_URL}/${currentCitySlug}/${article.categorySlug}/${article.articleSlug}`, // Corrected URL structure
         lastModified: article.lastModified ?? currentDate,
         changeFrequency: 'monthly',
-        priority: 0.6,
+        priority: 0.6, // Kept priority for articles
       });
     });
   }
