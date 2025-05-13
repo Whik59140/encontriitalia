@@ -6,6 +6,7 @@ import path from 'path';
 const BASE_URL = 'https://www.incontri-italia.it';
 const ARTICLES_DIR = path.join(process.cwd(), 'content', 'articles');
 const GEO_JSON_PATH = path.join(process.cwd(), 'lib', 'data', 'geo.json');
+const ID_SEPARATOR = '___'; // Separator for complex IDs, must match other sitemap files
 
 // Define all available categories (copied from generate-articles.mjs)
 // Removed as it's not used in the current logic
@@ -100,60 +101,85 @@ async function findArticleFiles(dir: string): Promise<ArticleInfo[]> {
   return results;
 }
 
-// Removed generateSitemaps function
+export async function generateSitemaps() {
+  console.log('[AppSitemap/Leaf] Generating sitemap IDs for leaf sitemaps (global & city-category-articles)...');
+  const articles = await findArticleFiles(ARTICLES_DIR);
+  const cityCategoryPairs = new Set<string>();
+  articles.forEach(article => {
+    cityCategoryPairs.add(`${article.citySlug}${ID_SEPARATOR}${article.categorySlug}`);
+  });
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  console.log('[Sitemap] Generating single sitemap...'); // Log start
-  const allCitySlugs = await getAllCitySlugs();
-  const allArticles = await findArticleFiles(ARTICLES_DIR);
-  console.log(`[Sitemap] Total articles found: ${allArticles.length}`); // Log total articles
+  const sitemapIds = [{ id: 'global' }]; // For /sitemap/global.xml
+
+  Array.from(cityCategoryPairs).sort().forEach(pair => {
+    const [citySlug, categorySlug] = pair.split(ID_SEPARATOR);
+    // This ID will be used by Next.js to generate file like /sitemap/articles___city___category.xml
+    sitemapIds.push({ id: `articles${ID_SEPARATOR}${citySlug}${ID_SEPARATOR}${categorySlug}` });
+  });
+
+  console.log(`[AppSitemap/Leaf] Generated ${sitemapIds.length} IDs for leaf sitemaps.`);
+  return sitemapIds;
+}
+
+export default async function sitemap({ id }: { id: string }): Promise<MetadataRoute.Sitemap> {
+  console.log(`[AppSitemap/Leaf] Generating sitemap content for leaf ID: ${id}`);
   const currentDate = new Date();
   const sitemapEntries: MetadataRoute.Sitemap = [];
 
-  // 1. Homepage
-  sitemapEntries.push({
-    url: BASE_URL,
-    lastModified: currentDate,
-    changeFrequency: 'daily',
-    priority: 1.0,
-  });
-
-  // 2. Top-level City Pages
-  allCitySlugs.forEach(citySlug => {
+  if (id === 'global') {
     sitemapEntries.push({
-      url: `${BASE_URL}/${citySlug}`,
+      url: BASE_URL,
       lastModified: currentDate,
-      changeFrequency: 'weekly',
-      priority: 0.8,
+      changeFrequency: 'daily',
+      priority: 1.0,
     });
-  });
+    const citySlugs = await getAllCitySlugs();
+    citySlugs.forEach(citySlug => {
+      sitemapEntries.push({
+        url: `${BASE_URL}/${citySlug}`,
+        lastModified: currentDate,
+        changeFrequency: 'weekly',
+        priority: 0.8,
+      });
+    });
+  } else if (id.startsWith(`articles${ID_SEPARATOR}`)) {
+    const parts = id.split(ID_SEPARATOR);
+    // articles___citySlug___categorySlug
+    if (parts.length !== 3) { // Check for correct number of parts
+        console.error(`[AppSitemap/Leaf] Invalid articles ID format: ${id}. Expected 3 parts, got ${parts.length}.`);
+        return [];
+    }
+    const citySlug = parts[1];
+    const categorySlug = parts[2];
 
-  // 3. City-Category Pages (only if articles exist)
-  const cityCategoryPairs = new Set<string>();
-  allArticles.forEach(article => {
-    cityCategoryPairs.add(`${article.citySlug}:${article.categorySlug}`);
-  });
+    if (!citySlug || !categorySlug) {
+      console.error(`[AppSitemap/Leaf] Invalid city or category slug from ID: ${id}`);
+      return [];
+    }
 
-  Array.from(cityCategoryPairs).sort().forEach(pair => {
-    const [citySlug, categorySlug] = pair.split(':');
+    // Add the city-category page itself
     sitemapEntries.push({
       url: `${BASE_URL}/${citySlug}/${categorySlug}`,
-      lastModified: currentDate, // Could be refined based on newest article in this city-category
+      lastModified: currentDate,
       changeFrequency: 'weekly',
       priority: 0.7,
     });
-  });
 
-  // 4. Article Pages
-  allArticles.forEach(article => {
-    sitemapEntries.push({
-      url: `${BASE_URL}/${article.categorySlug}/${article.citySlug}/${article.articleSlug}`,
-      lastModified: article.lastModified ?? currentDate,
-      changeFrequency: 'monthly',
-      priority: 0.6,
+    const allArticles = await findArticleFiles(ARTICLES_DIR);
+    const relevantArticles = allArticles.filter(
+      article => article.citySlug === citySlug && article.categorySlug === categorySlug
+    );
+
+    relevantArticles.forEach(article => {
+      sitemapEntries.push({
+        url: `${BASE_URL}/${article.categorySlug}/${article.citySlug}/${article.articleSlug}`,
+        lastModified: article.lastModified ?? currentDate,
+        changeFrequency: 'monthly',
+        priority: 0.6,
+      });
     });
-  });
+  }
 
-  console.log(`[Sitemap] Finished generating single sitemap. Entries: ${sitemapEntries.length}`); // Log end
+  console.log(`[AppSitemap/Leaf] Finished sitemap for leaf ID: ${id}. Entries: ${sitemapEntries.length}`);
   return sitemapEntries;
 } 
