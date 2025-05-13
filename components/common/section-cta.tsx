@@ -29,13 +29,13 @@ export function SectionCTA({ cityName, categoryName, categorySlug }: SectionCTAP
     >
       <div className="flex items-center w-full max-w-screen-md">
         <p className="text-sm sm:text-base md:text-lg font-bold drop-shadow-sm text-center flex-grow mr-2 sm:mr-3 md:mr-4">
-          {mainText}
-        </p>
-        <span 
+        {mainText}
+      </p>
+      <span 
           className="inline-block flex-shrink-0 bg-yellow-300 hover:bg-yellow-400 text-gray-900 font-extrabold text-sm sm:text-base md:text-lg py-1 px-3 sm:py-2 sm:px-4 md:py-2 md:px-6 rounded-md shadow-md pointer-events-none transition-colors duration-200"
-        >
-          {buttonText}
-        </span>
+      >
+        {buttonText}
+      </span>
       </div>
     </a>
   );

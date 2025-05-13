@@ -43,7 +43,8 @@ export function RootLayoutClient({
 
   const [cityName, setCityName] = useState<string | null>(null);
   const [categoryName, setCategoryName] = useState<string | null>(null);
-  const [chatButtonText, setChatButtonText] = useState(rootLayoutStrings.chatLiveText);
+  const [chatButtonText, setChatButtonText] = useState<string | { line1: string; line2: string }>(rootLayoutStrings.chatLiveText);
+  const [chatButtonAriaLabel, setChatButtonAriaLabel] = useState(rootLayoutStrings.chatLiveText);
 
   useEffect(() => {
     if (params.citySlug && typeof params.citySlug === 'string') {
@@ -67,11 +68,17 @@ export function RootLayoutClient({
 
   useEffect(() => {
     if (cityName && categoryName) {
-      setChatButtonText(rootLayoutStrings.chatLiveInCategoryInCity(categoryName, cityName));
+      setChatButtonText({
+        line1: rootLayoutStrings.chatLiveInCategoryInCity(categoryName, cityName).split(cityName)[0].trim(),
+        line2: cityName
+      });
+      setChatButtonAriaLabel(rootLayoutStrings.chatLiveInCategoryInCity(categoryName, cityName));
     } else if (cityName) {
       setChatButtonText(rootLayoutStrings.chatLiveInCity(cityName));
+      setChatButtonAriaLabel(rootLayoutStrings.chatLiveInCity(cityName));
     } else {
       setChatButtonText(rootLayoutStrings.chatLiveText);
+      setChatButtonAriaLabel(rootLayoutStrings.chatLiveText);
     }
   }, [cityName, categoryName]);
 
@@ -117,19 +124,32 @@ export function RootLayoutClient({
         {/* Floating Chat Button Added Here */}
         <Link 
           href="/chat" 
-          className="fixed top-[4.75rem] sm:top-[4rem] md:top-[5.75rem] right-6 group flex items-center px-4 py-3 text-base font-semibold text-white 
+          className="fixed top-[4.75rem] sm:top-[4rem] md:top-[5.75rem] right-4 sm:right-6 group 
+                     flex flex-col items-center text-center sm:flex-row sm:text-left 
+                     px-3 py-2 sm:px-4 sm:py-3 
+                     text-xs sm:text-base font-semibold text-white  休憩/* Mobile text-xs, sm and up text-base */
                      bg-pink-600 hover:bg-pink-700 
-                     rounded-full shadow-lg hover:shadow-xl 
+                     rounded-lg sm:rounded-full shadow-lg hover:shadow-xl 
                      transition-all duration-300 ease-in-out 
                      z-[100] transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-opacity-50"
-          aria-label={chatButtonText} // For accessibility
+          aria-label={chatButtonAriaLabel}
         >
-          <MessagesSquare size={22} className="mr-2 group-hover:animate-pulse" />
-          <span>{chatButtonText}</span>
-          {/* Pulsating dot for "live" effect - adjusted position slightly if needed */}
-          <span className="absolute top-1 right-1 flex h-3 w-3">
+          {/* Icon size: 14 mobile, 20 sm+ */}
+          <MessagesSquare size={14} className="sm:size-5 sm:mr-2" /> 
+          <span className="mt-1 sm:mt-0 min-w-[60px] flex flex-col sm:flex-row items-center"> 
+            {typeof chatButtonText === 'string' ? (
+              <span className="leading-tight sm:leading-normal">{chatButtonText}</span>
+            ) : (
+              <>
+                <span className="block leading-tight sm:leading-normal">{chatButtonText.line1}</span>
+                <span className="block leading-tight sm:leading-normal sm:ml-1.5">{chatButtonText.line2}</span> 
+              </>
+            )}
+          </span>
+          {/* Pulsating dot for "live" effect - kept sm:h-3 sm:w-3 */}
+          <span className="absolute top-1 right-1 flex h-2 w-2 sm:h-3 sm:w-3">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-300 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-3 w-3 bg-red-400"></span>
+            <span className="relative inline-flex rounded-full h-full w-full bg-red-400"></span>
           </span>
         </Link>
       </body>

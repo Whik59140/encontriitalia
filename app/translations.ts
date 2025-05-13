@@ -104,7 +104,8 @@ export const cityCategoryPageStrings = {
   noArticlesFound: "Nessun articolo trovato per questa categoria e città. Torna presto per nuovi contenuti!",
   ctaSectionDescription: "Non aspettare, la tua prossima avventura potrebbe essere a un clic di distanza.",
   ctaSectionButtonText: "💕 Inizia Subito!",
-  defaultFallbackLink: "https://www.example.com/default-fallback" // For affiliate link fallback
+  defaultFallbackLink: "https://www.example.com/default-fallback", // For affiliate link fallback
+  articleCardImageAltText: (categoryName: string) => `Immagine rappresentativa per articoli su ${categoryName}`
 };
 
 export const annunciChooserPageStrings = {

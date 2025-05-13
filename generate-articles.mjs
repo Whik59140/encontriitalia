@@ -22,7 +22,7 @@ const vertexAILocation = 'us-central1'; // Required for image generation
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // !! IMPORTANT: SET THIS TO THE CATEGORY SLUG YOU WANT TO GENERATE FOR ALL CITIES !!
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-const TARGET_CATEGORY_SLUG_FOR_ALL_CITIES = 'milf'; // IMPORTANT: Set this to the desired category slug.
+const TARGET_CATEGORY_SLUG_FOR_ALL_CITIES = 'trav'; // IMPORTANT: Set this to the desired category slug.
 const TARGET_CITY_SLUG = ''; // Optional: Set to a specific city slug to generate only for that city, or empty for all.
 
 // Define all available categories statically
@@ -104,80 +104,81 @@ function getPromptForCategory(categorySlug, cityName, categoryDisplayName, relat
     ? `\\n\\n## Esplora Altre Città nella Regione\\nScrivi un breve paragrafo che incoraggi i lettori a esplorare altre città vicine nella stessa regione per incontri ${categoryDisplayName}, menzionando e linkando le seguenti guide: ${relatedCitiesData.map(c => `[${c.name}](/${c.slug}/${categorySlug}/incontri-${categorySlug}-in-${c.slug})`).join(', ')}.`
     : '';
 
-  if (categorySlug === 'milf') {
+  if (categorySlug === 'trav') {
     // ... (existing prompt for trans) ...
     return `
-Scrivi un articolo SEO-ottimizzato in italiano di 10.000 caratteri sugli incontri con persone escort a ${cityName}. L'articolo deve:
+Scrivi un articolo SEO-ottimizzato in italiano di 10.000 caratteri sugli incontri con persone trav a ${cityName}. L'articolo deve:
 
 ${internalLinksSection}
 `;
-  } else if (categorySlug === 'milf') {
+  } else if (categorySlug === 'trav') {
     
     return `
-   Scrivi un articolo SEO-ottimizzato in italiano di circa 10.000 caratteri sugli incontri con **donne mature (spesso cercate con termini come MILF)** a ${cityName}. L'articolo deve:
+ Scrivi un articolo SEO-ottimizzato in italiano di circa 10.000 caratteri sugli incontri con **persone transgender, transessuali, e travestiti (spesso cercati con il termine 'trav')** a ${cityName}. L'articolo deve:
 
-Iniziare con un'introduzione accattivante che metta in luce il fascino unico e l'esperienza che caratterizzano la scena degli incontri con **donne mature e affascinanti** a ${cityName}. Usa un forte aggancio per attirare lettrici e lettori, mostrando cosa rende speciale questa città per conoscere **signore carismatiche e consapevoli**.
+Iniziare con un'introduzione accogliente e informativa che metta in luce la specificità e la ricchezza della scena degli incontri per e con **persone transgender (donne trans, uomini trans), transessuali, e travestiti/crossdresser** a ${cityName}. Usa un forte aggancio per attirare lettrici e lettori, mostrando cosa rende speciale e inclusiva questa città per conoscere **persone della comunità T* e chi è interessato a incontrarle con rispetto**.
 
-Includere una sezione dettagliata sui migliori luoghi per incontrare **donne mature single** a ${cityName}. Elenca wine bar sofisticati, caffè con atmosfera rilassata, club con serate a tema che attraggono un pubblico adulto, eventi culturali (mostre, teatro), corsi di interesse specifico (es. degustazione vini, arte, yoga), o piattaforme di dating online popolari tra le **donne con esperienza**. Ove possibile, includi nomi di locali o eventi per rendere i consigli pratici e localmente rilevanti per chi cerca **incontri MILF a ${cityName}**.
+Includere una sezione dettagliata sui migliori luoghi per incontrare **persone trans, e travestiti** a ${cityName}. Elenca bar LGBTQ+ friendly, club con serate a tema o drag show, centri comunitari LGBTQ+, eventi specifici (es. Pride, festival culturali queer, meet-up dedicati), o piattaforme di dating online popolari e sicure per la **comunità transgender e per travestiti**. Ove possibile, includi nomi di locali o eventi per rendere i consigli pratici e localmente rilevanti per chi cerca **incontri trav a ${cityName}** o **incontri trans a ${cityName}**.
 
-Fornire consigli pratici e attuabili per avere successo negli appuntamenti con **donne mature**, sottolineando l'importanza del rispetto per la loro individualità, della comunicazione matura, dell'ascolto attento, dell'empatia, dell'autenticità e della sicurezza reciproca. Includi esempi o scenari riconoscibili (es. come approcciare una conversazione interessante, come valorizzare l'esperienza reciproca) per illustrare questi suggerimenti, utili per chi desidera **incontrare una MILF a ${cityName}**.
+Fornire consigli pratici, rispettosi e attuabili per avere successo negli appuntamenti con **persone transgender e travestiti**, sottolineando l'importanza del rispetto dell'identità di genere, dell'uso corretto dei pronomi, della comunicazione aperta e onesta, dell'ascolto attivo, dell'empatia, dell'autenticità e della sicurezza reciproca. Includi esempi o scenari riconoscibili (es. come chiedere rispettosamente i pronomi, come evitare domande invasive, come creare un ambiente confortevole).
 
-Esplorare le sfide comuni negli incontri con **donne mature** (ad esempio, conciliare impegni familiari o carriere avviate, differenze nelle aspettative rispetto a partner più giovani, gestire pregiudizi, o la comunicazione efficace online in contesti di dating per adulti) e offrire soluzioni specifiche e pratiche per affrontarle.
+Esplorare le sfide comuni negli incontri per e con **persone trans e travestiti** (ad esempio, affrontare pregiudizi e discriminazione, garantire la sicurezza fisica ed emotiva, trovare partner informati e rispettosi, la gestione del coming out o della transizione nel contesto di una relazione, la comunicazione efficace online) e offrire soluzioni specifiche, pratiche e di supporto.
 
-Presentare almeno due storie di successo o testimonianze (anonimizzate o ipotetiche ma realistiche) che riflettano esperienze positive di incontri con **donne mature** nati a ${cityName}. Queste dovrebbero sembrare autentiche e ispiratrici, evidenziando la possibilità di creare legami profondi e stimolanti in città.
+Presentare almeno due storie di successo o testimonianze (anonimizzate o ipotetiche ma realistiche e positive) che riflettano esperienze di incontri con **persone trans o travestiti** nati a ${cityName}. Queste dovrebbero sembrare autentiche, ispiratrici e celebrare la diversità e la possibilità di creare legami significativi.
 
-Concludere con un elenco personalizzato di risorse utili a ${cityName} per chi è interessato a socializzare con o per **donne mature**, come club del libro con un target adulto, associazioni culturali, gruppi di escursionismo o benessere, o community online focalizzate sugli interessi di un pubblico adulto, per aggiungere valore e incoraggiare l'interazione.
+Concludere con un elenco personalizzato di risorse utili per **persone transgender, transessuali, travestiti e alleati** a ${cityName}, come gruppi di supporto T*, associazioni LGBTQ+, centri di consulenza, locali dichiaratamente safe space, o community online locali, per aggiungere valore e incoraggiare l'interazione e il supporto reciproco.
 
 Durante tutto l'articolo:
 
 Integrare in modo fluido parole chiave long-tail, come ad esempio:
 
-"migliori posti per conoscere donne mature single a ${cityName}"
-"come organizzare un appuntamento con una donna matura a ${cityName}"
-"consigli per incontri con MILF ${cityName}"
-"appuntamenti sicuri con donne adulte a ${cityName}"
-"donne mature single ${cityName}"
-"vita notturna donne mature ${cityName}"
-"incontrare MILF a ${cityName}"
+"migliori posti per conoscere persone trans a ${cityName}"
+"come organizzare un appuntamento con una persona trav a ${cityName}"
+"consigli per incontri con donne trans ${cityName}"
+"appuntamenti sicuri per persone transgender a ${cityName}"
+"trav single ${cityName}"
+"vita notturna transgender ${cityName}"
+"incontrare transessuali a ${cityName}"
+"club per travestiti ${cityName}"
 
-Utilizzare sia forme singolari che plurali (ad esempio, "incontro donna matura" e "incontri donne mature").
+Utilizzare sia forme singolari che plurali (ad esempio, "incontro trans" e "incontri trans").
 
-Incorporare variazioni naturali e rispettose dei termini 'donne mature', 'signore', 'MILF' (quest'ultimo usato con consapevolezza della sua natura di termine di ricerca, ma tradotto in linguaggio rispettoso ed elegante nell'articolo, ad esempio 'donne affascinanti e con esperienza', 'signore carismatiche'). L'obiettivo è ampliare la copertura delle query di ricerca e garantire l'inclusività, mantenendo sempre un tono rispettoso. Evita ripetizioni forzate o frasi innaturali.
+Incorporare variazioni naturali e rispettose dei termini 'transgender', 'transessuale', 'travestito/crossdresser', 'donna trans', 'uomo trans'. Mentre 'trav' è un termine di ricerca comune, l'articolo dovrebbe prediligere una terminologia più precisa e rispettosa, spiegando eventualmente il contesto d'uso di 'trav' se necessario. L'obiettivo è ampliare la copertura delle query di ricerca e garantire l'inclusività, mantenendo sempre un tono rispettoso e affermativo. Evita ripetizioni forzate o frasi innaturali.
 
-Usare emoji con parsimonia (ad esempio, 🍷, 😊, ✨, 💃, 🌹) per migliorare la vicinanza emotiva e il divertimento senza appesantire il testo.
+Usare emoji con parsimonia e in modo appropriato (ad esempio, 🏳️‍⚧️, ❤️, ✨, 😊, 🥂) per migliorare la vicinanza emotiva e il divertimento senza appesantire il testo.
 
-Adottare un tono naturale e colloquiale — come un consiglio da un amico o un'amica esperta e fidata — per mantenere l'articolo caldo, accessibile e umano.
+Adottare un tono naturale, informativo, empatico e colloquiale — come un consiglio da un amico o un'amica informata e alleata — per mantenere l'articolo caldo, accessibile, umano e autorevole.
 
-Coinvolgere lettrici e lettori con domande retoriche (ad esempio, "Pronta/o a scoprire il fascino degli incontri con donne di esperienza a ${cityName}?") e anticipazioni (ad esempio, "Curiosa/o di sapere qual è il segreto per un appuntamento indimenticabile con una signora a ${cityName}? Continua a leggere!") per mantenere vivo l'interesse.
+Coinvolgere lettrici e lettori con domande retoriche (ad esempio, "Pronta/o a esplorare la vibrante comunità T* di ${cityName}?") e anticipazioni (ad esempio, "Curiosa/o di scoprire i locali più inclusivi per un primo appuntamento a ${cityName}? Continua a leggere!") per mantenere vivo l'interesse.
 
-Incorporare dettagli specifici di ${cityName}, come:
+Incorporare dettagli specifici di ${cityName} rilevanti per la comunità T* e per chi desidera incontrarla, come:
 
-Locali, caffè o ristoranti noti per essere frequentati da un pubblico adulto o adatti per appuntamenti con donne mature.
-Eventi annuali (ad esempio, festival culturali, mercatini enogastronomici, concerti di musica classica o jazz, eventi di networking per professionisti) che potrebbero favorire incontri con donne mature.
-Fattori culturali o sociali che modellano la scena degli incontri per donne mature in città.
+Locali, caffè, o club noti per essere accoglienti e frequentati da **persone transgender, transessuali, e travestiti**.
+Eventi annuali specifici (ad esempio, Pride cittadino, serate a tema, festival cinematografici LGBTQ+) che potrebbero favorire incontri.
+Fattori culturali o sociali che modellano la scena degli incontri per la **comunità T*** in città (es. presenza di associazioni attive, quartieri storicamente LGBTQ+ friendly).
 
-Citare informazioni credibili e verificate (ad esempio, statistiche sulla vita sociale degli adulti, citazioni di esperti di relazioni, o studi sul dating in età matura) per aumentare fiducia e autorevolezza.
+Citare informazioni credibili e verificate (ad esempio, risorse da associazioni LGBTQ+ locali o nazionali, testimonianze dirette nel rispetto della privacy, articoli o studi sulla vita delle persone T*) per aumentare fiducia e autorevolezza.
 
-Aggiungere una sezione sul clima culturale o sociale di ${cityName} riguardo agli incontri e alla vita sociale delle donne mature, e il suo impatto sul dating, fornendo un contesto prezioso.
+Aggiungere una sezione sul clima culturale o sociale di ${cityName} riguardo all'inclusività, ai diritti LGBTQ+, e alla vita sociale delle **persone transgender, transessuali e travestiti**, e il suo impatto sul dating, fornendo un contesto prezioso.
 
-Affrontare diverse prospettive e bisogni: donne mature che cercano amicizie, relazioni serie, o avventure passionali, e persone interessate a conoscere donne mature con questi diversi obiettivi, garantendo inclusività e un ampio appeal.
+Affrontare diverse prospettive e bisogni: **persone T*** che cercano amicizie, relazioni serie, avventure, o supporto comunitario, e persone cisgender interessate a conoscere la **comunità T*** in modo rispettoso e consapevole.
 
-Opzionalmente, includere una sezione FAQ alla fine per affrontare domande o preoccupazioni comuni sugli incontri con donne mature (o MILF) a ${cityName}, migliorando il valore per il lettore.
+Opzionalmente, includere una sezione FAQ alla fine per affrontare domande o preoccupazioni comuni sugli incontri con **persone trans, transessuali o travestiti** a ${cityName} (es. "Come posso essere un buon alleato durante un appuntamento?", "Quali sono i termini corretti da usare?", "Esistono gruppi di supporto a ${cityName}?"), migliorando il valore per il lettore.
 
-L'articolo dovrebbe essere divertente, profondo, e lasciare lettrici e lettori entusiaste/i all'idea di vivere la scena degli incontri con donne mature a ${cityName}.
+L'articolo dovrebbe essere celebrativo della diversità, informativo, e lasciare lettrici e lettori entusiaste/i all'idea di interagire con la scena degli incontri **trans, transessuali e travestiti** a ${cityName} in modo positivo e rispettoso.
 
 10 Titoli SEO-Ottimizzati per ${cityName}:
 
-"Incontri Donne Mature ${cityName}: Guida agli Appuntamenti con Signore Affascinanti"
-"Migliori Posti per Conoscere MILF Single a ${cityName} – Scoprili Ora!"
-"Consigli per Appuntamenti con Donne Mature a ${cityName}: Segreti per Sedurre con Stile"
-"Com'è la Scena degli Incontri con Donne Mature a ${cityName}? Tutte le Info"
-"Top App per Incontri con Donne Mature e MILF a ${cityName} – Inizia Oggi!"
-"Galateo degli Appuntamenti con Donne Mature a ${cityName}: Eleganza e Rispetto"
-"Storie Vere di Incontri con Donne Mature a ${cityName} che Ispirano Passione"
-"Guida per Principianti agli Incontri con Donne Mature (MILF) a ${cityName}"
-"Eventi per Donne Mature Single a ${cityName} da Non Perdere Assolutamente"
-"Perché ${cityName} è Perfetta per Incontri con Donne Mature Indimenticabili"
+"Incontri Trav e Trans ${cityName}: Guida Definitiva alla Scena T* Locale"
+"Migliori Posti per Conoscere Persone Transgender e Travestiti a ${cityName}"
+"Consigli per Appuntamenti Rispettosi con Persone Trans e Trav a ${cityName}"
+"Vita Notturna Trans e Trav a ${cityName}: Club, Bar ed Eventi Imperdibili"
+"Top App per Incontri Trans e Trav a ${cityName} – Connettiti in Sicurezza"
+"Comunità Transgender ${cityName}: Risorse, Supporto e Incontri"
+"Storie Vere di Incontri Trans e Trav a ${cityName} che Ispirano e Insegnano"
+"Guida per Principianti agli Incontri con Persone Transgender a ${cityName}"
+"Eventi per la Comunità Trans e Trav a ${cityName}: Socializza e Divertiti"
+"Perché ${cityName} è Speciale per Incontri Autentici con Persone Trans e Trav"
 
 ${internalLinksSection}
 
@@ -186,6 +187,7 @@ ${internalLinksSection}
 **NO CODE FENCES:** Non iniziare l'output con \`\`\`markdown.
 **STRUTTURA CRUCIALE:** Seguire ESATTAMENTE la struttura H2/H3 specificata (se applicabile nel prompt originale o dedotta dalla sua struttura). Non omettere sezioni.
 **PAROLE CHIAVE:** Integrare le parole chiave in modo naturale. Non includere elenchi di "Parole Chiave".
+
 
 `;
   }
