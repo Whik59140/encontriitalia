@@ -2,6 +2,33 @@ import fs from 'fs/promises';
 import path from 'path';
 import Link from 'next/link';
 import matter from 'gray-matter'; // For parsing frontmatter
+import { CtaSection } from '@/components/common/cta-section';
+import { Footer } from '@/components/common/footer'; // Changed to named import
+import { getRegionalCities } from '@/lib/utils/geo'; // Import getRegionalCities
+
+// --- Configuration for Affiliate Link ---
+// ! IMPORTANT: Replace this with your actual affiliate link structure.
+// Use {citySlug} and {categorySlug} as placeholders where the slugs should be inserted.
+const AFFILIATE_LINK_TEMPLATE = 'https://affiliate.example.com/register?campaign={categorySlug}&location={citySlug}&tracking_id=your_id'; // Restored
+
+// --- Helper Functions & Data ---
+function capitalizeCityName(slug: string): string { // Restored
+  if (!slug) return '';
+  return slug.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+}
+
+const CATEGORY_DISPLAY_NAMES: { [slug: string]: string } = { // Restored
+  gay: 'Gay',
+  milf: 'MILF',
+  donne: 'Donne',
+  ragazze: 'Ragazze',
+  trans: 'Trans',
+  trav: 'Trav',
+  escort: 'Escort',
+  studentessa: 'Studentesse',
+  adulti: 'Adulti',
+};
+// --- End Helper Functions & Data ---
 
 interface ArticleEntry {
   title: string;
@@ -35,10 +62,10 @@ export async function generateStaticParams(): Promise<{ citySlug: string; catego
           const cityDirs = await fs.readdir(cityDirsPath, { withFileTypes: true });
           for (const cityDir of cityDirs) {
             if (cityDir.isDirectory()) {
-              const citySlug = cityDir.name;
+              const citySlugValue = cityDir.name;
               // Ensure we don't add duplicates if somehow a city/category combo is processed twice
-              if (!paramsList.some(p => p.citySlug === citySlug && p.categorySlug === categorySlug)) {
-                paramsList.push({ citySlug, categorySlug });
+              if (!paramsList.some(p => p.citySlug === citySlugValue && p.categorySlug === categorySlug)) {
+                paramsList.push({ citySlug: citySlugValue, categorySlug });
               }
             }
           }
@@ -64,6 +91,7 @@ export async function generateStaticParams(): Promise<{ citySlug: string; catego
 
 export default async function CategoryListingPage({ params }: { params: Promise<ResolvedListingPageParams> }) {
   const { citySlug, categorySlug }: ResolvedListingPageParams = await params;
+  const { cities: regionalCities, regionName } = await getRegionalCities(citySlug); // Fetch regional cities
   
   // Updated directory path to scan for articles for this specific city/category combination
   const articlesParentDirectory = path.join(process.cwd(), 'content', 'articles', categorySlug, citySlug);
@@ -74,7 +102,7 @@ export default async function CategoryListingPage({ params }: { params: Promise<
     for (const filename of filenames) {
       // Expecting filenames like [articleSlug].md, e.g., "index.md", "overview.md"
       if (filename.endsWith('.md')) {
-        const articleSlug = filename.replace('.md', '');
+        const articleSlugFromFile = filename.replace('.md', '');
         const filePath = path.join(articlesParentDirectory, filename);
         const fileContent = await fs.readFile(filePath, 'utf8');
         const { data } = matter(fileContent);
@@ -82,10 +110,10 @@ export default async function CategoryListingPage({ params }: { params: Promise<
         articles.push({
           title: data.title || 'Untitled Article',
           description: data.description,
-          url: `/${citySlug}/${categorySlug}/${articleSlug}`,
-          city: data.cityName || citySlug, // Using cityName from frontmatter if available
-          category: data.categoryName || categorySlug, // Using categoryName from frontmatter
-          articleSlug: articleSlug
+          url: `/${citySlug}/${categorySlug}/${articleSlugFromFile}`,
+          city: data.cityName || capitalizeCityName(citySlug),
+          category: data.categoryName || CATEGORY_DISPLAY_NAMES[categorySlug] || capitalizeCityName(categorySlug),
+          articleSlug: articleSlugFromFile
         });
       }
     }
@@ -99,41 +127,65 @@ export default async function CategoryListingPage({ params }: { params: Promise<
     }
   }
 
-  if (articles.length === 0) {
-    return (
-      <div className="container mx-auto p-4">
-        <h1 className="text-2xl font-bold mb-4">
-          Articles for {citySlug} / {categorySlug}
-        </h1>
-        <p>No specific articles found for this category yet. Check back soon!</p>
-        {/* You could link back to the main city page or homepage */}
-      </div>
-    );
-  }
+  const displayNameForCity = capitalizeCityName(citySlug);
+  const displayNameForCategory = CATEGORY_DISPLAY_NAMES[categorySlug] || capitalizeCityName(categorySlug);
 
-  // You'll want to use your site's layout, proper card components, styling etc.
+  const pageTitle = `Articoli per: ${displayNameForCity} / ${displayNameForCategory}`;
+
+  // Construct dynamic affiliate link - Restored
+  const dynamicAffiliateLink = AFFILIATE_LINK_TEMPLATE
+    .replace('{citySlug}', citySlug)
+    .replace('{categorySlug}', categorySlug);
+
+  const ctaTitle = `Cerchi Incontri ${displayNameForCategory} a ${displayNameForCity}? 🤔`; // Restored
+  const ctaSubtitle = `Registrazione Gratuita ✅ con Profili Veri ✅.\nConferma la tua email per iniziare subito!`; // Restored
+
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-6">
-        Articles for: {articles[0]?.city || citySlug} / {articles[0]?.category || categorySlug}
-      </h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {articles.map((article) => (
-          <div key={article.url} className="border p-4 rounded-lg shadow hover:shadow-md">
-            <h2 className="text-xl font-semibold mb-2">
-              <Link href={article.url} className="hover:text-blue-600">
-                {article.title}
-              </Link>
-            </h2>
-            {article.description && (
-              <p className="text-gray-700 text-sm mb-3">{article.description}</p>
-            )}
-            <Link href={article.url} className="text-blue-500 hover:underline text-sm">
-              Read more &rarr;
-            </Link>
+    <div className="container mx-auto p-4 flex flex-col min-h-screen">
+      <main className="flex-grow">
+        <h1 className="text-3xl font-bold mb-6">
+          {pageTitle}
+        </h1>
+        {articles.length === 0 ? (
+          <p className="text-center text-gray-600 py-8">Nessun articolo specifico trovato per questa categoria. Torna presto a trovarci!</p>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {articles.map((article) => (
+              <div key={article.url} className="border p-4 rounded-lg shadow hover:shadow-md flex flex-col justify-between">
+                <div>
+                  <h2 className="text-xl font-semibold mb-2">
+                    <Link href={article.url} className="hover:text-blue-600">
+                      {article.title}
+                    </Link>
+                  </h2>
+                  {article.description && (
+                    <p className="text-gray-700 text-sm mb-3">{article.description}</p>
+                  )}
+                </div>
+                <Link href={article.url} className="text-blue-500 hover:underline text-sm mt-auto self-start">
+                  Leggi di più &rarr;
+                </Link>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        )}
+        {/* CtaSection Restored with user-specified props */}
+        <CtaSection 
+          title={ctaTitle}
+          subtitle={ctaSubtitle}
+          description="Trova profili verificati e inizia la tua avventura. La registrazione è veloce e richiede solo la tua email."
+          buttonText="💕 Inizia Subito!"
+          buttonLink={dynamicAffiliateLink}
+          isExternalLink={true}
+          linkTarget="_blank"
+        />
+      </main>
+      <Footer 
+        currentCitySlug={citySlug} 
+        currentCategorySlug={categorySlug} 
+        regionalCities={regionalCities}
+        regionName={regionName}
+      />
     </div>
   );
 }

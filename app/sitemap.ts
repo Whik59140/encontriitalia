@@ -132,9 +132,9 @@ export default async function sitemap({ id }: { id: string }): Promise<MetadataR
     allCitySlugs.forEach(citySlug => {
       sitemapEntries.push({
         url: `${BASE_URL}/${citySlug}`,
-        lastModified: currentDate, 
-        changeFrequency: 'weekly',
-        priority: 0.8,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.8,
       });
     });
   } else {

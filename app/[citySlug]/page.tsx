@@ -1,11 +1,12 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { getCityBySlug, getAllCategories, getAllCities } from '@/lib/utils/geo';
-// import type { City, Category } from '@/types/geo'; // Removed as types are inferred
+import { getCityBySlug, getAllCategories, getAllCities, getRegionalCities } from '@/lib/utils/geo';
+// import type { City } from '@/types/geo'; // Removed unused import
 import { Card, CardTitle } from '@/components/ui/card';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
 import { DirectEncounterCTA } from '@/components/common/direct-encounter-cta';
+import { Footer } from '@/components/common/footer';
 
 interface CityPageProps {
   params: Promise<{ citySlug: string }>;
@@ -43,6 +44,7 @@ export default async function CityPage(props: CityPageProps) {
   const citySlug = resolvedParams.citySlug;
   const city = await getCityBySlug(citySlug);
   const categories = await getAllCategories();
+  const { cities: regionalCities, regionName } = await getRegionalCities(citySlug);
 
   const categoryImageMap: { [key: string]: string } = {
     gay: '/buttons/gays.webp',
@@ -61,8 +63,8 @@ export default async function CityPage(props: CityPageProps) {
   }
 
   return (
-    <div className="bg-gradient-to-br from-slate-50 via-gray-100 to-stone-200 dark:from-gray-800 dark:via-gray-900 dark:to-black min-h-screen">
-      <main className="container mx-auto px-4 py-8 sm:py-12">
+    <div className="bg-gradient-to-br from-slate-50 via-gray-100 to-stone-200 dark:from-gray-800 dark:via-gray-900 dark:to-black min-h-screen flex flex-col">
+      <main className="container mx-auto px-4 py-8 sm:py-12 flex-grow">
         <DirectEncounterCTA cityName={city.name} />
         <Breadcrumb className="mb-8">
           <BreadcrumbList>
@@ -128,6 +130,11 @@ export default async function CityPage(props: CityPageProps) {
           </div>
         </section>
       </main>
+      <Footer 
+        currentCitySlug={citySlug} 
+        regionalCities={regionalCities}
+        regionName={regionName}
+      />
     </div>
   );
 } 

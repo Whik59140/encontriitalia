@@ -1,6 +1,7 @@
 export interface City {
   slug: string;
   name: string;
+  region: string;
 }
 
 export interface Category {

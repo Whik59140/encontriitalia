@@ -10,10 +10,14 @@ import rehypeSlug from 'rehype-slug';
 import { visit } from 'unist-util-visit'; // To traverse HAST
 import type { Root as HastRoot, Element as HastElement, ElementContent as HastElementContent, Text as HastText } from 'hast';
 import type { Root as MdastRootType } from 'mdast';
+import { getRegionalCities } from '@/lib/utils/geo'; // Added
+import { Footer } from '@/components/common/footer'; // Added
+import { RelatedContent } from '@/components/common/related-content'; // Import RelatedContent
+import { TopArticleCTA } from '@/components/common/top-article-cta';
 
 // Import constants and the new CTA component
 import { categoryAffiliateLinks } from '@/lib/constants';
-import { TopArticleCTA } from '@/components/common/top-article-cta';
+import { capitalizeSlug } from '@/lib/utils/string';
 
 // Shadcn UI Accordion components - will be used by the client component
 // We still define the structure here, but rendering moves to client component
@@ -122,6 +126,18 @@ function prepareArticleRenderData(hast: HastRoot, frontmatter: ArticleFrontmatte
   };
 }
 
+const CATEGORY_DISPLAY_NAMES_FOR_RELATED: { [slug: string]: string } = {
+  gay: 'Gay',
+  milf: 'MILF',
+  donne: 'Donne',
+  ragazze: 'Ragazze',
+  trans: 'Trans',
+  trav: 'Trav',
+  escort: 'Escort',
+  studentessa: 'Studentesse',
+  adulti: 'Adulti',
+};
+
 export async function generateStaticParams(): Promise<{ citySlug: string; categorySlug: string; articleSlug: string; }[]> {
   const rootArticlesDir = path.join(process.cwd(), 'content', 'articles');
   const paramsList: { citySlug: string; categorySlug: string; articleSlug: string; }[] = [];
@@ -163,6 +179,7 @@ export async function generateStaticParams(): Promise<{ citySlug: string; catego
 export default async function SpecificArticlePage({ params }: { params: Promise<ResolvedPageParams> }) {
   const resolvedParams = await params;
   const { citySlug, categorySlug, articleSlug } = resolvedParams;
+  const { cities: regionalCities, regionName } = await getRegionalCities(citySlug);
   
   const expectedFilename = `${articleSlug}.md`;
   const filePath = path.join(process.cwd(), 'content', 'articles', categorySlug, citySlug, expectedFilename);
@@ -189,53 +206,111 @@ export default async function SpecificArticlePage({ params }: { params: Promise<
 
   const articleRenderData = prepareArticleRenderData(hastNode, frontmatter);
 
+  // --- Fetch related articles --- 
+  const relatedArticlesDir = path.join(process.cwd(), 'content', 'articles', categorySlug, citySlug);
+  const relatedArticleLinks: Array<{ title: string; url: string; }> = [];
+  try {
+    const allArticleFiles = await fs.readdir(relatedArticlesDir);
+    const mdFiles = allArticleFiles.filter(file => file.endsWith('.md') && file !== expectedFilename);
+
+    for (const mdFile of mdFiles.slice(0, 3)) { // Limit to 3 related articles
+      const relatedArticleFilePath = path.join(relatedArticlesDir, mdFile);
+      const relatedFileContent = await fs.readFile(relatedArticleFilePath, 'utf8');
+      const { data: relatedFrontmatter } = matter(relatedFileContent);
+      const relatedArticleActualSlug = mdFile.replace('.md', '');
+      relatedArticleLinks.push({
+        title: relatedFrontmatter.title || capitalizeSlug(relatedArticleActualSlug),
+        url: `/${citySlug}/${categorySlug}/${relatedArticleActualSlug}`,
+      });
+    }
+  } catch (e) {
+    console.warn(`Could not fetch related articles for ${citySlug}/${categorySlug}:`, e);
+  }
+  // --- End fetch related articles ---
+
+  const displayCityName = frontmatter.cityName || capitalizeSlug(citySlug);
+  const displayCategoryName = CATEGORY_DISPLAY_NAMES_FOR_RELATED[categorySlug] || capitalizeSlug(categorySlug);
+
+  const categoryPageData = {
+    name: displayCategoryName,
+    url: `/${citySlug}/${categorySlug}`,
+  };
+  const cityPageData = {
+    name: displayCityName,
+    url: `/${citySlug}`,
+  };
+
   // Determine affiliate URL and names for the CTA
-  const categoryName = frontmatter.category || categorySlug;
-  const cityName = frontmatter.cityName || frontmatter.city || '';
+  const ctaCategoryName = frontmatter.category || categorySlug;
+  const ctaCityName = frontmatter.cityName || frontmatter.city || '';
   const affiliateUrl = categorySlug ? categoryAffiliateLinks[categorySlug] : '';
 
-  // Fallback if no content could be structured - this also needs to be rethought 
-  // as dangerouslySetInnerHTML will not work with client component rendering HAST
-  // For now, we'll pass the raw markdownBody to the client component for fallback.
+  // Fallback if no content could be structured
   if (articleRenderData.leadingHastNodes.length === 0 && articleRenderData.accordionSections.length === 0) {
     return (
-      <>
-        {/* Render Top CTA in fallback case as well */}
-        {affiliateUrl && (
-          <TopArticleCTA
-            categoryName={categoryName}
-            cityName={cityName}
-            affiliateUrl={affiliateUrl}
+      <div className="flex flex-col min-h-screen"> {/* Wrapper div */} 
+        <main className="flex-grow container mx-auto px-4 py-8"> {/* Added container, padding, flex-grow */} 
+          {affiliateUrl && (
+            <TopArticleCTA
+              categoryName={ctaCategoryName}
+              cityName={ctaCityName}
+              affiliateUrl={affiliateUrl}
+            />
+          )}
+          <ArticleContentRenderer 
+              leadingHastNodes={[]}
+              accordionSections={[]}
+              frontmatter={articleRenderData.frontmatter}
+              headings={[]}
+              fallbackMarkdownBody={markdownBody}
           />
-        )}
-        <ArticleContentRenderer 
-            leadingHastNodes={[]} 
-            accordionSections={[]} 
-            frontmatter={articleRenderData.frontmatter}
-            headings={[]} // Pass empty headings for fallback
-            fallbackMarkdownBody={markdownBody} // Pass raw markdown for client-side fallback processing
+        </main>
+        <RelatedContent 
+          relatedArticles={relatedArticleLinks}
+          categoryPage={categoryPageData}
+          cityPage={cityPageData}
         />
-      </>
+        <Footer 
+          currentCitySlug={citySlug}
+          currentCategorySlug={categorySlug}
+          currentArticleSlug={articleSlug}
+          regionalCities={regionalCities}
+          regionName={regionName}
+        />
+      </div>
     );
   }
 
   return (
-    <>
-      {/* Render the new Top Article CTA */}
-      {affiliateUrl && (
-        <TopArticleCTA
-          categoryName={categoryName}
-          cityName={cityName}
-          affiliateUrl={affiliateUrl}
+    <div className="flex flex-col min-h-screen"> {/* Wrapper div */} 
+      <main className="flex-grow container mx-auto px-4 py-8"> {/* Added container, padding, flex-grow */} 
+        {affiliateUrl && (
+          <TopArticleCTA
+            categoryName={ctaCategoryName}
+            cityName={ctaCityName}
+            affiliateUrl={affiliateUrl}
+          />
+        )}
+        <ArticleContentRenderer 
+            leadingHastNodes={articleRenderData.leadingHastNodes} 
+            accordionSections={articleRenderData.accordionSections} 
+            frontmatter={articleRenderData.frontmatter}
+            headings={articleRenderData.headings}
         />
-      )}
-    <ArticleContentRenderer 
-        leadingHastNodes={articleRenderData.leadingHastNodes} 
-        accordionSections={articleRenderData.accordionSections} 
-        frontmatter={articleRenderData.frontmatter}
-        headings={articleRenderData.headings} // Pass populated headings
-    />
-    </>
+      </main>
+      <RelatedContent 
+        relatedArticles={relatedArticleLinks}
+        categoryPage={categoryPageData}
+        cityPage={cityPageData}
+      />
+      <Footer 
+        currentCitySlug={citySlug}
+        currentCategorySlug={categorySlug}
+        currentArticleSlug={articleSlug}
+        regionalCities={regionalCities}
+        regionName={regionName}
+      />
+    </div>
   );
 }
 
