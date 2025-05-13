@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Generate Peach Favicon</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    canvas {
+      border: 1px solid #ccc;
+      margin: 10px;
+    }
+    .size-label {
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    .download-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    button {
+      padding: 10px 15px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Peach 🍑 Favicon Generator</h1>
+  
+  <div class="size-label">512x512 Version</div>
+  <canvas id="canvas512" width="512" height="512"></canvas>
+  
+  <div class="size-label">192x192 Version</div>
+  <canvas id="canvas192" width="192" height="192"></canvas>
+  
+  <div class="size-label">180x180 Version (Apple Touch Icon)</div>
+  <canvas id="canvas180" width="180" height="180"></canvas>
+  
+  <div class="size-label">32x32 Version</div>
+  <canvas id="canvas32" width="32" height="32"></canvas>
+
+  <div class="download-container">
+    <button onclick="downloadPNG('canvas512', 'icon-512.png')">Download 512x512 PNG</button>
+    <button onclick="downloadPNG('canvas192', 'icon-192.png')">Download 192x192 PNG</button>
+    <button onclick="downloadPNG('canvas180', 'apple-touch-icon.png')">Download 180x180 PNG (Apple Touch)</button>
+    <button onclick="downloadICO()">Download favicon.ico (32x32)</button>
+  </div>
+
+  <script>
+    // Function to draw the peach emoji on canvas
+    function drawPeachEmoji(canvasId, fontSize) {
+      const canvas = document.getElementById(canvasId);
+      const ctx = canvas.getContext('2d');
+      
+      // Clear canvas
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      // Draw background
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
+      // Draw peach emoji
+      ctx.font = `${fontSize}px serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('🍑', canvas.width / 2, canvas.height / 2);
+    }
+    
+    // Initialize all canvases
+    window.onload = function() {
+      drawPeachEmoji('canvas512', 400);
+      drawPeachEmoji('canvas192', 150);
+      drawPeachEmoji('canvas180', 140);
+      drawPeachEmoji('canvas32', 24);
+    };
+    
+    // Function to download canvas as PNG
+    function downloadPNG(canvasId, filename) {
+      const canvas = document.getElementById(canvasId);
+      const link = document.createElement('a');
+      link.download = filename;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+    
+    // Function to download 32x32 canvas as ICO
+    function downloadICO() {
+      alert('For ICO format, please save the 32x32 PNG and convert it using a tool like https://favicon.io/favicon-converter/');
+      downloadPNG('canvas32', 'favicon-32x32.png');
+    }
+  </script>
+</body>
+</html> 
