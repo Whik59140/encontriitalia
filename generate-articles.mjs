@@ -22,7 +22,7 @@ const vertexAILocation = 'us-central1'; // Required for image generation
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // !! IMPORTANT: SET THIS TO THE CATEGORY SLUG YOU WANT TO GENERATE FOR ALL CITIES !!
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-const TARGET_CATEGORY_SLUG_FOR_ALL_CITIES = 'escort'; // IMPORTANT: Set this to the desired category slug.
+const TARGET_CATEGORY_SLUG_FOR_ALL_CITIES = 'milf'; // IMPORTANT: Set this to the desired category slug.
 const TARGET_CITY_SLUG = ''; // Optional: Set to a specific city slug to generate only for that city, or empty for all.
 
 // Define all available categories statically
@@ -34,8 +34,7 @@ const ALL_CATEGORIES = [
   { slug: 'trans', name: 'Trans' },
   { slug: 'trav', name: 'Trav' },
   { slug: 'escort', name: 'Escort' },
-  { slug: 'studentessa', name: 'Studentessa' },
-  { slug: 'adulti', name: 'Adulti' },
+  
 ];
 
 // --- Helper Functions ---
@@ -105,72 +104,80 @@ function getPromptForCategory(categorySlug, cityName, categoryDisplayName, relat
     ? `\\n\\n## Esplora Altre Città nella Regione\\nScrivi un breve paragrafo che incoraggi i lettori a esplorare altre città vicine nella stessa regione per incontri ${categoryDisplayName}, menzionando e linkando le seguenti guide: ${relatedCitiesData.map(c => `[${c.name}](/${c.slug}/${categorySlug}/incontri-${categorySlug}-in-${c.slug})`).join(', ')}.`
     : '';
 
-  if (categorySlug === 'escort') {
+  if (categorySlug === 'milf') {
     // ... (existing prompt for trans) ...
     return `
 Scrivi un articolo SEO-ottimizzato in italiano di 10.000 caratteri sugli incontri con persone escort a ${cityName}. L'articolo deve:
 
 ${internalLinksSection}
 `;
-  } else if (categorySlug === 'escort') {
+  } else if (categorySlug === 'milf') {
     
     return `
-    Scrivi un articolo SEO-ottimizzato in italiano di circa 10.000 caratteri sui servizi escort e la scena degli incontri con escort a ${cityName}. L'articolo deve essere informativo e responsabile, rivolto a un pubblico adulto che cerca tali informazioni.
+   Scrivi un articolo SEO-ottimizzato in italiano di circa 10.000 caratteri sugli incontri con **donne mature (spesso cercate con termini come MILF)** a ${cityName}. L'articolo deve:
 
-L'articolo deve:
+Iniziare con un'introduzione accattivante che metta in luce il fascino unico e l'esperienza che caratterizzano la scena degli incontri con **donne mature e affascinanti** a ${cityName}. Usa un forte aggancio per attirare lettrici e lettori, mostrando cosa rende speciale questa città per conoscere **signore carismatiche e consapevoli**.
 
-1.  **Introduzione alla Scena Escort di ${cityName}:**
-    *   Iniziare con un'introduzione discreta e informativa che descriva la disponibilità e le caratteristiche generali dei servizi escort a ${cityName}.
-    *   Evidenziare la varietà di servizi che potrebbero essere disponibili, se noti (es. escort indipendenti, agenzie, specializzazioni), mantenendo un tono oggettivo.
+Includere una sezione dettagliata sui migliori luoghi per incontrare **donne mature single** a ${cityName}. Elenca wine bar sofisticati, caffè con atmosfera rilassata, club con serate a tema che attraggono un pubblico adulto, eventi culturali (mostre, teatro), corsi di interesse specifico (es. degustazione vini, arte, yoga), o piattaforme di dating online popolari tra le **donne con esperienza**. Ove possibile, includi nomi di locali o eventi per rendere i consigli pratici e localmente rilevanti per chi cerca **incontri MILF a ${cityName}**.
 
-2.  **Come Trovare Servizi Escort a ${cityName} in Modo Sicuro e Discreto:**
-    *   Dettagliare i metodi comuni per trovare escort a ${cityName}, come piattaforme online specializzate, directory verificate o agenzie rinomate.
-    *   Enfatizzare l'importanza della verifica dei profili, della lettura di recensioni (se disponibili e affidabili) e dell'uso di canali discreti e sicuri.
-    *   Menzionare l'importanza di comprendere i termini del servizio e i costi in anticipo.
-    *   Keywords da integrare: "trovare escort ${cityName}", "escort verificate ${cityName}", "annunci escort ${cityName}", "agenzie escort ${cityName}".
+Fornire consigli pratici e attuabili per avere successo negli appuntamenti con **donne mature**, sottolineando l'importanza del rispetto per la loro individualità, della comunicazione matura, dell'ascolto attento, dell'empatia, dell'autenticità e della sicurezza reciproca. Includi esempi o scenari riconoscibili (es. come approcciare una conversazione interessante, come valorizzare l'esperienza reciproca) per illustrare questi suggerimenti, utili per chi desidera **incontrare una MILF a ${cityName}**.
 
-3.  **Consigli per un'Esperienza Positiva, Rispettosa e Sicura:**
-    *   Fornire consigli pratici per i clienti su come interagire con le escort in modo rispettoso e chiaro.
-    *   Sottolineare l'importanza della comunicazione aperta sulle aspettative, i limiti e il consenso da entrambe le parti.
-    *   Includere suggerimenti sulla sicurezza personale (es. incontri in luoghi sicuri, informare una persona di fiducia, igiene).
-    *   Discutere l'etichetta e la discrezione attese durante e dopo l'incontro.
-    *   Keywords: "incontro escort sicuro ${cityName}", "sesso con escort ${cityName} regole", "comunicare con escort", "esperienza escort positiva ${cityName}".
+Esplorare le sfide comuni negli incontri con **donne mature** (ad esempio, conciliare impegni familiari o carriere avviate, differenze nelle aspettative rispetto a partner più giovani, gestire pregiudizi, o la comunicazione efficace online in contesti di dating per adulti) e offrire soluzioni specifiche e pratiche per affrontarle.
 
-4.  **Comprendere i Servizi Offerti e Gestire le Aspettative:**
-    *   Spiegare la gamma di servizi che le escort a ${cityName} potrebbero offrire (es. compagnia per eventi, cene, conversazione, esperienze intime, GFE - GirlFriend Experience), e come questi possono variare.
-    *   Affrontare come gestire le proprie aspettative in modo realistico e come chiarire i servizi desiderati (es. "sesso", "scopare", o altri tipi di interazione) in modo consensuale e rispettoso prima dell'incontro.
-    *   Sottolineare che ogni escort è un'individua con propri termini e limiti.
+Presentare almeno due storie di successo o testimonianze (anonimizzate o ipotetiche ma realistiche) che riflettano esperienze positive di incontri con **donne mature** nati a ${cityName}. Queste dovrebbero sembrare autentiche e ispiratrici, evidenziando la possibilità di creare legami profondi e stimolanti in città.
 
-5.  **Sicurezza, Privacy e Aspetti Legali (con Disclaimer):**
-    *   Discutere l'importanza della privacy per entrambe le parti.
-    *   Fornire una nota generale sulla necessità per gli utenti di essere consapevoli e rispettare le leggi locali relative ai servizi escort a ${cityName}. **Includere un disclaimer che l'articolo è a scopo informativo e non incoraggia attività illegali, e che gli utenti sono responsabili di agire in conformità con le leggi vigenti.**
-    *   Potrebbe menzionare l'importanza di evitare situazioni di sfruttamento e di interagire solo con professioniste/i consenzienti e maggiorenni.
-
-6.  **Conclusione Informativa:**
-    *   Riassumere i punti chiave per un approccio informato, sicuro e rispettoso alla ricerca di servizi escort a ${cityName}.
-    *   Rinforzare l'importanza della discrezione e del consenso.
+Concludere con un elenco personalizzato di risorse utili a ${cityName} per chi è interessato a socializzare con o per **donne mature**, come club del libro con un target adulto, associazioni culturali, gruppi di escursionismo o benessere, o community online focalizzate sugli interessi di un pubblico adulto, per aggiungere valore e incoraggiare l'interazione.
 
 Durante tutto l'articolo:
 
-*   **Keywords:** Integrare in modo fluido e naturale parole chiave rilevanti, inclusi termini espliciti come "sesso escort ${cityName}", "scopare con escort a ${cityName}", "tariffe escort ${cityName}", "escort di lusso ${cityName}", "escort indipendenti ${cityName}", "accompagnatrici ${cityName}" e varianti. Non creare una lista di keywords visibile nel testo.
-*   **Linguaggio:** Mantenere un linguaggio adulto, diretto ma professionale e rispettoso. Evitare volgarità eccessive o linguaggio degradante.
-*   **Tono:** Informativo, maturo, discreto e non giudicante. L'obiettivo è fornire informazioni utili a chi cerca questi servizi, non a promuoverli in modo sensazionalistico.
-*   **Dettagli Locali:** Se possibile e rilevante, menzionare aspetti specifici della scena di ${cityName} (es. zone note per la vita notturna dove tali servizi potrebbero essere più presenti, tipologie di servizi più comuni in città), sempre in modo fattuale e discreto.
-*   **Disclaimer sulla Responsabilità:** L'articolo deve chiarire che le informazioni sono fornite per adulti consenzienti e che l'uso dei servizi descritti è una scelta personale che deve avvenire nel rispetto delle leggi e dell'etica.
-*   **Originalità:** Assicurarsi che il contenuto sia unico e non una semplice copia di altre fonti.
+Integrare in modo fluido parole chiave long-tail, come ad esempio:
+
+"migliori posti per conoscere donne mature single a ${cityName}"
+"come organizzare un appuntamento con una donna matura a ${cityName}"
+"consigli per incontri con MILF ${cityName}"
+"appuntamenti sicuri con donne adulte a ${cityName}"
+"donne mature single ${cityName}"
+"vita notturna donne mature ${cityName}"
+"incontrare MILF a ${cityName}"
+
+Utilizzare sia forme singolari che plurali (ad esempio, "incontro donna matura" e "incontri donne mature").
+
+Incorporare variazioni naturali e rispettose dei termini 'donne mature', 'signore', 'MILF' (quest'ultimo usato con consapevolezza della sua natura di termine di ricerca, ma tradotto in linguaggio rispettoso ed elegante nell'articolo, ad esempio 'donne affascinanti e con esperienza', 'signore carismatiche'). L'obiettivo è ampliare la copertura delle query di ricerca e garantire l'inclusività, mantenendo sempre un tono rispettoso. Evita ripetizioni forzate o frasi innaturali.
+
+Usare emoji con parsimonia (ad esempio, 🍷, 😊, ✨, 💃, 🌹) per migliorare la vicinanza emotiva e il divertimento senza appesantire il testo.
+
+Adottare un tono naturale e colloquiale — come un consiglio da un amico o un'amica esperta e fidata — per mantenere l'articolo caldo, accessibile e umano.
+
+Coinvolgere lettrici e lettori con domande retoriche (ad esempio, "Pronta/o a scoprire il fascino degli incontri con donne di esperienza a ${cityName}?") e anticipazioni (ad esempio, "Curiosa/o di sapere qual è il segreto per un appuntamento indimenticabile con una signora a ${cityName}? Continua a leggere!") per mantenere vivo l'interesse.
+
+Incorporare dettagli specifici di ${cityName}, come:
+
+Locali, caffè o ristoranti noti per essere frequentati da un pubblico adulto o adatti per appuntamenti con donne mature.
+Eventi annuali (ad esempio, festival culturali, mercatini enogastronomici, concerti di musica classica o jazz, eventi di networking per professionisti) che potrebbero favorire incontri con donne mature.
+Fattori culturali o sociali che modellano la scena degli incontri per donne mature in città.
+
+Citare informazioni credibili e verificate (ad esempio, statistiche sulla vita sociale degli adulti, citazioni di esperti di relazioni, o studi sul dating in età matura) per aumentare fiducia e autorevolezza.
+
+Aggiungere una sezione sul clima culturale o sociale di ${cityName} riguardo agli incontri e alla vita sociale delle donne mature, e il suo impatto sul dating, fornendo un contesto prezioso.
+
+Affrontare diverse prospettive e bisogni: donne mature che cercano amicizie, relazioni serie, o avventure passionali, e persone interessate a conoscere donne mature con questi diversi obiettivi, garantendo inclusività e un ampio appeal.
+
+Opzionalmente, includere una sezione FAQ alla fine per affrontare domande o preoccupazioni comuni sugli incontri con donne mature (o MILF) a ${cityName}, migliorando il valore per il lettore.
+
+L'articolo dovrebbe essere divertente, profondo, e lasciare lettrici e lettori entusiaste/i all'idea di vivere la scena degli incontri con donne mature a ${cityName}.
 
 10 Titoli SEO-Ottimizzati per ${cityName}:
 
-1.  "Guida Escort ${cityName}: Trovare Servizi Sicuri e Discreti"
-2.  "Escort a ${cityName}: Tutto Quello che Devi Sapere per un Incontro Rispettoso"
-3.  "Servizi Escort ${cityName}: Consigli, Prezzi e Come Prenotare in Sicurezza"
-4.  "La Scena Escort di ${cityName}: Guida Completa per Adulti Consapevoli"
-5.  "Sesso con Escort a ${cityName}: Aspettative, Sicurezza e Consigli Utili"
-6.  "Recensioni Escort ${cityName}: Come Scegliere l'Accompagnatrice Giusta per Te?" (Se si vuole includere un riferimento a come valutare, con cautela)
-7.  "Escort di Lusso ${cityName}: Esperienze Esclusive e Servizi Premium"
-8.  "Incontri con Escort a ${cityName}: Etichetta e Suggerimenti per Non Sbagliare"
-9.  "Tariffe Escort ${cityName}: Cosa Aspettarsi e Come Chiarire i Costi"
-10. "Scoprire ${cityName} con un'Escort: Servizi di Compagnia e Intrattenimento"
+"Incontri Donne Mature ${cityName}: Guida agli Appuntamenti con Signore Affascinanti"
+"Migliori Posti per Conoscere MILF Single a ${cityName} – Scoprili Ora!"
+"Consigli per Appuntamenti con Donne Mature a ${cityName}: Segreti per Sedurre con Stile"
+"Com'è la Scena degli Incontri con Donne Mature a ${cityName}? Tutte le Info"
+"Top App per Incontri con Donne Mature e MILF a ${cityName} – Inizia Oggi!"
+"Galateo degli Appuntamenti con Donne Mature a ${cityName}: Eleganza e Rispetto"
+"Storie Vere di Incontri con Donne Mature a ${cityName} che Ispirano Passione"
+"Guida per Principianti agli Incontri con Donne Mature (MILF) a ${cityName}"
+"Eventi per Donne Mature Single a ${cityName} da Non Perdere Assolutamente"
+"Perché ${cityName} è Perfetta per Incontri con Donne Mature Indimenticabili"
 
 ${internalLinksSection}
 
@@ -178,7 +185,8 @@ ${internalLinksSection}
 **FORMATO MARKDOWN:** Output diretto in Markdown.
 **NO CODE FENCES:** Non iniziare l'output con \`\`\`markdown.
 **STRUTTURA CRUCIALE:** Seguire ESATTAMENTE la struttura H2/H3 specificata (se applicabile nel prompt originale o dedotta dalla sua struttura). Non omettere sezioni.
-**RESPONSABILITÀ:** L'articolo deve essere scritto in modo responsabile, enfatizzando la sicurezza, la discrezione, il consenso e il rispetto reciproco. Evitare linguaggio che possa essere interpretato come sfruttamento o che violi le policy di Google o altre normative.
+**PAROLE CHIAVE:** Integrare le parole chiave in modo naturale. Non includere elenchi di "Parole Chiave".
+
 `;
   }
   // Add more else if blocks for other categories as needed

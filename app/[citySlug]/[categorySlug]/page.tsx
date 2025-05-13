@@ -10,6 +10,7 @@ import { categoryAffiliateLinks } from '@/lib/constants'; // <<< IMPORT THE CENT
 import { homePageStrings, cityCategoryPageStrings } from '@/app/translations'; // Import translations
 import { FaqSection } from '@/components/common/faq-section'; // Added import
 import { SeoTextSection } from '@/components/common/seo-text-section'; // Added import
+import { Button } from '@/components/ui/button'; // Added import for Button
 
 // --- REMOVE Configuration for Affiliate Link --- 
 // const AFFILIATE_LINK_TEMPLATE = 'https://affiliate.example.com/register?campaign={categorySlug}&location={citySlug}&tracking_id=your_id';
@@ -173,9 +174,11 @@ export default async function CategoryListingPage({ params }: { params: Promise<
               <p className="text-gray-700 text-sm mb-3">{article.description}</p>
             )}
                 </div>
-                <Link href={article.url} className="text-blue-500 hover:underline text-sm mt-auto self-start">
-                  {cityCategoryPageStrings.readMoreLink}
-            </Link>
+                <Button asChild variant="outline" size="sm" className="mt-auto self-start">
+                  <Link href={article.url}>
+                    {cityCategoryPageStrings.readMoreButtonText}
+                  </Link>
+                </Button>
           </div>
         ))}
       </div>

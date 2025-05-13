@@ -95,16 +95,16 @@ export const citySlugPageStrings = {
 };
 
 export const cityCategoryPageStrings = {
-  untitledArticle: 'Untitled Article',
-  pageTitle: (cityName: string, categoryName: string) => `Articoli per: ${cityName} / ${categoryName}`,
-  ctaTitle: (categoryName: string, cityName: string) => `Cerchi Incontri ${categoryName} a ${cityName}? 🤔`,
-  ctaSubtitle: `Registrazione Gratuita ✅ con Profili Veri ✅.\nConferma la tua email per iniziare subito!`,
-  viewAllAdsLink: (categoryName: string, cityName: string) => `🔞 Vedi TUTTI gli Annunci ${categoryName} a ${cityName} 🔞`,
-  noArticlesFound: "Nessun articolo specifico trovato per questa categoria. Torna presto a trovarci!",
-  readMoreLink: "Leggi di più &rarr;",
-  ctaSectionDescription: "Trova profili verificati e inizia la tua avventura. La registrazione è veloce e richiede solo la tua email.",
+  untitledArticle: "Articolo Senza Titolo",
+  pageTitle: (city: string, category: string) => `Articoli e Guide: ${category} a ${city}`,
+  ctaTitle: (category: string, city: string) => `Cerchi ${category} a ${city}?`,
+  ctaSubtitle: "Trova subito quello che cerchi!",
+  readMoreButtonText: "✨ Leggi di più &rarr;",
+  viewAllAdsLink: (category: string, city: string) => `Vedi Annunci ${category} a ${city}`,
+  noArticlesFound: "Nessun articolo trovato per questa categoria e città. Torna presto per nuovi contenuti!",
+  ctaSectionDescription: "Non aspettare, la tua prossima avventura potrebbe essere a un clic di distanza.",
   ctaSectionButtonText: "💕 Inizia Subito!",
-  defaultFallbackLink: 'https://defaultfallback.link' // For affiliate link fallback
+  defaultFallbackLink: "https://www.example.com/default-fallback" // For affiliate link fallback
 };
 
 export const annunciChooserPageStrings = {

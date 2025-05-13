@@ -10,6 +10,8 @@ import { Footer } from '@/components/common/footer';
 import { ChooserPageCtaButtonWithModal } from '@/components/common/chooser-page-cta-button-with-modal';
 import { WebcamCtaButton } from '@/components/common/webcam-cta-button';
 import { homePageStrings, annunciChooserPageStrings, globalSiteStrings } from '@/app/translations'; // Import translations
+import { FaqSection } from '@/components/common/faq-section';
+import { SeoTextSection } from '@/components/common/seo-text-section';
 
 // CATEGORY_DISPLAY_NAMES is now from homePageStrings.categoryDisplayNames
 // AFFILIATE_LINK_TEMPLATE is now from annunciChooserPageStrings.affiliateLinkTemplate
@@ -146,6 +148,22 @@ export default async function AnnunciChooserPage({ params: paramsPromise }: Annu
             </div>
           </div>
         </section>
+
+        <div className="mt-10 sm:mt-12 md:mt-16">
+          <FaqSection 
+            cityDisplayName={cityDisplayName} 
+            categoryDisplayName={categoryDisplayName} 
+            subCategoryType="incontri"
+          />
+        </div>
+
+        <div className="mt-10 sm:mt-12 md:mt-16">
+          <SeoTextSection 
+            cityDisplayName={cityDisplayName} 
+            categoryDisplayName={categoryDisplayName} 
+            subCategoryType="incontri"
+          />
+        </div>
 
         <ChooserPageCtaButtonWithModal 
           cityDisplayName={cityDisplayName}
