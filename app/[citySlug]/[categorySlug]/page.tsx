@@ -5,6 +5,7 @@ import matter from 'gray-matter'; // For parsing frontmatter
 import { CtaSection } from '@/components/common/cta-section';
 import { Footer } from '@/components/common/footer'; // Changed to named import
 import { getRegionalCities } from '@/lib/utils/geo'; // Import getRegionalCities
+import { WebcamCtaButton } from '@/components/common/webcam-cta-button'; // Import the new component
 
 // --- Configuration for Affiliate Link ---
 // ! IMPORTANT: Replace this with your actual affiliate link structure.
@@ -140,12 +141,21 @@ export default async function CategoryListingPage({ params }: { params: Promise<
   const ctaTitle = `Cerchi Incontri ${displayNameForCategory} a ${displayNameForCity}? 🤔`; // Restored
   const ctaSubtitle = `Registrazione Gratuita ✅ con Profili Veri ✅.\nConferma la tua email per iniziare subito!`; // Restored
 
-  return (
+    return (
     <div className="container mx-auto p-4 flex flex-col min-h-screen">
       <main className="flex-grow">
         <h1 className="text-3xl font-bold mb-6">
           {pageTitle}
         </h1>
+
+        {/* Webcam CTA Button added at the top */}
+        <div className="my-8 flex justify-center">
+          <WebcamCtaButton 
+            cityDisplayName={displayNameForCity}
+            categoryDisplayName={displayNameForCategory}
+            categorySlug={categorySlug}
+          />
+        </div>
 
         {/* Link to the new Annunci CHOOSER page */}
         <div className="my-8 text-center"> 
@@ -155,30 +165,30 @@ export default async function CategoryListingPage({ params }: { params: Promise<
           >
             🔞 Vedi TUTTI gli Annunci {displayNameForCategory} a {displayNameForCity} 🔞
           </Link>
-        </div>
+      </div>
 
         {articles.length === 0 ? (
           <p className="text-center text-gray-600 py-8">Nessun articolo specifico trovato per questa categoria. Torna presto a trovarci!</p>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {articles.map((article) => (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {articles.map((article) => (
               <div key={article.url} className="border p-4 rounded-lg shadow hover:shadow-md flex flex-col justify-between">
                 <div>
-                  <h2 className="text-xl font-semibold mb-2">
-                    <Link href={article.url} className="hover:text-blue-600">
-                      {article.title}
-                    </Link>
-                  </h2>
-                  {article.description && (
-                    <p className="text-gray-700 text-sm mb-3">{article.description}</p>
-                  )}
+            <h2 className="text-xl font-semibold mb-2">
+              <Link href={article.url} className="hover:text-blue-600">
+                {article.title}
+              </Link>
+            </h2>
+            {article.description && (
+              <p className="text-gray-700 text-sm mb-3">{article.description}</p>
+            )}
                 </div>
                 <Link href={article.url} className="text-blue-500 hover:underline text-sm mt-auto self-start">
                   Leggi di più &rarr;
-                </Link>
-              </div>
-            ))}
+            </Link>
           </div>
+        ))}
+      </div>
         )}
         {/* CtaSection Restored with user-specified props */}
         <CtaSection 

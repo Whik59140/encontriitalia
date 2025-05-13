@@ -8,6 +8,7 @@ import { getRegionalCities } from '@/lib/utils/geo';
 import { capitalizeSlug } from '@/lib/utils/string';
 import { Footer } from '@/components/common/footer';
 import { ChooserPageCtaButtonWithModal } from '@/components/common/chooser-page-cta-button-with-modal';
+import { WebcamCtaButton } from '@/components/common/webcam-cta-button';
 
 const CATEGORY_DISPLAY_NAMES: { [slug: string]: string } = {
   gay: 'Gay',
@@ -23,19 +24,19 @@ const CATEGORY_DISPLAY_NAMES: { [slug: string]: string } = {
 
 const AFFILIATE_LINK_TEMPLATE = 'https://affiliate.example.com/register?campaign={categorySlug}&location={citySlug}&tracking_id=your_id';
 
-interface ListingsChooserPageParams {
+interface AnnunciChooserPageParams {
   citySlug: string;
   categorySlug: string;
 }
 
 // Define specific props interface for this page type expecting a Promise for params
-interface ListingsChooserPageProps {
-  params: Promise<ListingsChooserPageParams>;
+interface AnnunciChooserPagePropsWithPromise {
+  params: Promise<AnnunciChooserPageParams>;
 }
 
-export async function generateStaticParams(): Promise<ListingsChooserPageParams[]> {
+export async function generateStaticParams(): Promise<AnnunciChooserPageParams[]> {
   const rootArticlesDir = path.join(process.cwd(), 'content', 'articles');
-  const paramsList: ListingsChooserPageParams[] = [];
+  const paramsList: AnnunciChooserPageParams[] = [];
   try {
     const categoryDirs = await fs.readdir(rootArticlesDir, { withFileTypes: true });
     for (const categoryDir of categoryDirs) {
@@ -62,7 +63,7 @@ export async function generateStaticParams(): Promise<ListingsChooserPageParams[
   return paramsList;
 }
 
-export async function generateMetadata({ params: paramsPromise }: ListingsChooserPageProps): Promise<Metadata> {
+export async function generateMetadata({ params: paramsPromise }: AnnunciChooserPagePropsWithPromise): Promise<Metadata> {
   const { citySlug, categorySlug } = await paramsPromise; // Await the params
   const cityName = capitalizeSlug(citySlug);
   const categoryName = CATEGORY_DISPLAY_NAMES[categorySlug] || capitalizeSlug(categorySlug);
@@ -83,7 +84,7 @@ export async function generateMetadata({ params: paramsPromise }: ListingsChoose
   };
 }
 
-export default async function AnnunciChooserPage({ params: paramsPromise }: ListingsChooserPageProps) {
+export default async function AnnunciChooserPage({ params: paramsPromise }: AnnunciChooserPagePropsWithPromise) {
   const { citySlug, categorySlug } = await paramsPromise; // Await the params
   const { cities: regionalCities, regionName } = await getRegionalCities(citySlug);
 
@@ -109,6 +110,14 @@ export default async function AnnunciChooserPage({ params: paramsPromise }: List
         <h1 className="text-2xl sm:text-3xl font-bold text-center my-6 sm:my-10 text-gray-800 dark:text-gray-100">
           Annunci {categoryDisplayName} a {cityDisplayName}: Scegli la Categoria Giusta per Te
         </h1>
+
+        <div className="my-6 sm:my-8 flex justify-center">
+          <WebcamCtaButton 
+            cityDisplayName={cityDisplayName}
+            categoryDisplayName={categoryDisplayName}
+            categorySlug={categorySlug}
+          />
+        </div>
 
         <section className="mb-10 py-8 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
           <div className="container mx-auto px-4 text-center">

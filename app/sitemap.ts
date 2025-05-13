@@ -130,12 +130,12 @@ export default async function sitemap({ id }: { id: string }): Promise<MetadataR
     });
     const allCitySlugs = await getAllCitySlugs(); // Fetch cities specifically for global sitemap
     allCitySlugs.forEach(citySlug => {
-      sitemapEntries.push({
+    sitemapEntries.push({
         url: `${BASE_URL}/${citySlug}`,
       lastModified: currentDate,
       changeFrequency: 'weekly',
       priority: 0.8,
-      });
+    });
     });
   } else {
     const currentCitySlug = id;

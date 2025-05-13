@@ -15,6 +15,8 @@ interface AnnounceCardProps {
   altText: string;
   categoryDisplayName: string; // Added
   cityDisplayName: string;     // Added
+  isOnline: boolean; // New prop
+  registrationTime: string; // New prop
 }
 
 export function AnnounceCard({
@@ -26,6 +28,8 @@ export function AnnounceCard({
   altText,
   categoryDisplayName,
   cityDisplayName,
+  isOnline, // New prop
+  registrationTime, // New prop
 }: AnnounceCardProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -69,11 +73,20 @@ export function AnnounceCard({
           <p className="text-sm text-gray-600 dark:text-gray-300 mb-3 line-clamp-2">
             {description}
           </p>
+
+          {/* User Status Information */}
+          <div className="flex items-center space-x-2 text-xs text-gray-500 dark:text-gray-400 mb-3">
+            <span className={`h-2.5 w-2.5 rounded-full ${isOnline ? 'bg-green-500' : 'bg-gray-400'} flex-shrink-0`}></span>
+            <span>{isOnline ? 'Online' : 'Offline'}</span>
+            <span className="text-gray-300 dark:text-gray-600">•</span>
+            <span className="truncate" title={registrationTime}>{registrationTime}</span>
+          </div>
+
           <span // Changed from Link to span, click handled by div
-            className="inline-flex items-center gap-1 text-sm font-medium text-pink-600 dark:text-pink-400 hover:text-pink-700 dark:hover:text-pink-500 transition-colors"
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-white bg-pink-600 hover:bg-pink-700 dark:bg-pink-500 dark:hover:bg-pink-600 px-4 py-2 rounded-md shadow-md hover:shadow-lg transition-all duration-200 ease-in-out transform group-hover:scale-105 w-full justify-center"
           >
             {ctaText}
-            <ArrowRight size={16} />
+            <ArrowRight size={18} className="ml-1" />
           </span>
         </div>
       </div>

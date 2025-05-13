@@ -14,6 +14,8 @@ import { getRegionalCities } from '@/lib/utils/geo'; // Added
 import { Footer } from '@/components/common/footer'; // Added
 import { RelatedContent } from '@/components/common/related-content'; // Import RelatedContent
 import { TopArticleCTA } from '@/components/common/top-article-cta';
+import { WebcamCtaButton } from '@/components/common/webcam-cta-button'; // Import the Webcam CTA Button
+import Link from 'next/link'; // Corrected import for Link
 
 // Import constants and the new CTA component
 import { categoryAffiliateLinks } from '@/lib/constants';
@@ -248,61 +250,59 @@ export default async function SpecificArticlePage({ params }: { params: Promise<
   // Fallback if no content could be structured
   if (articleRenderData.leadingHastNodes.length === 0 && articleRenderData.accordionSections.length === 0) {
     return (
-      <div className="flex flex-col min-h-screen"> {/* Wrapper div */} 
-        <main className="flex-grow container mx-auto px-4 py-8"> {/* Added container, padding, flex-grow */} 
-          {affiliateUrl && (
-            <TopArticleCTA
-              categoryName={ctaCategoryName}
-              cityName={ctaCityName}
-              affiliateUrl={affiliateUrl}
-            />
-          )}
-          <ArticleContentRenderer 
-              leadingHastNodes={[]}
-              accordionSections={[]}
-              frontmatter={articleRenderData.frontmatter}
-              headings={[]}
-              fallbackMarkdownBody={markdownBody}
-          />
-        </main>
-        <RelatedContent 
-          relatedArticles={relatedArticleLinks}
-          categoryPage={categoryPageData}
-          cityPage={cityPageData}
-        />
-        <Footer 
-          currentCitySlug={citySlug}
-          currentCategorySlug={categorySlug}
-          currentArticleSlug={articleSlug}
-          regionalCities={regionalCities}
-          regionName={regionName}
-        />
+      <div className="container mx-auto px-4 py-8 text-center">
+        <p className="text-xl text-red-500">Errore nella preparazione del contenuto dell&apos;articolo.</p>
+        <Link href={`/${citySlug}/${categorySlug}`} className="mt-4 inline-block bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600">
+          Torna alla categoria
+        </Link>
       </div>
     );
   }
+  
+  // const randomImageUrl = await getRandomImageUrl(categorySlug); // Assuming this function exists if needed elsewhere, but not using for this CTA directly
 
   return (
-    <div className="flex flex-col min-h-screen"> {/* Wrapper div */} 
-      <main className="flex-grow container mx-auto px-4 py-8"> {/* Added container, padding, flex-grow */} 
-        {affiliateUrl && (
-          <TopArticleCTA
+    <div className="bg-gray-50 dark:bg-gray-950 min-h-screen">
+      {/* Sticky Table of Contents for larger screens - Commented out for now */}
+      {/* {articleRenderData.headings && articleRenderData.headings.length > 3 && (
+        <div className="hidden lg:block fixed top-1/4 left-8 z-40">
+          <TableOfContents headings={articleRenderData.headings} />
+        </div>
+      )} */}
+      <main className="container mx-auto px-4 pt-20 lg:px-24 xl:px-32 2xl:px-40 pb-24"> {/* Adjusted padding: pt-20 (for sticky header) and kept pb-24 (for sticky footer) */}
+        <TopArticleCTA 
+            // title={frontmatter.title || 'Scopri di più'} // title prop issue - commented out
             categoryName={ctaCategoryName}
             cityName={ctaCityName}
             affiliateUrl={affiliateUrl}
+            // imageUrl={randomImageUrl} // randomImageUrl not defined - commented out
+        />
+        
+        {/* Webcam CTA Button moved here, below TopArticleCTA */}
+        <div className="my-8 flex justify-center">
+          <WebcamCtaButton 
+            cityDisplayName={displayCityName} 
+            categoryDisplayName={displayCategoryName}
+            categorySlug={categorySlug}
+          />
+        </div>
+
+        <ArticleContentRenderer 
+          leadingHastNodes={articleRenderData.leadingHastNodes}
+          accordionSections={articleRenderData.accordionSections}
+          frontmatter={articleRenderData.frontmatter}
+          headings={articleRenderData.headings}
+          fallbackMarkdownBody={markdownBody}
+        />
+
+        {relatedArticleLinks.length > 0 && (
+          <RelatedContent
+            relatedArticles={relatedArticleLinks}
+            categoryPage={categoryPageData}
+            cityPage={cityPageData}
           />
         )}
-        <ArticleContentRenderer 
-            leadingHastNodes={articleRenderData.leadingHastNodes} 
-            accordionSections={articleRenderData.accordionSections} 
-            frontmatter={articleRenderData.frontmatter}
-            headings={articleRenderData.headings}
-        />
       </main>
-      <RelatedContent 
-        relatedArticles={relatedArticleLinks}
-        categoryPage={categoryPageData}
-        cityPage={cityPageData}
-      />
       <Footer 
         currentCitySlug={citySlug}
         currentCategorySlug={categorySlug}

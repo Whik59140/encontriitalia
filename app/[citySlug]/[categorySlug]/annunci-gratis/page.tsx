@@ -10,15 +10,16 @@ import Link from 'next/link';
 import { ChevronLeft } from 'lucide-react';
 import { FaqSection } from '@/components/common/faq-section';
 import { SeoTextSection } from '@/components/common/seo-text-section';
+import { WebcamCtaButton } from '@/components/common/webcam-cta-button';
 
 // Define specific param and props interfaces for this page type
-interface ListingsSubCategoryParams {
+interface AnnunciSubCategoryPageParams {
   citySlug: string;
   categorySlug: string;
 }
 
-interface GratisListingsPageProps {
-  params: Promise<ListingsSubCategoryParams>;
+interface AnnunciGratisPageProps {
+  params: Promise<AnnunciSubCategoryPageParams>;
 }
 
 const SUB_CATEGORY_DISPLAY_NAME = "Gratis";
@@ -42,9 +43,9 @@ const CATEGORY_DISPLAY_NAMES: { [slug: string]: string } = {
 //   categorySlug: string;
 // }
 
-export async function generateStaticParams(): Promise<ListingsSubCategoryParams[]> {
+export async function generateStaticParams(): Promise<AnnunciSubCategoryPageParams[]> {
   const rootArticlesDir = path.join(process.cwd(), 'content', 'articles');
-  const paramsList: ListingsSubCategoryParams[] = [];
+  const paramsList: AnnunciSubCategoryPageParams[] = [];
   try {
     const categoryDirs = await fs.readdir(rootArticlesDir, { withFileTypes: true });
     for (const categoryDir of categoryDirs) {
@@ -71,7 +72,7 @@ export async function generateStaticParams(): Promise<ListingsSubCategoryParams[
   return paramsList;
 }
 
-export async function generateMetadata({ params: paramsPromise }: GratisListingsPageProps): Promise<Metadata> {
+export async function generateMetadata({ params: paramsPromise }: AnnunciGratisPageProps): Promise<Metadata> {
   const { citySlug, categorySlug } = await paramsPromise;
   const cityName = capitalizeSlug(citySlug);
   const categoryName = CATEGORY_DISPLAY_NAMES[categorySlug] || capitalizeSlug(categorySlug);
@@ -92,7 +93,7 @@ export async function generateMetadata({ params: paramsPromise }: GratisListings
   };
 }
 
-export default async function AnnunciGratisPage({ params: paramsPromise }: GratisListingsPageProps) {
+export default async function AnnunciGratisPage({ params: paramsPromise }: AnnunciGratisPageProps) {
   const { citySlug, categorySlug } = await paramsPromise;
   const { cities: regionalCities, regionName } = await getRegionalCities(citySlug);
 
@@ -112,6 +113,14 @@ export default async function AnnunciGratisPage({ params: paramsPromise }: Grati
       </header>
       
       <main className="flex-grow">
+        <div className="my-6 sm:my-8 flex justify-center">
+          <WebcamCtaButton 
+            cityDisplayName={cityDisplayName}
+            categoryDisplayName={categoryDisplayName}
+            categorySlug={categorySlug}
+          />
+        </div>
+
         <AnnouncesGrid
           categorySlug={categorySlug}
           citySlug={citySlug}

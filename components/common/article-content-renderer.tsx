@@ -373,7 +373,7 @@ const ArticleContentRenderer: React.FC<ArticleContentRendererProps> = ({
                                </div>
                             </a>
                           </>
-                        );
+              );
                       })()}
                     </div>
                   )}
@@ -393,7 +393,7 @@ const ArticleContentRenderer: React.FC<ArticleContentRendererProps> = ({
                       categorySlug={categorySlug} 
                       affiliateLink={affiliateUrl} 
                     />
-                  )}
+        )}
                   */}
                 </>
               )}

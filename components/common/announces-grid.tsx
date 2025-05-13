@@ -105,6 +105,22 @@ function generateAnnounceText(
   return { title, description };
 }
 
+function generateRandomUserStatus(): { isOnline: boolean; registrationTime: string } {
+  const isOnline = Math.random() < 0.65; // 65% chance of being online
+
+  let registrationTime: string;
+  const minutesAgo = Math.floor(Math.random() * 59) + 1;
+  const hoursAgo = Math.floor(Math.random() * 10) + 1; // Up to 10 hours for more "recent" feel
+
+  if (Math.random() < 0.7) { // 70% chance for minutes
+    registrationTime = `${minutesAgo} minut${minutesAgo === 1 ? 'o' : 'i'} fa`;
+  } else {
+    registrationTime = `${hoursAgo} or${hoursAgo === 1 ? 'a' : 'e'} fa`;
+  }
+
+  return { isOnline, registrationTime };
+}
+
 export async function AnnouncesGrid({
   categorySlug,
   // citySlug, // Keep for future use if needed
@@ -136,6 +152,7 @@ export async function AnnouncesGrid({
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {imageUrls.map((url, index) => {
             const { title, description } = generateAnnounceText(categoryDisplayName, cityDisplayName, index, subCategoryType);
+            const { isOnline, registrationTime } = generateRandomUserStatus(); // Generate random status
             const altText = `${title} - Annuncio ${index + 1}`;
             return (
               <AnnounceCard
@@ -143,11 +160,13 @@ export async function AnnouncesGrid({
                 imageUrl={url}
                 title={title}
                 description={description}
-                ctaText="Vedi Dettagli"
+                ctaText="Scopri Profilo e Chatta" // Updated CTA text
                 ctaLink={affiliateLink}
                 altText={altText}
                 categoryDisplayName={categoryDisplayName}
                 cityDisplayName={cityDisplayName}
+                isOnline={isOnline} // Pass new prop
+                registrationTime={registrationTime} // Pass new prop
               />
             );
           })}

@@ -10,6 +10,7 @@ import Link from 'next/link';
 import { ChevronLeft } from 'lucide-react';
 import { FaqSection } from '@/components/common/faq-section';
 import { SeoTextSection } from '@/components/common/seo-text-section';
+import { WebcamCtaButton } from '@/components/common/webcam-cta-button';
 
 const SUB_CATEGORY_DISPLAY_NAME = "Sesso";
 const SUB_CATEGORY_SLUG = "annunci-sesso";
@@ -26,19 +27,19 @@ const CATEGORY_DISPLAY_NAMES: { [slug: string]: string } = {
   adulti: 'Adulti',
 };
 
-interface ListingsSubCategoryParams {
+interface AnnunciSubPageParams {
   citySlug: string;
   categorySlug: string;
 }
 
 // Define specific props interface for this page type expecting a Promise for params
-interface SessoListingsPageProps {
-  params: Promise<ListingsSubCategoryParams>;
+interface AnnunciSessoPageProps {
+  params: Promise<AnnunciSubPageParams>;
 }
 
-export async function generateStaticParams(): Promise<ListingsSubCategoryParams[]> {
+export async function generateStaticParams(): Promise<AnnunciSubPageParams[]> {
   const rootArticlesDir = path.join(process.cwd(), 'content', 'articles');
-  const paramsList: ListingsSubCategoryParams[] = [];
+  const paramsList: AnnunciSubPageParams[] = [];
   try {
     const categoryDirs = await fs.readdir(rootArticlesDir, { withFileTypes: true });
     for (const categoryDir of categoryDirs) {
@@ -65,7 +66,7 @@ export async function generateStaticParams(): Promise<ListingsSubCategoryParams[
   return paramsList;
 }
 
-export async function generateMetadata({ params: paramsPromise }: SessoListingsPageProps): Promise<Metadata> {
+export async function generateMetadata({ params: paramsPromise }: AnnunciSessoPageProps): Promise<Metadata> {
   const { citySlug, categorySlug } = await paramsPromise; // Await the params
   const cityName = capitalizeSlug(citySlug);
   const categoryName = CATEGORY_DISPLAY_NAMES[categorySlug] || capitalizeSlug(categorySlug);
@@ -86,7 +87,7 @@ export async function generateMetadata({ params: paramsPromise }: SessoListingsP
   };
 }
 
-export default async function AnnunciSessoPage({ params: paramsPromise }: SessoListingsPageProps) {
+export default async function AnnunciSessoPage({ params: paramsPromise }: AnnunciSessoPageProps) {
   const { citySlug, categorySlug } = await paramsPromise; // Await the params
   const { cities: regionalCities, regionName } = await getRegionalCities(citySlug);
 
@@ -106,6 +107,14 @@ export default async function AnnunciSessoPage({ params: paramsPromise }: SessoL
       </header>
       
       <main className="flex-grow">
+        <div className="my-6 sm:my-8 flex justify-center">
+          <WebcamCtaButton 
+            cityDisplayName={cityDisplayName}
+            categoryDisplayName={categoryDisplayName}
+            categorySlug={categorySlug}
+          />
+        </div>
+
         <AnnouncesGrid
           categorySlug={categorySlug}
           citySlug={citySlug}
