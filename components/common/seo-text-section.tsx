@@ -4,7 +4,7 @@ import { seoTextSectionStrings } from '@/app/translations';
 interface SeoTextSectionProps {
   categoryDisplayName: string;
   cityDisplayName: string;
-  subCategoryType: 'gratis' | 'sesso' | 'seri' | 'incontri' | 'chat';
+  subCategoryType: 'gratis' | 'sesso' | 'seri' | 'incontri' | 'chat' | 'cityGeneral';
 }
 
 export function SeoTextSection({ categoryDisplayName, cityDisplayName, subCategoryType }: SeoTextSectionProps) {

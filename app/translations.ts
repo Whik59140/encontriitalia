@@ -258,6 +258,7 @@ export const faqSectionStrings = {
     else if (subCategoryType === 'sesso') typeText = "di Sesso";
     else if (subCategoryType === 'seri') typeText = "Seri";
     else if (subCategoryType === 'chat') return `Domande Frequenti - Chat ${categoryDisplayName} a ${cityDisplayName}`;
+    else if (subCategoryType === 'cityGeneral') return `Domande Frequenti su Incontri e Annunci a ${cityDisplayName}`; // New case
     // 'incontri' type will use the default "Incontri"
     return `Domande Frequenti - Annunci ${categoryDisplayName} ${typeText} a ${cityDisplayName}`;
   },
@@ -371,6 +372,28 @@ export const faqSectionStrings = {
       answer: `Se riscontri problemi tecnici, prova a ricaricare la pagina o a controllare la tua connessione. Per utenti molesti, utilizza le opzioni di blocco o segnalazione utente fornite dalla piattaforma di chat {category} a {city}.`,
     },
   ],
+  cityGeneralFaqItems: [ // New FAQ items for general city pages
+    {
+      question: `Quali tipi di incontri posso trovare a {city}?`,
+      answer: `A {city} puoi trovare una vasta gamma di opportunità di incontri, da relazioni serie ad avventure casuali, amicizie e chat. Esplora le diverse categorie sul nostro sito per scoprire quella più adatta a te.`
+    },
+    {
+      question: `Come posso iniziare a cercare annunci o profili a {city}?`,
+      answer: `È semplice! Seleziona una delle categorie di tuo interesse per {city} dalla nostra homepage o dalle sezioni dedicate. Potrai quindi navigare tra gli annunci e profili disponibili per iniziare la tua ricerca.`
+    },
+    {
+      question: `È sicuro utilizzare questo sito per incontri a {city}?`,
+      answer: `La sicurezza dei nostri utenti è una priorità. Collaboriamo con piattaforme partner che adottano misure per la verifica dei profili. Tuttavia, consigliamo sempre prudenza: leggi i nostri consigli sulla sicurezza online e per i primi appuntamenti.`
+    },
+    {
+      question: `Ci sono consigli specifici per gli incontri a {city}?`,
+      answer: `Ogni città ha la sua atmosfera unica! A {city}, ti consigliamo di essere aperto/a a nuove esperienze, comunicare chiaramente le tue intenzioni e, per i primi incontri, scegliere luoghi pubblici e conosciuti. Sfrutta le peculiarità di {city} per rendere i tuoi appuntamenti speciali.`
+    },
+    {
+      question: `Posso trovare annunci per diverse fasce d'età o interessi specifici a {city}?`,
+      answer: `Assolutamente. Le nostre categorie coprono un'ampia varietà di interessi e fasce d'età. Ti invitiamo a esplorare le sezioni dedicate (es. MILF, Gay, Studentesse, etc.) per trovare annunci più mirati per {city}.`
+    }
+  ]
 };
 
 export const seoTextSectionStrings = {
@@ -434,6 +457,18 @@ export const seoTextSectionStrings = {
     li5: `<strong>Divertimento Assicurato:</strong> Un modo frizzante e moderno per socializzare e trovare incontri {category} a {city}.`,
     p3: `Non aspettare oltre! Tuffati nelle conversazioni della chat {category} a {city} e scopri un universo di possibilità. La registrazione è veloce e gratuita. Inizia ora!`,
   },
+  cityGeneral: { // New SEO text for general city pages
+    title: `Incontri e Annunci a {city}: La Tua Guida Completa`,
+    p1: `Scopri il vibrante mondo degli incontri a {city}! Che tu stia cercando l'anima gemella, nuove amicizie, avventure eccitanti o semplicemente qualcuno con cui chattare, {city} offre innumerevoli possibilità. Questa guida ti aiuterà a navigare le opzioni e a trovare ciò che fa per te.`,
+    p2: `Utilizzare il nostro portale per {city} è il primo passo per connetterti con persone interessanti e profili verificati. Dalle chat room tematiche agli annunci specifici per categoria, la nostra piattaforma ti mette a disposizione tutti gli strumenti per iniziare la tua ricerca in modo facile e sicuro. Ricorda di esplorare tutte le categorie disponibili per {city}!`,
+    h3: `Perché Cercare Incontri e Annunci a {city} con Noi?`,
+    li1: `<strong>Vasta Scelta:</strong> Accesso a diverse categorie di incontri e annunci specifici per {city}.`,
+    li2: `<strong>Facilità d'Uso:</strong> Interfaccia intuitiva per trovare rapidamente quello che cerchi a {city}.`,
+    li3: `<strong>Profili Verificati:</strong> Ci impegniamo a offrire una community con profili autentici per la tua sicurezza a {city}.`,
+    li4: `<strong>Specificità Locale:</strong> Contenuti e suggerimenti pensati per la scena degli incontri di {city}.`,
+    li5: `<strong>Privacy e Discrezione:</strong> La tua privacy è importante per noi in tutte le interazioni a {city}.`,
+    p3: `Non aspettare oltre! Immergiti nelle opportunità di incontri che {city} ha da offrire. Registrati, esplora e connettiti oggi stesso!`
+  }
 };
 
 export const webcamCtaButtonStrings = {

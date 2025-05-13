@@ -4,7 +4,7 @@ import { faqSectionStrings } from '@/app/translations';
 interface FaqSectionProps {
   categoryDisplayName: string;
   cityDisplayName: string;
-  subCategoryType: 'gratis' | 'sesso' | 'seri' | 'incontri' | 'chat';
+  subCategoryType: 'gratis' | 'sesso' | 'seri' | 'incontri' | 'chat' | 'cityGeneral';
 }
 
 interface FaqItem {
@@ -23,6 +23,8 @@ export function FaqSection({ categoryDisplayName, cityDisplayName, subCategoryTy
     faqItems = faqSectionStrings.seriFaqItems;
   } else if (subCategoryType === 'chat') {
     faqItems = faqSectionStrings.chatFaqItems;
+  } else if (subCategoryType === 'cityGeneral') {
+    faqItems = faqSectionStrings.cityGeneralFaqItems;
   } else { // Default to 'incontri'
     faqItems = faqSectionStrings.incontriFaqItems;
   }

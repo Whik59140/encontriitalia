@@ -10,6 +10,8 @@ import { DirectEncounterCTA } from '@/components/common/direct-encounter-cta';
 import { Footer } from '@/components/common/footer';
 import { citySlugPageStrings } from '@/app/translations'; // Import translations
 import { Button } from '@/components/ui/button'; // Import Button for categories
+import { FaqSection } from '@/components/common/faq-section'; // Added import
+import { SeoTextSection } from '@/components/common/seo-text-section'; // Added import
 
 interface CityPageProps {
   params: Promise<{ citySlug: string }>;
@@ -109,6 +111,23 @@ export default async function CityPage(props: CityPageProps) {
         <DirectEncounterCTA cityName={city.name} />
 
         {/* Removed old popular categories section with images */}
+
+        {/* Added FAQ and SEO Text Sections for City Page */}
+        <div className="mt-12 sm:mt-16">
+          <FaqSection 
+            cityDisplayName={city.name} 
+            categoryDisplayName="Incontri" // Generic placeholder, not used by 'cityGeneral' strings
+            subCategoryType="cityGeneral"
+          />
+        </div>
+
+        <div className="mt-12 sm:mt-16">
+          <SeoTextSection 
+            cityDisplayName={city.name} 
+            categoryDisplayName="Incontri" // Generic placeholder, not used by 'cityGeneral' strings
+            subCategoryType="cityGeneral"
+          />
+        </div>
 
       </main>
       <Footer 

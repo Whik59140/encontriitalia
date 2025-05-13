@@ -22,7 +22,7 @@ const vertexAILocation = 'us-central1'; // Required for image generation
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // !! IMPORTANT: SET THIS TO THE CATEGORY SLUG YOU WANT TO GENERATE FOR ALL CITIES !!
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-const TARGET_CATEGORY_SLUG_FOR_ALL_CITIES = 'trans'; // IMPORTANT: Set this to the desired category slug.
+const TARGET_CATEGORY_SLUG_FOR_ALL_CITIES = 'escort'; // IMPORTANT: Set this to the desired category slug.
 const TARGET_CITY_SLUG = ''; // Optional: Set to a specific city slug to generate only for that city, or empty for all.
 
 // Define all available categories statically
@@ -101,187 +101,90 @@ function capitalizeCategoryName(name) {
 function getPromptForCategory(categorySlug, cityName, categoryDisplayName, relatedCitiesData) {
   console.log(`   Generating prompt for category '${categoryDisplayName}' in '${cityName}'`);
 
-  // Construct the internal links markdown part if data exists
   const internalLinksSection = relatedCitiesData && relatedCitiesData.length > 0 
-    ? `\n\n## Esplora Altre Città nella Regione\nScrivi un breve paragrafo che incoraggi i lettori a esplorare altre città vicine nella stessa regione per incontri ${categoryDisplayName}, menzionando e linkando le seguenti guide: ${relatedCitiesData.map(c => `[${c.name}](/${c.slug}/${categorySlug}/incontri-${categorySlug}-in-${c.slug})`).join(', ')}.`
-    : ''; // Empty string if no related cities
+    ? `\\n\\n## Esplora Altre Città nella Regione\\nScrivi un breve paragrafo che incoraggi i lettori a esplorare altre città vicine nella stessa regione per incontri ${categoryDisplayName}, menzionando e linkando le seguenti guide: ${relatedCitiesData.map(c => `[${c.name}](/${c.slug}/${categorySlug}/incontri-${categorySlug}-in-${c.slug})`).join(', ')}.`
+    : '';
 
-  if (categorySlug === 'trans') {
+  if (categorySlug === 'escort') {
+    // ... (existing prompt for trans) ...
     return `
- 
+Scrivi un articolo SEO-ottimizzato in italiano di 10.000 caratteri sugli incontri con persone escort a ${cityName}. L'articolo deve:
 
-    Write a 10,000-character SEO-optimized italian article about dating trans individuals in ${cityName}. The article must:
-
-
-
-
-
-    Start with a captivating introduction that highlights the unique appeal of the trans dating scene in ${cityName}. Use a strong hook to draw readers in and showcase what makes this city special for trans dating.
-    
-    
-    
-    Include a detailed section on the best places to meet trans singles in ${cityName}. List specific local bars, clubs, LGBTQ+ events, or popular online dating platforms. Where possible, include names of venues or events to make the advice actionable and locally relevant.
-    
-    
-    
-    Provide practical, actionable tips for successful trans dating, emphasizing respect, communication, and understanding trans experiences. Include relatable examples or scenarios to illustrate these tips.
-    
-    
-    
-    Explore common challenges in trans dating (e.g., societal stigma, pronoun navigation) and offer specific, practical solutions to address them.
-    
-    
-    
-    Feature at least two success stories or testimonials reflecting positive trans dating experiences in ${cityName}. These should feel authentic and inspiring, highlighting the city’s welcoming vibe.
-    
-    
-    
-    Conclude with a tailored list of resources for ${cityName}, such as local LGBTQ+ organizations, support groups, or online communities, to add value and encourage engagement.
-    
-    Throughout the article:
-    
-    
-    
-    
-    
-    Seamlessly integrate long-tail keywords, such as:
-    
-    
-    
-    
-    
-    "best trans dating spots in ${cityName}"
-    
-    
-    
-    "how to date trans singles in ${cityName}"
-    
-    
-    
-    "trans dating tips ${cityName}"
-    
-    
-    
-    Use both singular and plural forms (e.g., "trans date" and "trans dates").
-    
-    
-    
-    Incorporate respectful variations of 'trans' (e.g., "transgender," "trans woman," "trans man," "trans person") naturally to broaden search query coverage and ensure inclusivity. Avoid forced repetition or unnatural phrasing.
-    
-    
-    
-    Use emojis sparingly (e.g., ❤️, 🌈, 😊) to enhance relatability and fun without overwhelming the text.
-    
-    
-    
-    Adopt a natural, conversational tone—like advice from a trusted friend—to keep the article warm, approachable, and humanized.
-    
-    
-    
-    Engage readers with rhetorical questions (e.g., "Ready to explore love in ${cityName}?") and teasers (e.g., "Curious about ${cityName}’s top trans dating spot? Keep reading!") to maintain interest.
-    
-    
-    
-    Incorporate specific ${cityName} details, such as:
-    
-    
-    
-    
-    
-    Notable LGBTQ+ venues
-    
-    
-    
-    Annual events (e.g., Pride celebrations, trans-focused gatherings)
-    
-    
-    
-    Cultural or social factors shaping the trans dating scene
-    
-    
-    
-    Cite credible, Google-sourced information (e.g., statistics, expert quotes, or studies) to boost trust and authority.
-    
-    
-    
-    Add a section on ${cityName}’s cultural or social climate regarding trans acceptance and its impact on dating, providing valuable context.
-    
-    
-    
-    Address dual perspectives: trans individuals seeking partners and those interested in dating trans individuals, ensuring inclusivity and broad appeal.
-    
-    
-    
-    Optionally, include a FAQ section at the end to tackle common questions or concerns about trans dating in ${cityName}, enhancing reader value.
-    
-    The article should be entertaining, insightful, and leave readers excited to dive into trans dating in ${cityName}.
-    
-    
-    
-    10 SEO-Optimized Titles for ${cityName}
-    
-    
-    
-    
-    
-    "Dating Trans in ${cityName}: Your Ultimate Guide to Love and Connection"
-    
-    
-    
-    "Best Places to Meet Trans Singles in ${cityName} – Discover Now!"
-    
-    
-    
-    "Trans Dating Tips for ${cityName} Locals: Expert Secrets Unveiled"
-    
-    
-    
-    "What’s the Trans Dating Scene Like in ${cityName}? Find Out Here"
-    
-    
-    
-    "Top Apps for Finding Trans Dates in ${cityName} – Start Swiping!"
-    
-    
-    
-    "Trans Dating Etiquette in ${cityName}: How to Shine on Every Date"
-    
-    
-    
-    "Real Trans Dating Stories from ${cityName} That Inspire"
-    
-    
-    
-    "Beginner’s Guide to Dating Trans Individuals in ${cityName}"
-    
-    
-    
-    "Trans Dating Events in ${cityName} You Can’t Miss"
-    
-    
-    
-    "Why ${cityName} is Perfect for Trans Dating Adventures"
-    
-    **Lenght** 10.000 characters approximately.
-    **FORMATO MARKDOWN:** Output direct in Markdown.
-    **NO CODE FENCES:** do not initiate output with \`\`\`markdown.
-    **CRUCIAL STRUCTURE:** Follow EXACTLY the specified H2/H3 structure. Do not omit sections.
-    **KEYWORDS:** Integrate keywords of course. Do NOT include “Keywords” lists. 
+${internalLinksSection}
 `;
-  } else if (categorySlug === 'milf') {
-    console.warn(`      --> Placeholder prompt for 'milf' category. IMPLEMENT THIS! Include internal links.`);
-    return `**Titolo SEO:** Incontri MILF a ${cityName}: Scopri Dove Trovarle\\n\\n**Meta Description:** Guida agli incontri MILF a ${cityName}.\\n\\n## Introduzione alle MILF di ${cityName}\\n(Scrivi qui...)${internalLinksSection}\\n## Conclusione`;
-  } else if (categorySlug === 'donne') {
-    console.warn(`      --> Placeholder prompt for 'donne' category. IMPLEMENT THIS! Include internal links.`);
-    return `**Titolo SEO:** Incontri Donne a ${cityName}: Guida Completa\\n\\n**Meta Description:** Trova incontri con donne a ${cityName}.\\n\\n## Donne a ${cityName}\\n(Scrivi qui...)${internalLinksSection}\\n## Conclusione`;
-  }
-  // ... Add else if blocks for: 'ragazze', 'trans', 'trav', 'escort', 'studentessa', 'adulti'
-  // Make sure to add ${internalLinksSection} to their prompts before the conclusion.
+  } else if (categorySlug === 'escort') {
+    
+    return `
+    Scrivi un articolo SEO-ottimizzato in italiano di circa 10.000 caratteri sui servizi escort e la scena degli incontri con escort a ${cityName}. L'articolo deve essere informativo e responsabile, rivolto a un pubblico adulto che cerca tali informazioni.
 
-  else {
-    console.warn(`      --> No specific prompt defined for category slug '${categorySlug}'. Skipping.`);
-    return null; // Or return a very generic fallback prompt if you prefer
+L'articolo deve:
+
+1.  **Introduzione alla Scena Escort di ${cityName}:**
+    *   Iniziare con un'introduzione discreta e informativa che descriva la disponibilità e le caratteristiche generali dei servizi escort a ${cityName}.
+    *   Evidenziare la varietà di servizi che potrebbero essere disponibili, se noti (es. escort indipendenti, agenzie, specializzazioni), mantenendo un tono oggettivo.
+
+2.  **Come Trovare Servizi Escort a ${cityName} in Modo Sicuro e Discreto:**
+    *   Dettagliare i metodi comuni per trovare escort a ${cityName}, come piattaforme online specializzate, directory verificate o agenzie rinomate.
+    *   Enfatizzare l'importanza della verifica dei profili, della lettura di recensioni (se disponibili e affidabili) e dell'uso di canali discreti e sicuri.
+    *   Menzionare l'importanza di comprendere i termini del servizio e i costi in anticipo.
+    *   Keywords da integrare: "trovare escort ${cityName}", "escort verificate ${cityName}", "annunci escort ${cityName}", "agenzie escort ${cityName}".
+
+3.  **Consigli per un'Esperienza Positiva, Rispettosa e Sicura:**
+    *   Fornire consigli pratici per i clienti su come interagire con le escort in modo rispettoso e chiaro.
+    *   Sottolineare l'importanza della comunicazione aperta sulle aspettative, i limiti e il consenso da entrambe le parti.
+    *   Includere suggerimenti sulla sicurezza personale (es. incontri in luoghi sicuri, informare una persona di fiducia, igiene).
+    *   Discutere l'etichetta e la discrezione attese durante e dopo l'incontro.
+    *   Keywords: "incontro escort sicuro ${cityName}", "sesso con escort ${cityName} regole", "comunicare con escort", "esperienza escort positiva ${cityName}".
+
+4.  **Comprendere i Servizi Offerti e Gestire le Aspettative:**
+    *   Spiegare la gamma di servizi che le escort a ${cityName} potrebbero offrire (es. compagnia per eventi, cene, conversazione, esperienze intime, GFE - GirlFriend Experience), e come questi possono variare.
+    *   Affrontare come gestire le proprie aspettative in modo realistico e come chiarire i servizi desiderati (es. "sesso", "scopare", o altri tipi di interazione) in modo consensuale e rispettoso prima dell'incontro.
+    *   Sottolineare che ogni escort è un'individua con propri termini e limiti.
+
+5.  **Sicurezza, Privacy e Aspetti Legali (con Disclaimer):**
+    *   Discutere l'importanza della privacy per entrambe le parti.
+    *   Fornire una nota generale sulla necessità per gli utenti di essere consapevoli e rispettare le leggi locali relative ai servizi escort a ${cityName}. **Includere un disclaimer che l'articolo è a scopo informativo e non incoraggia attività illegali, e che gli utenti sono responsabili di agire in conformità con le leggi vigenti.**
+    *   Potrebbe menzionare l'importanza di evitare situazioni di sfruttamento e di interagire solo con professioniste/i consenzienti e maggiorenni.
+
+6.  **Conclusione Informativa:**
+    *   Riassumere i punti chiave per un approccio informato, sicuro e rispettoso alla ricerca di servizi escort a ${cityName}.
+    *   Rinforzare l'importanza della discrezione e del consenso.
+
+Durante tutto l'articolo:
+
+*   **Keywords:** Integrare in modo fluido e naturale parole chiave rilevanti, inclusi termini espliciti come "sesso escort ${cityName}", "scopare con escort a ${cityName}", "tariffe escort ${cityName}", "escort di lusso ${cityName}", "escort indipendenti ${cityName}", "accompagnatrici ${cityName}" e varianti. Non creare una lista di keywords visibile nel testo.
+*   **Linguaggio:** Mantenere un linguaggio adulto, diretto ma professionale e rispettoso. Evitare volgarità eccessive o linguaggio degradante.
+*   **Tono:** Informativo, maturo, discreto e non giudicante. L'obiettivo è fornire informazioni utili a chi cerca questi servizi, non a promuoverli in modo sensazionalistico.
+*   **Dettagli Locali:** Se possibile e rilevante, menzionare aspetti specifici della scena di ${cityName} (es. zone note per la vita notturna dove tali servizi potrebbero essere più presenti, tipologie di servizi più comuni in città), sempre in modo fattuale e discreto.
+*   **Disclaimer sulla Responsabilità:** L'articolo deve chiarire che le informazioni sono fornite per adulti consenzienti e che l'uso dei servizi descritti è una scelta personale che deve avvenire nel rispetto delle leggi e dell'etica.
+*   **Originalità:** Assicurarsi che il contenuto sia unico e non una semplice copia di altre fonti.
+
+10 Titoli SEO-Ottimizzati per ${cityName}:
+
+1.  "Guida Escort ${cityName}: Trovare Servizi Sicuri e Discreti"
+2.  "Escort a ${cityName}: Tutto Quello che Devi Sapere per un Incontro Rispettoso"
+3.  "Servizi Escort ${cityName}: Consigli, Prezzi e Come Prenotare in Sicurezza"
+4.  "La Scena Escort di ${cityName}: Guida Completa per Adulti Consapevoli"
+5.  "Sesso con Escort a ${cityName}: Aspettative, Sicurezza e Consigli Utili"
+6.  "Recensioni Escort ${cityName}: Come Scegliere l'Accompagnatrice Giusta per Te?" (Se si vuole includere un riferimento a come valutare, con cautela)
+7.  "Escort di Lusso ${cityName}: Esperienze Esclusive e Servizi Premium"
+8.  "Incontri con Escort a ${cityName}: Etichetta e Suggerimenti per Non Sbagliare"
+9.  "Tariffe Escort ${cityName}: Cosa Aspettarsi e Come Chiarire i Costi"
+10. "Scoprire ${cityName} con un'Escort: Servizi di Compagnia e Intrattenimento"
+
+${internalLinksSection}
+
+**Lunghezza:** Circa 10.000 caratteri.
+**FORMATO MARKDOWN:** Output diretto in Markdown.
+**NO CODE FENCES:** Non iniziare l'output con \`\`\`markdown.
+**STRUTTURA CRUCIALE:** Seguire ESATTAMENTE la struttura H2/H3 specificata (se applicabile nel prompt originale o dedotta dalla sua struttura). Non omettere sezioni.
+**RESPONSABILITÀ:** L'articolo deve essere scritto in modo responsabile, enfatizzando la sicurezza, la discrezione, il consenso e il rispetto reciproco. Evitare linguaggio che possa essere interpretato come sfruttamento o che violi le policy di Google o altre normative.
+`;
   }
+  // Add more else if blocks for other categories as needed
+  console.warn(`   ---> No specific prompt defined for category \'${categorySlug}\'. Using a generic approach or skipping.`);
+  return null; // Or a very generic prompt as a fallback
+
 }
 
 /**

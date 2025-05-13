@@ -8,6 +8,8 @@ import { getRegionalCities } from '@/lib/utils/geo'; // Import getRegionalCities
 import { WebcamCtaButton } from '@/components/common/webcam-cta-button'; // Import the new component
 import { categoryAffiliateLinks } from '@/lib/constants'; // <<< IMPORT THE CENTRALIZED MAP
 import { homePageStrings, cityCategoryPageStrings } from '@/app/translations'; // Import translations
+import { FaqSection } from '@/components/common/faq-section'; // Added import
+import { SeoTextSection } from '@/components/common/seo-text-section'; // Added import
 
 // --- REMOVE Configuration for Affiliate Link --- 
 // const AFFILIATE_LINK_TEMPLATE = 'https://affiliate.example.com/register?campaign={categorySlug}&location={citySlug}&tracking_id=your_id';
@@ -188,6 +190,23 @@ export default async function CategoryListingPage({ params }: { params: Promise<
           isExternalLink={true}
           linkTarget="_blank"
         />
+
+        {/* Added FAQ and SEO Text Sections for City-Category Page */}
+        <div className="mt-12 sm:mt-16">
+          <FaqSection 
+            cityDisplayName={displayNameForCity} 
+            categoryDisplayName={displayNameForCategory} 
+            subCategoryType="incontri" // Use 'incontri' for general category pages
+          />
+        </div>
+
+        <div className="mt-12 sm:mt-16">
+          <SeoTextSection 
+            cityDisplayName={displayNameForCity} 
+            categoryDisplayName={displayNameForCategory} 
+            subCategoryType="incontri" // Use 'incontri' for general category pages
+          />
+        </div>
 
       </main>
       <Footer 
