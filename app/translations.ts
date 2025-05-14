@@ -57,7 +57,10 @@ export const homePageStrings = {
   highlightText: "✨ È Gratis, Senza Numero di Telefono, Registrazione in 30 Secondi! ✨",
   categoryButtonPrefix: "Sto cercando ",
   categoryButtonSuffix: " 👉",
-  exploreByCityHeading: "Oppure, esplora per città:"
+  exploreByCityHeading: "Oppure, esplora per città:",
+  exploreByInfluencerHeading: "Cerca per Influencer",
+  searchInfluencerPlaceholder: "Cerca un influencer...",
+  viewAllInfluencersButton: "Vedi Tutti gli Influencer"
 };
 
 export const chatPageStrings = {
@@ -651,4 +654,170 @@ export const citySearchDisplayStrings = {
 // Add translations for article page
 export const articlePageStrings = {
   backLinkText: (categoryDisplayName: string, cityName: string) => `Torna a ${categoryDisplayName} a ${cityName}`,
+};
+
+export const influencerSeoTextStrings: { [key: string]: string } = {
+  nudes: "🍑 Scopri i nudi INTEGRALI di {influencerName}! Foto e video esclusivi che non lasciano nulla all'immaginazione. Preparati a vedere {influencerName} come non l'hai mai vista prima... completamente SENZA VELI! 🔥 Questo è il posto giusto per ammirare ogni curva e dettaglio del suo corpo da urlo. Non perderti i set più bollenti! 💦",
+  leaks: "💣 Contenuti LEAKED di {influencerName} FINITI ONLINE! 🕵️‍♀️ Abbiamo raccolto tutto il materiale più SCOTTANTE e proibito che {influencerName} non voleva farvi vedere. Video privati, foto rubate, chat segrete... tutto qui, senza censure! 🔞 Preparati a uno scandalo HOT che ti lascerà senza fiato! 💥",
+  onlyfans: "💖 Accesso ESCLUSIVO all'OnlyFans di {influencerName}! 🌶️ Scopri i video POV, le performance di sesso estremo, richieste personalizzate e molto altro. {influencerName} si spinge OLTRE OGNI LIMITE per i suoi fan più fedeli. Abbonati per non perdere nemmeno un gemito! 🤤 Include sessioni di SODOMIA SELVAGGIA e posizioni estreme mai viste prima! 💦",
+  porno: "🎬 {influencerName} nella sua versione PIÙ HARDCORE! 😈 Esplora la sua filmografia porno completa, con scene di GRUPPO, GANGBANG, SODOMIA VIOLENTA e tutte le pratiche più estreme. Guarda {influencerName} mentre si scatena in performance indimenticabili. Non adatto ai deboli di cuore! 💔➡️❤️‍🔥",
+  xxx: "🔥 Contenuti XXX ESPLICITI di {influencerName}! 🌡️ Preparati per il materiale più SPINTO e VIETATO che tu abbia mai visto. Video integrali di SESSO ESTREMO, senza tagli, con dettagli ravvicinati di ogni azione. {influencerName} si mostra in tutta la sua lussuria selvaggia con SODOMIA PROFONDA e molto altro! 🔑 Sblocca ora il piacere PROIBITO! 💦",
+  video: "📹 Tutti i VIDEO più CALDI di {influencerName}! 💦 Dai clip privati ai dietro le quinte bollenti dei suoi set, fino ai video amatoriali di SESSO SFRENATO che ti faranno impazzire. Guarda {influencerName} in azione, mentre riceve e dà piacere in OGNI POSIZIONE immaginabile! 🍌🍑 Clicca e goditi lo spettacolo più piccante del web!",
+  telegram: "🤫 Il canale Telegram SEGRETO di {influencerName}! 📲 Link esclusivi a contenuti INEDITI e PROIBITI, foto e video di SESSO SFRENATO che non troverai da nessun'altra parte. Unisciti per chat HOT 💬, anteprime di SODOMIA e per scoprire come {influencerName} adora farsi PENETRARE! Accesso immediato ai suoi segreti più nascosti e perversi! 🔥",
+  sesso: "🫦 Tutto sul SESSO SELVAGGIO con {influencerName}! 💦 Esplora le sue pratiche preferite, le posizioni che la fanno IMPAZZIRE (inclusa la SODOMIA DOLOROSA!), i racconti delle sue ORGE più spinte e i consigli per un piacere ANALE estremo. {influencerName} si confessa SENZA TABÙ e mostra come ama essere DOMINATA! 🔥 Preparati a imparare cose che non immaginavi nemmeno fossero possibili! 🍆",
+  default: "🔞 Esplora il lato più PROIBITO e PERVERSO di {influencerName} nella categoria {subcategoryName}! 😈 Contenuti ESCLUSIVI di SESSO ESTREMO, video di SODOMIA PROFONDA, foto senza censure e molto altro ti aspettano. Preparati a scoprire i segreti più PICCANTI e VIETATI di {influencerName} e a soddisfare le tue FANTASIE più nascoste! 🔥💦"
+};
+
+export interface FaqItem {
+  question: string;
+  answer: string;
+}
+
+export const influencerFaqStrings: { [key: string]: FaqItem[] } = {
+  nudes: [
+    {
+      question: "I nudi di {influencerName} sono davvero integrali? 🙈",
+      answer: "Assolutamente SÌ! 🍑 {influencerName} non si risparmia e mostra TUTTO. Preparati per primi piani mozzafiato e pose che esaltano ogni centimetro del suo corpo. Nessuna censura, solo puro piacere visivo. 🔥"
+    },
+    {
+      question: "Posso trovare video nuda di {influencerName} qui? 💦",
+      answer: "Certo! Oltre alle foto, ci sono clip esclusive di {influencerName} completamente nuda, mentre gioca e si diverte. Non vorrai perderteli! 😈"
+    },
+    {
+      question: "Quali sono le pose più esplicite di {influencerName} nei suoi nudi? 🍑",
+      answer: "Oh, {influencerName} adora mostrare TUTTO! 🔥 La troverai in pose A GAMBE APERTE, con CLOSE-UP INTIMI, mentre si TOCCA in modo provocante e si mette in posizioni che evidenziano il suo FONDOSCHIENA e ogni altra parte del corpo. Le sue foto più PICCANTI ti mostreranno angolazioni che non avresti mai immaginato! 💦"
+    },
+    {
+      question: "Le foto nude di {influencerName} sono recenti? 📸",
+      answer: "Assolutamente SÌ! 🕒 Aggiorniamo continuamente la galleria con i suoi ULTIMI SCATTI più provocanti, comprese NUOVE SERIE fotografiche e video dove si mostra completamente NUDA in situazioni sempre più AUDACI! {influencerName} ama superare i limiti della sensualità e noi ti portiamo tutto in tempo reale! 🔥"
+    }
+  ],
+  leaks: [
+    {
+      question: "Questi leaks di {influencerName} sono autentici? 🕵️‍♀️",
+      answer: "ASSOLUTAMENTE SÌ! 💣 Abbiamo fatto una minuziosa verifica per assicurarci di offrirti solo contenuti AUTENTICI e SCOTTANTI. Si tratta di materiale PRIVATO che è finito online senza il suo consenso, mostrandola come MAI avresti immaginato! 🔞 Guarda tu stesso e giudica quanto sono piccanti!"
+    },
+    {
+      question: "Cosa includono esattamente i leaks di {influencerName}? 💥",
+      answer: "I leaks contengono di TUTTO! 🔥 Foto intime mentre è COMPLETAMENTE NUDA, video privati di SESSO SFRENATO, chat dove descrive le sue FANTASIE più perverse, e persino registrazioni di VIDEOCHIAMATE HOT dove si soddisfa in diretta! 💦 {influencerName} è stata ESPOSTA completamente, senza alcun filtro. Aspettati l'INIMMAGINABILE! 😉"
+    }
+  ],
+  onlyfans: [
+    {
+      question: "Cosa rende l'OnlyFans di {influencerName} così speciale? 💖",
+      answer: "L'OnlyFans di {influencerName} è il suo regno privato del piacere! 🌶️ Troverai contenuti esclusivi che non pubblica altrove, interazioni dirette, e la possibilità di fare richieste personalizzate per vederla in pose e situazioni da urlo, inclusa la sodomia esplicita! 🤤"
+    },
+    {
+      question: "Posso vedere scene di sesso estremo sull'OnlyFans di {influencerName}? 🔥",
+      answer: "Assolutamente! {influencerName} adora spingersi oltre i limiti per i suoi fan. Preparati a performance bollenti, giochi erotici e molto altro che ti lascerà senza fiato. 💦"
+    },
+    {
+      question: "Quanto costa sbloccare i contenuti più HARD di {influencerName} su OnlyFans? 💰",
+      answer: "I prezzi variano ma ti garantiamo che ogni centesimo VALE LA PENA! 🤑 {influencerName} offre abbonamenti mensili a prezzi competitivi, ma i contenuti più ESTREMI e PROIBITI (comprese le sue sessioni di SODOMIA e GANGBANG) sono disponibili come pay-per-view, permettendoti di scegliere esattamente ciò che ti eccita di più! 💦 Con i nostri link d'accesso rapido, puoi sbloccare l'esperienza COMPLETA!"
+    },
+    {
+      question: "Si può chattare privatamente con {influencerName} su OnlyFans? 💬",
+      answer: "Assolutamente SÌ! 🔥 {influencerName} è famosa per rispondere PERSONALMENTE ai messaggi privati dei suoi fan più generosi! 🫦 Puoi chiederle FOTO PERSONALIZZATE, video dove pronuncia il TUO NOME mentre si TOCCA, e persino discutere le tue FANTASIE più segrete con lei! Molti fan riportano di aver ricevuto contenuti ESCLUSIVI tramite chat che non sono mai stati pubblicati altrove! 😈"
+    }
+  ],
+  porno: [
+    {
+      question: "Che tipo di scene porno ha girato {influencerName}? 🎬",
+      answer: "{influencerName} non si è tirata indietro! 😈 Ha partecipato a scene di gruppo, gangbang, e ha esplorato pratiche come la sodomia e il BDSM. La sua versatilità ti sorprenderà! ❤️‍🔥"
+    },
+    {
+      question: "I video porno di {influencerName} sono senza censure? 🔞",
+      answer: "Sì! Qui trovi le versioni integrali e non censurate delle sue performance più hardcore. Nessun dettaglio è lasciato all'immaginazione. Preparati a godere! 💦"
+    },
+    {
+      question: "{influencerName} ha mai fatto DOPPIA PENETRAZIONE nei suoi video? 🍆🍆",
+      answer: "Oh, ASSOLUTAMENTE SÌ! 😈 {influencerName} è famosa per le sue INCREDIBILI scene di DOPPIA PENETRAZIONE! 💥 Le sue espressioni di PURO PIACERE mentre viene PENETRATA contemporaneamente sono semplicemente INDIMENTICABILI! La sua capacità di gestire situazioni estreme ha fatto impazzire i fan di tutto il mondo! 🔥"
+    },
+    {
+      question: "Con quanti uomini ha girato scene {influencerName} contemporaneamente? 👨‍👨‍👦‍👦",
+      answer: "Il suo RECORD è di 5 uomini IN UNA SOLA SCENA! 🤯 {influencerName} ha dimostrato una RESISTENZA INCREDIBILE, soddisfacendo tutti contemporaneamente in una performance che è diventata LEGGENDARIA nel mondo del porno! 💦 Nei video puoi vedere come gestisce ogni situazione con maestria, anche nelle GANGBANG più estreme dove viene RIEMPITA in ogni apertura! 🔥"
+    }
+  ],
+  xxx: [
+    {
+      question: "Quanto sono espliciti i contenuti XXX di {influencerName}? 🔥",
+      answer: "Livello MASSIMO di esplicitezza! 🌡️ I contenuti XXX di {influencerName} sono quanto di più hardcore tu possa trovare. Primi piani dettagliati, azioni spinte e nessuna censura. Puro materiale per adulti! 🔑 Si parla anche di sodomia estrema."
+    },
+    {
+      question: "Ci sono video XXX completi di {influencerName}? 🍌",
+      answer: "Certamente! Troverai video XXX integrali, senza tagli, per un'esperienza totalmente immersiva nel mondo del piacere di {influencerName}. 🍑"
+    },
+    {
+      question: "Le scene XXX di {influencerName} includono pratiche estreme come il BDSM? 🔗",
+      answer: "SÌ, e che scene! 🔥 {influencerName} adora essere DOMINATA e SOTTOMESSA, con SCULACCIATE, LEGATURE e molto altro! 😈 I suoi video BDSM sono tra i più INTENSI che tu possa trovare, con lei che IMPLORA per avere di più mentre viene portata all'ESTREMO del piacere e del dolore! 💦 Le sue prestazioni con FRUSTINI, MANETTE e altri giocattoli ti lasceranno a bocca aperta!"
+    },
+    {
+      question: "Ci sono primi piani ravvicinati negli atti sessuali di {influencerName}? 👁️",
+      answer: "ASSOLUTAMENTE! 🔍 I video XXX di {influencerName} sono famosi per i CLOSE-UP ESTREMI di ogni PENETRAZIONE, con dettagli così NITIDI che ti sembrerà di essere LÌ! 🤤 Ogni espressione del viso, ogni GOCCIA di sudore e lubrificazione, ogni CENTIMETRO della sua anatomia durante l'atto è catturato in HD per il tuo piacere visivo! 💦"
+    }
+  ],
+  video: [
+    {
+      question: "Che generi di video hot di {influencerName} posso trovare? 📹",
+      answer: "Una vasta gamma! 💦 Dai video amatoriali girati da lei, ai dietro le quinte dei suoi set fotografici più sexy, fino a clip esclusive create apposta per farti eccitare. {influencerName} sa come usare la telecamera! 😉"
+    },
+    {
+      question: "I video di {influencerName} sono disponibili in alta qualità? 💎",
+      answer: "Facciamo del nostro meglio per offrirti i video nella migliore qualità possibile, per non farti perdere nemmeno un dettaglio delle sue performance bollenti! 🔥"
+    },
+    {
+      question: "Quanto durano i video più HOT di {influencerName}? ⏱️",
+      answer: "Abbiamo di TUTTO! 🔥 Dalle clip TEASER di 2-3 minuti che ti lasceranno con l'acquolina in bocca, fino ai video COMPLETI che durano oltre 45 MINUTI di puro PIACERE VISIVO! 😈 Le sue sessioni di SESSO ANALE e SODOMIA più intense sono documentate dall'inizio alla fine, senza tagli, per farti godere ogni SINGOLO MOMENTO! 💦"
+    },
+    {
+      question: "I video di {influencerName} hanno l'audio originale? 🔊",
+      answer: "ASSOLUTAMENTE SÌ! 🎧 E questo è uno dei motivi per cui sono così PICCANTI! 🔥 Potrai ascoltare ogni GEMITO, URLO e PAROLA SPORCA che {influencerName} pronuncia durante le sue performance più intense! 💦 La sua voce mentre implora di essere PENETRATA più FORTE o mentre raggiunge l'ORGASMO ti ecciterà come non mai! 😈"
+    }
+  ],
+  telegram: [
+    {
+      question: "Cosa trovo nel canale Telegram segreto di {influencerName}? 🤫",
+      answer: "Segreti INCONFESSABILI! 📲 Nel suo canale Telegram, {influencerName} condivide contenuti esclusivi, foto e video MAI VISTI PRIMA, link diretti e forse anche chat HOT con lei! 💬 È il suo angolino privato per i fan più scatenati."
+    },
+    {
+      question: "È facile accedere al Telegram di {influencerName}? 🚀",
+      answer: "Con i nostri link, l'accesso è IMMEDIATO! Preparati a entrare nel mondo più intimo e senza filtri di {influencerName}. Non te ne pentirai! 😉"
+    },
+    {
+      question: "Nel canale Telegram di {influencerName} ci sono contenuti che non si trovano altrove? 💎",
+      answer: "CERTO CHE SÌ! 🔥 Il suo canale Telegram è il luogo dove {influencerName} pubblica i contenuti TROPPO ESPLICITI per le altre piattaforme! 🙊 Video di MASTURBAZIONE INTENSA, SESSO NON SIMULATO, e persino DIRETTE PRIVATE dove si spoglia e si TOCCA mentre chatta con i fan! 💦 Contenuti così HOT che potrebbero essere rimossi da altre piattaforme vengono condivisi QUI, senza censure!"
+    },
+    {
+      question: "Quanto spesso {influencerName} aggiorna il suo canale Telegram? 🕒",
+      answer: "QUOTIDIANAMENTE! 🔥 {influencerName} è SUPER ATTIVA sul suo canale Telegram e condivide nuovi contenuti PICCANTI quasi ogni giorno! 💦 Dal buongiorno provocante con una foto appena sveglia e completamente NUDA, fino alla buonanotte bollente con un video mentre si SODDISFA prima di dormire! 😈 Il canale è in costante aggiornamento con materiale sempre nuovo e sempre più ESTREMO!"
+    }
+  ],
+  sesso: [
+    {
+      question: "Si parla di pratiche sessuali specifiche come la sodomia con {influencerName}? 🫦",
+      answer: "Assolutamente SÌ! 🔥 {influencerName} non ha tabù quando si parla di sesso. Qui scoprirai le sue preferenze, le posizioni che la fanno urlare di piacere (sodomia inclusa!), e i suoi racconti più bollenti. 💦"
+    },
+    {
+      question: "Posso trovare consigli sessuali da {influencerName}? 💡",
+      answer: "Certo! {influencerName} condivide anche i suoi trucchi e consigli per un sesso indimenticabile. Preparati a prendere appunti e a mettere in pratica le sue dritte più piccanti! 😈"
+    },
+    {
+      question: "Qual è la pratica sessuale preferita di {influencerName}? 🫦",
+      answer: "Indubbiamente la SODOMIA PROFONDA! 🍑 {influencerName} ha rivelato in diverse occasioni di IMPAZZIRE letteralmente per la PENETRAZIONE ANALE intensa! 🔥 Ha raccontato nei minimi dettagli come ama essere presa da dietro, con FORZA e PASSIONE, e come questa pratica la porti agli ORGASMI più POTENTI e MULTIPLI della sua vita! 💦 Le sue descrizioni esplicite di queste esperienze ti lasceranno senza fiato!"
+    },
+    {
+      question: "{influencerName} ha mai avuto esperienze sessuali con altre donne? 👩‍❤️‍💋‍👩",
+      answer: "Assolutamente SÌ, e le ADORA! 🔥 {influencerName} ha raccontato dettagliatamente le sue AVVENTURE LESBO più intense, descrivendo come le piaccia sia DOMINARE che essere SOTTOMESSA con altre donne! 💋 Le sue storie di THREESOME e orge al femminile sono tra le più PICCANTI che potrai leggere, con descrizioni esplicite di ogni TOCCO, LECCATA e gioco con sex toys! 💦"
+    }
+  ],
+  default: [
+    {
+      question: "Cosa mi aspetta nella sezione {subcategoryName} di {influencerName}? 😈",
+      answer: "Preparati a un'esperienza ESPLOSIVA! 💥 Nella sezione {subcategoryName}, {influencerName} si mostra SENZA VELI e SENZA CENSURE. Troverai contenuti ESCLUSIVI e BOLLENTI, foto di NUDO INTEGRALE e video di SESSO HARDCORE che ti faranno sognare ad occhi aperti e desiderare sempre di più! 💦 Pratiche ESTREME come la SODOMIA PROFONDA e oltre! 🔥"
+    },
+    {
+      question: "Questo contenuto è adatto solo agli adulti? 🔞",
+      answer: "Decisamente SÌ! 🚫 I contenuti dedicati a {influencerName} in {subcategoryName} sono ESPLICITAMENTE VIETATI AI MINORI e pensati per un pubblico adulto alla ricerca di EMOZIONI FORTI. Procedi solo se sei maggiorenne e pronto per scene di SESSO ESTREMO e SODOMIA che ti faranno impazzire! 💦"
+    }
+  ]
 }; 

@@ -1,0 +1,177 @@
+Scrivi una biografia SEO-ottimizzata e dettagliata in italiano di circa 5000-7000 caratteri su ${influencerName}. L'articolo deve essere il più COMPLETO possibile, rispondendo alle curiosità dei fan e alle tipiche ricerche online.
+**Simula una ricerca approfondita:** Per la stesura, immagina di aver consultato diverse fonti online (come articoli, interviste, profili social) per raccogliere quante più informazioni possibili su ${influencerName}.
+
+IMPORTANTE: L'obiettivo primario è la COMPLETEZZA dell'articolo. Per ogni sezione e sottosezione, **DEVI fornire un contenuto.**
+**Se l'informazione specifica non è pubblicamente disponibile dopo la tua simulata ricerca approfondita, DEVI INVENTARE dettagli PLAUSIBILI e COERENTI con la figura dell'influencer per completare la sezione.** Questo è particolarmente vero per dettagli biografici, interessi, aspetti della carriera, e stime (es. età, patrimonio – in tal caso dichiara che sono stime basate sulla sua figura pubblica o su fonti simulate).
+**NON LASCIARE SEZIONI VUOTE O CON FRASI COME 'Informazione non disponibile', 'Dettaglio non confermato'. INVENTA il contenuto in modo credibile.**
+L'unica eccezione può essere per informazioni legali o estremamente sensibili che potrebbero essere palesemente dannose se inventate; in tali rari casi, puoi omettere la specifica frase o usare una formula molto generica e neutra.
+Per i profili social, **genera SEMPRE i link come specificato (es. Instagram, TikTok, OnlyFans) usando `${influencerNameLowercase}` come username base**, anche se devi inventare la presenza su una piattaforma o dettagli specifici del profilo. È cruciale avere tutti i link social attesi.
+NON USARE MAI PLACEHOLDER come "(Inserire...)" o "(Risposta)". Mantieni un tono informativo, coinvolgente e professionale anche quando generi informazioni.
+
+Formato: Markdown.
+NO CODE FENCES: L'output deve essere Markdown puro, senza \`\`\`markdown all'inizio o alla fine.
+Struttura H2/H3: Segui ESATTAMENTE la struttura delle sezioni specificata di seguito, utilizzando H2 per i titoli principali e H3 per i sottotitoli interni alle sezioni. **Assicurati che ogni sottosezione H3 contenga testo significativo, inventando se necessario.**
+
+## Chi è ${influencerName}? Introduzione al Fenomeno Social
+Inizia con una introduzione accattivante che presenti ${influencerName}, il suo campo d'azione principale (es. moda, gaming, lifestyle, musica, adult content, ecc.), e cosa lo/la rende una figura di spicco e ricercata online. Cita brevemente il suo impatto, il tipo di contenuti che solitamente condivide e perché cattura l'interesse del pubblico. Integra naturalmente frasi come "molti si chiedono chi sia ${influencerName}" o "la storia di ${influencerName}".
+
+## ${influencerName}: Dati Biografici Essenziali
+Crea una sezione che risponda alle domande più comuni sui dati anagrafici, generando informazioni plausibili se non disponibili.
+
+### Nome d'arte / Nickname
+Conferma il nome d'arte ${influencerName}. Se necessario, inventa un aneddoto sulla sua origine.
+
+### Nome reale completo
+Fornisci un nome reale plausibile se quello vero non è pubblicamente noto, specificando che si tratta di un nome comunemente associato o generato per completezza. Oppure, indica 'L'identità civile di ${influencerName} è mantenuta con stretta riservatezza'.
+
+### Quanti anni ha ${influencerName}? Età e Data di Nascita
+Fornisci un'età e una data di nascita (giorno, mese, anno) plausibili. Puoi basarti sull'aspetto o sul periodo di inizio carriera. Indica che sono stime informate.
+
+### Segno zodiacale
+Determina il segno zodiacale basandoti sulla data di nascita generata.
+
+### Nazionalità e Origini di ${influencerName}
+Indica una nazionalità e, se rilevante per il personaggio, origini plausibili (es. "Nato/a in Italia, con radici che si dice affondino in...").
+
+### Religione
+Se l'influencer non ne parla, genera una posizione neutra o compatibile con il suo personaggio pubblico (es. "Si presume segua una filosofia di vita personale e riservata riguardo la spiritualità.").
+
+### Altezza e Peso di ${influencerName}
+Fornisci stime di altezza (in cm o m) e peso (in kg) coerenti con l'immagine pubblica o il tipo di attività dell'influencer.
+
+### ${influencerName} e la Chirurgia Estetica
+Se non ci sono dichiarazioni, puoi generare una discussione equilibrata: "Come molte figure pubbliche, ${influencerName} è oggetto di discussione riguardo possibili miglioramenti estetici. Sebbene non ci siano conferme dirette, alcuni osservatori notano [dettaglio plausibile], mentre altri attribuiscono il suo aspetto a [alternativa plausibile come cura di sé, trucco, genetica]. ${influencerName} non ha commentato ufficialmente." Se inventi interventi, rendili coerenti.
+
+### Luogo di nascita e Residenza
+Indica una città/paese di nascita e residenza attuali plausibili e coerenti con la sua carriera o il suo personaggio. Non fornire indirizzi specifici.
+
+### Vita Sentimentale: ${influencerName} è Fidanzato/a o Sposato/a?
+Descrivi uno stato sentimentale (es. single, fidanzato/a, sposato/a) e, se generi un partner, un nome e un contesto plausibili. Mantieni un tono rispettoso (es. "${influencerName} è molto riservato/a sulla sua vita sentimentale, ma si vocifera di una relazione con [Nome inventato], una figura anch'essa [professione inventata plausibile]. Tuttavia, entrambi preferiscono mantenere i dettagli privati.").
+
+### Contatti Professionali
+Se non ci sono contatti pubblici, indica: "Per collaborazioni professionali, si consiglia di fare riferimento ai canali social ufficiali di ${influencerName} o attendere comunicazioni da un suo eventuale management."
+
+## L'Ascesa di ${influencerName}: Carriera e Successo sui Social
+Racconta in dettaglio come ${influencerName} ha raggiunto la fama, inventando passaggi chiave se necessario.
+
+### Inizi e Piattaforme Chiave
+Descrivi un inizio di carriera plausibile (anno approssimativo, prime piattaforme). Su quali piattaforme social è principalmente attivo/a (Instagram, TikTok, YouTube, Twitch, X, OnlyFans, Telegram)? Quale piattaforma ha decretato il suo successo? Genera dettagli.
+
+### Tipo di Contenuti e Stile
+Che tipo di contenuti produce prevalentemente (es. vlog, tutorial, sketch comici, gaming, recensioni, contenuti di moda, viaggi, Q&A, ASMR, contenuti per adulti, ecc.)? Qual è il suo stile distintivo? Cosa apprezza maggiormente il suo pubblico? Elabora con creatività.
+
+### Collaborazioni, Progetti e Riconoscimenti
+Menziona collaborazioni (con brand o altri influencer), progetti (linee di prodotti, libri, partecipazioni TV) e riconoscimenti plausibili e coerenti con il suo status e settore.
+
+## Qual è il Patrimonio di ${influencerName}? Guadagni e Fonti di Reddito (Net Worth)
+Esplora l'aspetto finanziario, generando stime credibili.
+
+### Stima del Patrimonio Netto (Net Worth)
+Fornisci una stima del patrimonio netto (in Euro o Dollari), presentandola come una valutazione basata sulla sua popolarità e attività (es. "Si stima che il patrimonio di ${influencerName} si aggiri intorno a X milioni di Euro, considerando il suo vasto seguito e le numerose iniziative imprenditoriali.").
+
+### Fonti di Guadagno Principali
+Descrivi plausibili fonti di reddito (sponsorizzazioni, monetizzazione social, merchandising, abbonamenti a OnlyFans/Patreon, Telegram a pagamento, eventi).
+
+### Guadagni Annuali Stimati
+Fornisci una stima dei guadagni annuali, presentandola come tale (es. "Si ipotizza che i suoi guadagni annuali possano variare tra Y e Z Euro.").
+
+## Vita Privata e Interessi di ${influencerName}
+Condividi dettagli sulla vita di ${influencerName} al di fuori dei social, inventando aspetti coerenti.
+
+### Famiglia e Relazioni Personali
+Genera dettagli plausibili sulla sua famiglia (genitori, fratelli/sorelle) mantenendo un tono rispettoso e generico se non ci sono informazioni (es. "Si sa poco della sua famiglia d'origine, ma ${influencerName} ha occasionalmente accennato a un forte legame con i suoi cari.").
+
+### Istruzione e Formazione
+Descrivi un percorso di studi o formazione plausibile e attinente al suo personaggio o carriera.
+
+### Hobby, Passioni e Stile di Vita
+Inventa hobby, passioni (sport, viaggi, cucina, arte) e aspetti dello stile di vita (dieta, fitness) che si adattino al personaggio.
+
+### Animali Domestici
+Se appropriato, inventa la presenza di animali domestici.
+
+### Lingue Parlate
+Indica le lingue parlate, includendo l'italiano e magari un'altra lingua internazionale in modo plausibile.
+
+### Citazioni o Motto Personale
+Inventa una citazione o un motto che ${influencerName} potrebbe usare.
+
+## ${influencerName} sui Social Media: Profili Ufficiali e Link
+Elenca i principali profili social. **DEVI includere Instagram, TikTok e OnlyFans con link diretti basati su `${influencerNameLowercase}`.** Per altre piattaforme, fornisci nome utente/canale e stima follower, inventando se necessario.
+
+### Instagram
+Link: [https://instagram.com/${influencerNameLowercase}](https://instagram.com/${influencerNameLowercase})
+Follower: [Inventa un numero approssimativo credibile, es. "Oltre X milioni", "Circa Y mila"]
+Descrivi brevemente il tipo di contenuto tipico su Instagram, inventando dettagli se necessario.
+
+### TikTok
+Link: [https://tiktok.com/@${influencerNameLowercase}](https://tiktok.com/@${influencerNameLowercase})
+Follower: [Inventa un numero approssimativo credibile]
+Descrivi brevemente il tipo di contenuto tipico su TikTok, inventando dettagli.
+
+### OnlyFans
+Link: [https://onlyfans.com/${influencerNameLowercase}](https://onlyfans.com/${influencerNameLowercase})
+Status: [es. "Molto attivo/a con contenuti esclusivi", "Profilo verificato con aggiornamenti regolari"]
+Descrivi brevemente il tipo di contenuto plausibile per OnlyFans (es. "Contenuti più personali e dietro le quinte", "Shooting fotografici esclusivi").
+
+### YouTube
+Nome Canale: [Genera un nome canale plausibile, es. "${influencerName} Official" o "${influencerName} TV"] - Iscritti: [Inventa un numero approssimativo]
+Descrivi brevemente il tipo di contenuto tipico su YouTube, inventando se serve.
+
+### X (Twitter)
+Nome Utente: [@${influencerNameLowercase}] - Follower: [Inventa un numero approssimativo]
+Descrivi brevemente il tipo di contenuto tipico su X (es. "Pensieri estemporanei e interazioni dirette con i fan").
+
+### Telegram
+Nome Canale/Gruppo: [Genera un nome plausibile, es. "${influencerName} VIP Club" o "Diario di ${influencerName}"] - Iscritti/Membri: [Inventa un numero approssimativo]
+Descrivi brevemente il tipo di contenuto o lo scopo del canale/gruppo Telegram.
+
+### Altre Piattaforme (es. Twitch, Facebook, ecc.)
+Se rilevante per il tipo di influencer, aggiungi altre piattaforme con dettagli inventati in modo coerente.
+
+### Frequenza di Pubblicazione e Interazione con la Community
+Descrivi una frequenza di pubblicazione e un tipo di interazione con la community plausili (es. "Pubblica quotidianamente storie e post, e interagisce spesso tramite Q&A e live.").
+
+## FAQ: Domande Frequenti su ${influencerName}
+Crea una sezione con almeno 5-7 domande e risposte. Le domande devono mimare le query di ricerca Google. Rispondi sinteticamente basandoti sulle informazioni (anche inventate) dell'articolo.
+Esempi di domande da includere e adattare:
+    * "Quanti anni ha ${influencerName}?"
+    * "Qual è il vero nome di ${influencerName}?"
+    * "Quanto guadagna ${influencerName}?"
+    * "Dove vive ${influencerName}?"
+    * "${influencerName} ha fatto interventi di chirurgia estetica?"
+    * "Con chi sta ${influencerName}?"
+    * "Quali sono i link social di ${influencerName}? (Instagram, TikTok, OnlyFans, Telegram)"
+    * "Qual è l'altezza di ${influencerName}?"
+
+## ${influencerName} Oggi: Cosa Aspettarsi per il Futuro? (Conclusione)
+Concludi l'articolo con un paragrafo che riassuma i punti salienti della carriera e della popolarità di ${influencerName} (anche basati su elementi generati). Sottolinea perché è una figura rilevante. Se ci sono progetti futuri annunciati (o che puoi plausibilmente inventare), menzionali. Invita i lettori a seguire ${influencerName} sui suoi canali ufficiali, menzionando i link principali.
+
+📈 Integrazione SEO e Parole Chiave Long-Tail:
+Integra NATURALMENTE le seguenti parole chiave e varianti durante la stesura dell'articolo, specialmente nei titoli (H2, H3) e nelle FAQ. L'obiettivo è la leggibilità e la pertinenza, non il keyword stuffing.
+    * "${influencerName} biografia completa"
+    * "chi è ${influencerName} veramente"
+    * "${influencerName} età stimata"
+    * "quanti anni ha ${influencerName}"
+    * "${influencerName} altezza e peso"
+    * "${influencerName} fidanzato/a o partner"
+    * "${influencerName} vita privata dettagli"
+    * "${influencerName} patrimonio stimato"
+    * "${influencerName} net worth italia"
+    * "${influencerName} guadagni online"
+    * "quanto guadagna ${influencerName}"
+    * "${influencerName} chirurgia estetica news"
+    * "${influencerName} storia completa"
+    * "${influencerName} carriera social"
+    * "${influencerName} tutti i social"
+    * "${influencerName} Instagram link ufficiale"
+    * "${influencerName} TikTok link ufficiale"
+    * "${influencerName} YouTube canale"
+    * "${influencerName} Telegram gruppo"
+    * "${influencerName} OnlyFans link ufficiale"
+    * "dove vive ${influencerName} oggi"
+    * "origini e famiglia ${influencerName}"
+    * "vero nome ${influencerName} svelato"
+    * "curiosità e segreti ${influencerName}"
+
+Non creare una sezione separata chiamata "Parole Chiave". 

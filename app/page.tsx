@@ -2,14 +2,17 @@ import { CitySearchAndDisplay } from '@/components/common/city-search-display';
 import { getAllCities } from '@/lib/utils/geo';
 // Import the category links and types
 import { categoryAffiliateLinks } from '@/lib/constants';
-// import Link from 'next/link'; // No longer directly using Link for these CTAs
 import { CategoryCtaButtonWithModal } from '@/components/common/category-cta-button-with-modal'; // Added
 import { capitalizeSlug } from '@/lib/utils/string'; // Assuming it's in string.ts
 import { homePageStrings } from '@/app/translations'; // Import translations
+import { getInfluencers } from '@/lib/data-loader'; // Added for influencer data
+import { InfluencerSearchAndDisplay } from '@/components/common/influencer-search-display'; // Added for influencer search
+import Link from 'next/link'; // Added for the new button
 // Types will be implicitly handled or can be imported from @/types/geo if needed explicitly
 
 export default async function HomePage() {
   const cities = await getAllCities();
+  const influencers = await getInfluencers(); // Fetch influencers
   const categoryDisplayNames = homePageStrings.categoryDisplayNames; // Use from translations
 
   return (
@@ -47,6 +50,21 @@ export default async function HomePage() {
             {homePageStrings.exploreByCityHeading}
           </h2>
           <CitySearchAndDisplay allCities={cities} itemsPerPage={15} />
+        </section>
+
+        {/* Influencer Search and Display Section - ADDED */}
+        <section className="w-full mt-12 flex flex-col items-center">
+          <h2 className="text-2xl sm:text-3xl font-semibold text-gray-700 dark:text-gray-200 mb-6">
+            {homePageStrings.exploreByInfluencerHeading || 'Explore by Influencer'} {/* Added a fallback text */}
+          </h2>
+          <InfluencerSearchAndDisplay allInfluencers={influencers} itemsPerPage={10} />
+          <div className="mt-8">
+            <Link href="/influencers" passHref>
+              <div className="px-8 py-3 bg-pink-600 text-white text-lg font-semibold rounded-lg shadow-md hover:bg-pink-700 hover:shadow-lg transition-all duration-200 ease-in-out cursor-pointer">
+                {homePageStrings.viewAllInfluencersButton}
+              </div>
+            </Link>
+          </div>
         </section>
         
         {/* Placeholder for other sections like 'How it Works' */}

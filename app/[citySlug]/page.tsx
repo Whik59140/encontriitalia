@@ -119,7 +119,7 @@ export default async function CityPage(props: CityPageProps) {
             categoryDisplayName="Incontri" // Generic placeholder, not used by 'cityGeneral' strings
             subCategoryType="cityGeneral"
           />
-        </div>
+                      </div>
 
         <div className="mt-12 sm:mt-16">
           <SeoTextSection 
@@ -127,7 +127,7 @@ export default async function CityPage(props: CityPageProps) {
             categoryDisplayName="Incontri" // Generic placeholder, not used by 'cityGeneral' strings
             subCategoryType="cityGeneral"
           />
-        </div>
+                    </div>
 
       </main>
       <Footer 
