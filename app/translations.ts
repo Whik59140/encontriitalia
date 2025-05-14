@@ -147,8 +147,7 @@ export const annunciIncontriPageStrings = {
     trans: 'Trans',
     trav: 'Trav',
     escort: 'Escort',
-    studentessa: 'Studentesse',
-    adulti: 'Adulti',
+  
   } as { [key: string]: string },
   generateMetadataTitle: (subCategoryDisplayName: string, categoryName: string, cityName: string) => `Annunci ${subCategoryDisplayName} ${categoryName} a ${cityName} - Trova Subito!`,
   generateMetadataDescription: (subCategoryDisplayName: string, categoryName: string, cityName: string) => `Scopri annunci per ${subCategoryDisplayName} ${categoryName} a ${cityName}. Connessioni autentiche e profili verificati.`,
@@ -524,11 +523,7 @@ export const directEncounterCtaStrings = {
       label: "Incontri Ragazze 18+",
       imageSrc: '/buttons/ragazze.webp',
     },
-    {
-      id: 'studentesse',
-      label: "Incontri Studentesse 18+",
-      imageSrc: '/buttons/studentessa.webp',
-    },
+  
   ],
   // Emojis for the buttons inside the component
   categoryEmojis: {
@@ -538,7 +533,7 @@ export const directEncounterCtaStrings = {
     trav: '👗',
     milf: '💋',
     ragazze: '✨',
-    studentesse: '🎓',
+   
   } as { [key: string]: string },
 
   // Display names for the modal confirmation title
@@ -549,7 +544,7 @@ export const directEncounterCtaStrings = {
     trav: 'Trav',
     milf: 'MILF',
     ragazze: 'Ragazze',
-    studentesse: 'Studentesse',
+   
   } as { [key: string]: string },
 };
 

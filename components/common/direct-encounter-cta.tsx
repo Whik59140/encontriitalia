@@ -62,7 +62,7 @@ export function DirectEncounterCTA({ cityName }: DirectEncounterCTAProps) {
     setIsModalOpen(false);
   }
 
-  const headingText = cityName
+  const headingText = cityName 
     ? directEncounterCtaStrings.headingTextWithCity(cityName)
     : directEncounterCtaStrings.headingTextDefault;
 
