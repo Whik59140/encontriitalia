@@ -17,7 +17,7 @@ import { TopArticleCTA } from '@/components/common/top-article-cta';
 import { WebcamCtaButton } from '@/components/common/webcam-cta-button'; // Import the Webcam CTA Button
 import Link from 'next/link'; // Corrected import for Link
 import { CtaSection } from '@/components/common/cta-section'; // <<< ADD THIS IMPORT
-import { categoryAffiliateLinks } from '@/lib/constants'; // <<< IMPORT THE CENTRALIZED MAP
+import { categoryAffiliateLinks, type AffiliateCategory } from '@/lib/constants'; // <<< IMPORT THE CENTRALIZED MAP
 import { capitalizeSlug } from '@/lib/utils/string';
 import { ChevronLeft } from 'lucide-react'; // Import ChevronLeft icon for back arrow
 import { articlePageStrings } from '@/app/translations'; // Import article page translations
@@ -234,7 +234,7 @@ export default async function SpecificArticlePage({ params }: { params: Promise<
   const displayCityName = frontmatter.cityName || capitalizeSlug(citySlug);
   const displayCategoryName = CATEGORY_DISPLAY_NAMES_FOR_RELATED[categorySlug] || capitalizeSlug(categorySlug);
 
-  const dynamicAffiliateLink = categoryAffiliateLinks[categorySlug] || 'https://defaultfallback.link';
+  const dynamicAffiliateLink = categoryAffiliateLinks[categorySlug as AffiliateCategory] || 'https://defaultfallback.link';
 
   const ctaTitle = `Cerchi Incontri ${displayCategoryName} a ${displayCityName}? 🤔`;
   const ctaSubtitle = `Registrazione Gratuita ✅ con Profili Veri ✅.\nConferma la tua email per iniziare subito!`;

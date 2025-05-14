@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { categoryAffiliateLinks } from '@/lib/constants'; // Import affiliate links
+import { categoryAffiliateLinks, type AffiliateCategory } from '@/lib/constants'; // Import affiliate links
 import { sectionCtaStrings } from '@/app/translations'; // Import translations
 
 interface SectionCTAProps {
@@ -11,7 +11,7 @@ interface SectionCTAProps {
 }
 
 export function SectionCTA({ cityName, categoryName, categorySlug }: SectionCTAProps) {
-  const affiliateUrl = categorySlug ? categoryAffiliateLinks[categorySlug] : undefined;
+  const affiliateUrl = categorySlug ? categoryAffiliateLinks[categorySlug as AffiliateCategory] : undefined;
 
   if (!affiliateUrl) {
     return null; // Don't render if no link for the category

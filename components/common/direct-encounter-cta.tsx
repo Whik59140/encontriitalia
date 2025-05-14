@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { InterstitialModal } from './interstitial-modal';
 import { directEncounterCtaStrings } from '@/app/translations'; // Import translations
-import { categoryAffiliateLinks } from '@/lib/constants'; // Import affiliate links
+import { categoryAffiliateLinks, type AffiliateCategory } from '@/lib/constants'; // Import affiliate links
 
 // Define the type for the merged button structure
 interface MappedEncounterButton {
@@ -37,7 +37,7 @@ export function DirectEncounterCTA({ cityName }: DirectEncounterCTAProps) {
   // Map translated buttons with affiliate links
   const mappedEncounterButtons: MappedEncounterButton[] = directEncounterCtaStrings.encounterButtons.map(btn => ({
     ...btn,
-    affiliateUrl: categoryAffiliateLinks[btn.id] || categoryAffiliateLinks.default || '#', // Fallback to # if no link
+    affiliateUrl: categoryAffiliateLinks[btn.id as AffiliateCategory] || '#', // Fallback to # if no link
   }));
 
   const [selectedButtonInfo, setSelectedButtonInfo] = useState<MappedEncounterButton | null>(null);

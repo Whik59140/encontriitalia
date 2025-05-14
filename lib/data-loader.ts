@@ -72,7 +72,7 @@ export async function getArticleDataBySlug(slug: string): Promise<ArticleData | 
       date: data.date || new Date().toISOString().split('T')[0],
       content: content,
     };
-  } catch (error) {
+  } catch {
     return null;
   }
 }
@@ -100,7 +100,7 @@ export async function getArticleDataForSubcategory(slug: string, subcategory: st
       date: data.date || new Date().toISOString().split('T')[0],
       content: content,
     };
-  } catch (error) {
+  } catch {
     // It's common for subcategory files not to exist, so don't log an error, just return null.
     return null;
   }

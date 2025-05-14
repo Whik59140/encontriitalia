@@ -5,7 +5,7 @@ import { jsx, jsxs } from 'react/jsx-runtime';
 import { unified } from 'unified';
 import rehypeReact, { Options as RehypeReactOptions } from 'rehype-react';
 import type { Root as HastRoot, ElementContent as HastElementContent } from 'hast';
-import Image, { StaticImageData } from 'next/image';
+import Image from 'next/image';
 
 import {
   Accordion,

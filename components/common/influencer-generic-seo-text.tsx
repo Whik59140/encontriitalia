@@ -4,6 +4,26 @@ import React from 'react';
 // Assuming your translations are in a central file, adjust path if necessary
 import { influencerSeoTextStrings } from '@/app/translations'; 
 
+// Define an interface for the structure of SEO text for a single subcategory
+interface SeoTextParts {
+  title?: string;
+  p1?: string;
+  p2?: string;
+  h3?: string;
+  li1?: string;
+  li2?: string;
+  li3?: string;
+  li4?: string;
+  li5?: string;
+  p3?: string;
+}
+
+// Define the type for the entire influencerSeoTextStrings object
+interface InfluencerSeoTextStringsType {
+  [key: string]: SeoTextParts | undefined; // Allows any string key, value is SeoTextParts or undefined
+  default: SeoTextParts; // Ensure default is always present and of type SeoTextParts
+}
+
 interface InfluencerGenericSeoTextProps {
   influencerName: string;
   subcategorySlug: string; // Use slug to fetch the correct template
@@ -25,7 +45,8 @@ export function InfluencerGenericSeoText({
 
   // Select the correct set of strings based on subcategorySlug
   // Fallback to a 'default' template if a specific one for the subcategory isn't found
-  const strings = (influencerSeoTextStrings as any)[subcategorySlug] || influencerSeoTextStrings.default;
+  const typedInfluencerSeoTextStrings = influencerSeoTextStrings as unknown as InfluencerSeoTextStringsType;
+  const strings: SeoTextParts = typedInfluencerSeoTextStrings[subcategorySlug] || typedInfluencerSeoTextStrings.default;
 
   if (!strings) {
     // This case should ideally not be reached if 'default' template is always present

@@ -9,7 +9,7 @@ import Link from 'next/link';
 import { ChevronLeft } from 'lucide-react';
 import { FaqSection } from '@/components/common/faq-section';
 import { SeoTextSection } from '@/components/common/seo-text-section';
-import { categoryAffiliateLinks } from '@/lib/constants';
+import { categoryAffiliateLinks, type AffiliateCategory } from '@/lib/constants';
 import { WebcamCtaButton } from '@/components/common/webcam-cta-button';
 import { annunciIncontriPageStrings, globalSiteStrings } from '@/app/translations';
 
@@ -81,7 +81,7 @@ export default async function AnnunciIncontriPage({ params: paramsPromise }: Ann
 
   const cityDisplayName = capitalizeSlug(citySlug);
   const categoryDisplayName = annunciIncontriPageStrings.categoryDisplayNames[categorySlug] || capitalizeSlug(categorySlug);
-  const affiliateLink = categoryAffiliateLinks[categorySlug] || categoryAffiliateLinks['default'] || '#';
+  const affiliateLink = categoryAffiliateLinks[categorySlug as AffiliateCategory] || '#';
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100 dark:bg-gray-950">

@@ -1,23 +1,10 @@
 import { getInfluencers, getInfluencerBySlug, getArticleDataForSubcategory } from '@/lib/data-loader';
 import { Metadata, ResolvingMetadata } from 'next';
 import { notFound } from 'next/navigation';
-import Image from 'next/image'; // Keep for header/footer if needed, or main page structure
-import { unified } from 'unified';
-import remarkParse from 'remark-parse';
-import remarkGfm from 'remark-gfm';
-import remarkRehype from 'remark-rehype';
-import rehypeSlug from 'rehype-slug';
-import type { Root as HastRoot, Element as HastElement, ElementContent as HastElementContent, Text as HastText } from 'hast';
-import type { Root as MdastRootType } from 'mdast';
-
-// Import the renderer - we can reuse or adapt (might not be directly used if all content in client wrapper)
-// import { InfluencerArticleRenderer, InfluencerArticleRenderData, AccordionSectionData, HeadingData } from '@/components/common/influencer-article-renderer';
 import Link from 'next/link';
 import { ChevronLeft } from 'lucide-react';
-import { visit } from 'unist-util-visit';
 
 // Constants and helpers for footer and data
-import { REGISTRATION_OPTIONS, categoryAffiliateLinks } from '@/lib/constants';
 import { seedRandom } from '@/lib/content-generator'; // For deterministic shuffling for footer
 
 // Import the new client wrapper component
@@ -37,11 +24,15 @@ const SUB_CATEGORY_ICONS: Record<string, { emoji?: string; iconSrc?: string }> =
   sesso: { emoji: '💬' }, // Placeholder, can be more specific
 };
 
+// Define the shape of the resolved parameters
+type ResolvedPageParams = {
+  slug: string;
+  subcategory: string;
+};
+
+// This interface defines the props for the Page component itself
 interface InfluencerSubcategoryPageProps {
-  params: {
-    slug: string;
-    subcategory: string;
-  };
+  params: Promise<ResolvedPageParams>; // params is a Promise
 }
 
 // NavButtonProps needs to be accessible or redefined if not imported by client wrapper from a shared location
@@ -67,9 +58,11 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata(
-  { params: { slug, subcategory } }: InfluencerSubcategoryPageProps,
-  parent: ResolvingMetadata
+  props: InfluencerSubcategoryPageProps,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  _parent: ResolvingMetadata
 ): Promise<Metadata> {
+  const { slug, subcategory } = await props.params;
   const influencer = await getInfluencerBySlug(slug);
   const articleData = await getArticleDataForSubcategory(slug, subcategory);
   if (!influencer) {
@@ -94,9 +87,8 @@ export async function generateMetadata(
 // For now, keeping them in case any part of the page (e.g. if MD was rendered here) needed them.
 // If not, they can be removed for cleanliness.
 
-export default async function InfluencerSubcategoryPage({ params }: InfluencerSubcategoryPageProps) {
-  const slug = params.slug;
-  const currentSubcategory = params.subcategory;
+export default async function InfluencerSubcategoryPage({ params: paramsPromise }: InfluencerSubcategoryPageProps) {
+  const { slug, subcategory: currentSubcategory } = await paramsPromise; // Await and destructure params
   const influencer = await getInfluencerBySlug(slug);
 
   if (!influencer) {
@@ -149,14 +141,14 @@ export default async function InfluencerSubcategoryPage({ params }: InfluencerSu
     {
       src: '/leaks/1.webp', 
       alt: `Anteprima video ${subcategoryTitleCase} di ${influencer.name} 1`,
-      title: 'GUARDA ORA! 😈🔞',
-      subtitle: 'Accesso VIP Immediato! 💦'
+      title: `Guarda ${influencer.name} Senza Censure! 💋`,
+      subtitle: 'Video Privato ESCLUSIVO! 🔞'
     },
     {
       src: '/leaks/2.webp', 
       alt: `Anteprima video ${subcategoryTitleCase} di ${influencer.name} 2`,
-      title: 'XXX ESCLUSIVO! 🤤🔥',
-      subtitle: 'Clicca e Godi! 🍑🍆'
+      title: `${influencer.name} TI ASPETTA! 🔥`,
+      subtitle: 'Clicca e Vedi i Suoi Segreti! 🤫'
     },
   ];
 
@@ -180,8 +172,6 @@ export default async function InfluencerSubcategoryPage({ params }: InfluencerSu
           currentSubcategory={currentSubcategory}
           subcategoryTitleCase={subcategoryTitleCase}
           navButtons={navButtons}
-          REGISTRATION_OPTIONS={REGISTRATION_OPTIONS} // These are imported from @lib/constants
-          categoryAffiliateLinks={categoryAffiliateLinks} // Also from @lib/constants
           teaserImages={teaserImagesData} // Pass the dynamically set teaser images
         />
       </main>

@@ -2,10 +2,11 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
-import { PlayCircle, X } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { PlayCircle, X, MousePointerClick } from 'lucide-react';
 import { InfluencerSeoText } from '@/components/common/influencer-seo-text';
 import { InfluencerFaqSection } from '@/components/common/influencer-faq-section';
+import { REGISTRATION_OPTIONS, categoryAffiliateLinks, type AffiliateCategory } from '@/lib/constants';
 
 // Type definitions (can be moved to a central types file later)
 interface NavButtonProps {
@@ -25,9 +26,11 @@ interface Influencer {
 interface RegistrationOption {
   key: string; // Corresponds to AffiliateCategory which is keyof typeof categoryAffiliateLinks
   label: string;
-  emoji: string;
+  imageSrc: string;
   spicyText: string;
   buttonText: string;
+  onlineMembersMin: number; // Added for online count
+  onlineMembersMax: number; // Added for online count
 }
 
 interface TeaserImage {
@@ -42,8 +45,6 @@ interface InfluencerSubcategoryClientWrapperProps {
   currentSubcategory: string;
   subcategoryTitleCase: string;
   navButtons: NavButtonProps[];
-  REGISTRATION_OPTIONS: RegistrationOption[];
-  categoryAffiliateLinks: Record<string, string>;
   teaserImages: TeaserImage[];
 }
 
@@ -52,11 +53,93 @@ export function InfluencerSubcategoryClientWrapper({
   currentSubcategory,
   subcategoryTitleCase,
   navButtons,
-  REGISTRATION_OPTIONS,
-  categoryAffiliateLinks,
   teaserImages,
 }: InfluencerSubcategoryClientWrapperProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [onlineCounts, setOnlineCounts] = useState<Record<string, number>>({});
+
+  // Helper function for deterministic random number
+  function getDeterministicRandomNumber(min: number, max: number, seed: string): number {
+    let hash = 0;
+    for (let i = 0; i < seed.length; i++) {
+      const char = seed.charCodeAt(i);
+      hash = ((hash << 5) - hash) + char;
+      hash |= 0; // Convert to 32bit integer
+    }
+    const random = Math.abs(hash);
+    return min + (random % (max - min + 1));
+  }
+
+  useEffect(() => {
+    const initialCounts: Record<string, number> = {};
+    REGISTRATION_OPTIONS.forEach(option => {
+      initialCounts[option.key] = getDeterministicRandomNumber(
+        option.onlineMembersMin,
+        option.onlineMembersMax,
+        option.key + "-initial"
+      );
+    });
+    setOnlineCounts(initialCounts);
+  }, []); // Runs once on mount
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setOnlineCounts(prevCounts => {
+        const newCounts = { ...prevCounts };
+        REGISTRATION_OPTIONS.forEach(option => {
+          const currentCount = prevCounts[option.key] || getDeterministicRandomNumber(option.onlineMembersMin, option.onlineMembersMax, option.key + "-fallback");
+          // Fluctuate by ~2% of range, skew towards positive during peak conceptual times if desired, or just random walk
+          const range = option.onlineMembersMax - option.onlineMembersMin;
+          let fluctuation = Math.floor(Math.random() * (range * 0.05)) - Math.floor(range * 0.025); // Max 5% change, can decrease
+          fluctuation = Math.random() < 0.6 ? Math.abs(fluctuation) : -Math.abs(fluctuation); // 60% chance to increase
+
+          let newCount = currentCount + fluctuation;
+          
+          const absoluteMin = Math.max(20, Math.floor(option.onlineMembersMin * 0.75));
+          const absoluteMax = Math.floor(option.onlineMembersMax * 1.25);
+          
+          newCount = Math.max(absoluteMin, Math.min(newCount, absoluteMax));
+          newCounts[option.key] = Math.floor(newCount);
+        });
+        return newCounts;
+      });
+    }, 3500); // Update every 3.5 seconds
+
+    return () => clearInterval(intervalId); // Cleanup on unmount
+  }, []); // Runs once on mount to set up interval
+
+  const renderRegistrationButton = (option: RegistrationOption, sectionSeedSuffix: string) => {
+    const count = onlineCounts[option.key] || getDeterministicRandomNumber(option.onlineMembersMin, option.onlineMembersMax, option.key + sectionSeedSuffix + "-render");
+    return (
+      <div key={option.key + sectionSeedSuffix} className="group bg-white/10 dark:bg-black/20 p-1 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300">
+        <a href={categoryAffiliateLinks[option.key as AffiliateCategory]} target="_blank" rel="noopener noreferrer sponsored" className="relative block w-full aspect-square rounded-md overflow-hidden shadow-sm transition-transform duration-300 group-hover:scale-105 focus:outline-none focus:ring-2 focus:ring-pink-400 focus:ring-opacity-75">
+          <Image src={option.imageSrc} alt={option.label} layout="fill" className="object-cover z-0" priority={sectionSeedSuffix.includes('onpage')} />
+          
+          {/* Online Users Pill (Top Right) */}
+          <div className="absolute top-1.5 right-1.5 sm:top-2 sm:right-2 flex items-center bg-green-600/90 text-white text-[10px] sm:text-xs font-bold px-2 py-1 rounded-full shadow-lg z-20 backdrop-blur-sm">
+            <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-lime-300 rounded-full mr-1 sm:mr-1.5 animate-pulse"></div>
+            <span>{count}</span>
+            <span className="ml-1 opacity-90">Online</span>
+          </div>
+
+          {/* Central "ENTRA 🔞" Button - Now with responsive sizing for desktop */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
+            <div className="px-3 py-1.5 text-xs sm:px-5 sm:py-2.5 sm:text-base md:px-6 md:py-3 md:text-lg rounded-full bg-gradient-to-r from-green-500 to-emerald-600 text-white font-bold shadow-md group-hover:scale-110 group-hover:shadow-lg transition-all duration-300 whitespace-nowrap">
+              ENTRA 🔞
+            </div>
+          </div>
+
+          {/* Bottom Text Overlay - Refined icon sizing and alignment */}
+          <div className="absolute inset-x-0 bottom-0 p-1.5 xs:p-2 bg-black/70 group-hover:bg-pink-600/80 z-10 transition-all duration-300 group-hover:-translate-y-1">
+            <span className="block text-center text-[10px] xs:text-xs sm:text-sm md:text-base font-bold text-white transition-colors">
+              <MousePointerClick size={14} className="inline-block align-middle mr-1 mb-px opacity-80 group-hover:opacity-100 group-hover:-translate-y-0.5 transition-transform duration-300" /> 
+              {option.buttonText}
+            </span>
+          </div>
+        </a>
+      </div>
+    );
+  };
 
   return (
     <>
@@ -144,74 +227,36 @@ export function InfluencerSubcategoryClientWrapper({
           <span role="img" aria-label="lock" className="text-5xl">🔑</span>
         </div>
         <h2 className="text-2xl sm:text-3xl font-bold mb-3">
-          REGISTRATI GRATIS: Contenuti XXX Ti Aspettano! 🚀
+          ACCESSO GRATIS IN 30 SEC! 🇮🇹
         </h2>
         <p className="text-md sm:text-lg mb-6 max-w-2xl mx-auto">
-          Vuoi vedere {influencer.name} in versione {subcategoryTitleCase} COMPLETAMENTE ESPLICITA e poter scopare GRATIS con Donne, Gay e Trans Italiani super CALDI? 🔥 Registrati ora! È veloce, gratuito e ti dà accesso a TUTTO! 🔞💦
+          Solo la tua email e sei dentro! 😉 Convalida rapida per sbloccare TUTTO. Contenuti XXX ti aspettano! 😈🔞
         </p>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
-          {REGISTRATION_OPTIONS.map((option) => (
-            <div key={option.key} className="bg-white/10 dark:bg-black/20 p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 flex flex-col items-center text-center">
-              <span className="text-3xl mb-2">{option.emoji}</span>
-              <h3 className="text-lg font-semibold mb-1 text-white">{option.label}</h3>
-              <p className="text-xs text-pink-200 dark:text-purple-300 mb-3 flex-grow">{option.spicyText}</p>
-              <a
-                href={categoryAffiliateLinks[option.key]}
-                target="_blank"
-                rel="noopener noreferrer sponsored"
-                className="w-full mt-auto inline-block bg-white text-pink-600 font-bold text-sm px-6 py-2.5 rounded-md shadow-sm hover:bg-gray-100 transition-colors duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-pink-300 focus:ring-opacity-75"
-              >
-                {option.buttonText}
-              </a>
-            </div>
-          ))}
+        
+        {/* Restored single grid for all 4 options */}
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-2 sm:gap-2.5 md:gap-3 mb-6">
+          {REGISTRATION_OPTIONS.map(option => renderRegistrationButton(option, "-onpage"))}
         </div>
-        <p className="text-xs text-pink-200 dark:text-purple-300">
+        
+        <p className="text-xs text-pink-200 dark:text-purple-300 mt-6">
           Cliccando ti registri al nostro portale partner. La registrazione è sempre gratuita.
         </p>
       </section>
 
-      {/* Registration Modal */}
+      {/* Registration Modal (layout for buttons remains as a single grid) */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-[100] p-4 backdrop-blur-sm">
-          <div className="bg-gradient-to-br from-pink-600 to-purple-700 p-5 sm:p-8 rounded-xl shadow-2xl text-white w-full max-w-2xl relative transform transition-all duration-300 ease-out scale-100 opacity-100">
-            <button 
-              onClick={() => setIsModalOpen(false)} 
-              className="absolute top-3 right-3 sm:top-4 sm:right-4 text-white hover:text-gray-300 transition-colors p-1 rounded-full bg-white/10 hover:bg-white/20"
-              aria-label="Chiudi modale registrazione"
-            >
-              <X size={24} />
-            </button>
+          <div className="bg-gradient-to-br from-pink-600 to-purple-700 p-5 sm:p-8 rounded-xl shadow-2xl text-white w-full max-w-lg relative transform transition-all duration-300 ease-out scale-100 opacity-100">
+            <button onClick={() => setIsModalOpen(false)} className="absolute top-3 right-3 sm:top-4 sm:right-4 text-white hover:text-gray-300 transition-colors p-1.5 rounded-full bg-black/30 hover:bg-black/50 z-[110]" aria-label="Chiudi modale registrazione"><X size={24} /></button>
             <div className="text-center mb-5 sm:mb-6">
-              <span role="img" aria-label="lock" className="text-4xl sm:text-5xl">🔑</span>
-              <h2 className="text-xl sm:text-2xl font-bold mt-2 mb-1">
-                ACCESSO XXX ESCLUSIVO! 😈💦
-              </h2>
-              <p className="text-sm sm:text-md text-pink-100 dark:text-purple-200 max-w-md mx-auto">
-                Devi registrarti GRATIS per scopare con Donne, Gay e Trans Italiani 🔥 похотливые e vedere TUTTI i contenuti ESPLICITI di {influencer.name} per la categoria {subcategoryTitleCase}! 🍆🍑 Accesso Immediato e SENZA CENSURE! 🔞
-              </p>
+                <span role="img" aria-label="lock" className="text-4xl sm:text-5xl">🔑</span>
+                <h2 className="text-xl sm:text-2xl font-bold mt-2 mb-1">ACCESSO GRATIS IN 30 SEC! 🇮🇹</h2>
+                <p className="text-sm sm:text-md text-pink-100 dark:text-purple-200 max-w-md mx-auto">Solo la tua email e sei dentro! 😉 Convalida rapida per sbloccare TUTTO. Contenuti XXX ti aspettano! 😈🔞</p>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-              {REGISTRATION_OPTIONS.map((option) => (
-                <div key={option.key} className="bg-white/5 dark:bg-black/10 p-3 rounded-lg shadow-md hover:bg-white/10 dark:hover:bg-black/20 transition-all duration-200 flex flex-col items-center text-center">
-                  <span className="text-2xl sm:text-3xl mb-1.5">{option.emoji}</span>
-                  <h3 className="text-base sm:text-lg font-semibold mb-1 text-white">{option.label}</h3>
-                  <p className="text-xs text-pink-200 dark:text-purple-300 mb-2.5 flex-grow px-1 leading-tight">{option.spicyText}</p>
-                  <a
-                    href={categoryAffiliateLinks[option.key]}
-                    target="_blank"
-                    rel="noopener noreferrer sponsored"
-                    onClick={() => setIsModalOpen(false)} // Close modal on link click as well
-                    className="w-full mt-auto inline-block bg-white text-pink-600 font-bold text-xs sm:text-sm px-4 py-2 rounded-md shadow-sm hover:bg-gray-200 transition-colors duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-pink-300 focus:ring-opacity-75"
-                  >
-                    {option.buttonText}
-                  </a>
-                </div>
-              ))}
+            <div className="grid grid-cols-2 gap-2 sm:gap-2.5">
+              {REGISTRATION_OPTIONS.map(option => renderRegistrationButton(option, "-modal"))}
             </div>
-            <p className="text-xs text-pink-200 dark:text-purple-300 mt-4 text-center">
-              La registrazione è gratuita e ti dà accesso immediato.
-            </p>
+            <p className="text-xs text-pink-200 dark:text-purple-300 mt-4 text-center">La registrazione è gratuita e ti dà accesso immediato.</p>
           </div>
         </div>
       )}

@@ -6,7 +6,7 @@ import { CtaSection } from '@/components/common/cta-section';
 import { Footer } from '@/components/common/footer'; // Changed to named import
 import { getRegionalCities } from '@/lib/utils/geo'; // Import getRegionalCities
 import { WebcamCtaButton } from '@/components/common/webcam-cta-button'; // Import the new component
-import { categoryAffiliateLinks } from '@/lib/constants'; // <<< IMPORT THE CENTRALIZED MAP
+import { categoryAffiliateLinks, type AffiliateCategory } from '@/lib/constants'; // <<< IMPORT THE CENTRALIZED MAP
 import { homePageStrings, cityCategoryPageStrings } from '@/app/translations'; // Import translations
 import { FaqSection } from '@/components/common/faq-section'; // Added import
 import { SeoTextSection } from '@/components/common/seo-text-section'; // Added import
@@ -126,7 +126,7 @@ export default async function CategoryListingPage({ params }: { params: Promise<
   const pageTitleText = cityCategoryPageStrings.pageTitle(displayNameForCity, displayNameForCategory);
 
   // Construct dynamic affiliate link from the centralized map
-  const dynamicAffiliateLink = categoryAffiliateLinks[categorySlug] || cityCategoryPageStrings.defaultFallbackLink; // Fallback if slug not in map
+  const dynamicAffiliateLink = categoryAffiliateLinks[categorySlug as AffiliateCategory] || cityCategoryPageStrings.defaultFallbackLink; // Fallback if slug not in map
 
   const ctaTitleText = cityCategoryPageStrings.ctaTitle(displayNameForCategory, displayNameForCity);
   const ctaSubtitleText = cityCategoryPageStrings.ctaSubtitle;

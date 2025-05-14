@@ -1,7 +1,7 @@
 import { getRegionalCities } from '@/lib/utils/geo';
 import { AnnouncesGrid } from '@/components/common/announces-grid';
 import { Footer } from '@/components/common/footer';
-import { categoryAffiliateLinks } from '@/lib/constants';
+import { categoryAffiliateLinks, type AffiliateCategory } from '@/lib/constants';
 import { capitalizeSlug } from '@/lib/utils/string';
 import path from 'path';
 import fs from 'fs/promises';
@@ -81,7 +81,7 @@ export default async function AnnunciSessoPage({ params: paramsPromise }: Annunc
 
   const cityDisplayName = capitalizeSlug(citySlug);
   const categoryDisplayName = annunciIncontriPageStrings.categoryDisplayNames[categorySlug] || capitalizeSlug(categorySlug);
-  const affiliateLink = categoryAffiliateLinks[categorySlug] || categoryAffiliateLinks['default'] || '#';
+  const affiliateLink = categoryAffiliateLinks[categorySlug as AffiliateCategory] || '#';
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100 dark:bg-gray-950">

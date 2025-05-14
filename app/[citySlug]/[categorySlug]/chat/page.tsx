@@ -4,7 +4,7 @@ import React from 'react';
 import { getAllCities, getCityBySlug } from '@/lib/utils/geo';
 import { getAllCategories, getCategoryBySlug } from '@/lib/utils/category-utils';
 import { FakeChatInterface } from '@/components/common/fake-chat-interface';
-import { categoryAffiliateLinks } from '@/lib/constants';
+import { categoryAffiliateLinks, type AffiliateCategory } from '@/lib/constants';
 import { capitalizeCityName } from '@/lib/utils/string';
 import { FaqSection } from '@/components/common/faq-section';
 import { SeoTextSection } from '@/components/common/seo-text-section';
@@ -71,7 +71,7 @@ export default async function ChatPage({
   const cityDisplayName = capitalizeCityName(city.name);
   const categoryDisplayName = category.name;
 
-  const finalAffiliateLink = categoryAffiliateLinks[category.slug] || categoryAffiliateLinks.default || 'https://www.incontri-italia.it/';
+  const finalAffiliateLink = categoryAffiliateLinks[category.slug as AffiliateCategory] || 'https://www.incontri-italia.it/';
   
   const messagesForChat = categoryChatPageStrings.defaultMessagesConfig;
 

@@ -1,7 +1,7 @@
 import { getInfluencers, getInfluencerBySlug, getArticleDataBySlug } from '@/lib/data-loader';
 import { Metadata, ResolvingMetadata } from 'next';
 import { notFound } from 'next/navigation';
-import Image from 'next/image';
+// import Image from 'next/image'; // Removed unused import
 import { unified } from 'unified';
 import remarkParse from 'remark-parse';
 import remarkGfm from 'remark-gfm';
@@ -44,10 +44,14 @@ export interface InfluencerArticleRenderData {
   influencerName: string; // To pass influencer name for context
 }
 
+// Define the shape of the resolved parameters
+type ResolvedPageParams = {
+  slug: string;
+};
+
+// This interface defines the props for the Page component itself
 interface InfluencerPageProps {
-  params: {
-    slug: string;
-  };
+  params: Promise<ResolvedPageParams>; // params is a Promise
 }
 
 // Generate static paths for all influencers at build time
@@ -60,11 +64,13 @@ export async function generateStaticParams() {
 
 // Generate dynamic metadata for each influencer page
 export async function generateMetadata(
-  { params }: InfluencerPageProps,
-  parent: ResolvingMetadata
+  props: InfluencerPageProps, // Use InfluencerPageProps for the first arg
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  _parent: ResolvingMetadata // Add _parent, even if unused, for correct signature
 ): Promise<Metadata> {
-  const influencer = await getInfluencerBySlug(params.slug);
-  const articleData = await getArticleDataBySlug(params.slug);
+  const { slug } = await props.params; // Await params here
+  const influencer = await getInfluencerBySlug(slug);
+  const articleData = await getArticleDataBySlug(slug);
 
   if (!influencer) {
     return {
@@ -169,9 +175,10 @@ function prepareInfluencerArticleRenderData(
   };
 }
 
-export default async function InfluencerPage({ params }: InfluencerPageProps) {
-  const influencer = await getInfluencerBySlug(params.slug);
-  const articleData = await getArticleDataBySlug(params.slug);
+export default async function InfluencerPage({ params: paramsPromise }: InfluencerPageProps) {
+  const { slug } = await paramsPromise; // Await and destructure params
+  const influencer = await getInfluencerBySlug(slug);
+  const articleData = await getArticleDataBySlug(slug);
 
   if (!influencer || !articleData) { // Also check articleData
     notFound();
@@ -266,7 +273,7 @@ export default async function InfluencerPage({ params }: InfluencerPageProps) {
                 {SUB_CATEGORIES_FOR_LINKS.map((subcategory) => (
                   <Link 
                     key={subcategory}
-                    href={`/influencers/${params.slug}/${subcategory}`}
+                    href={`/influencers/${slug}/${subcategory}`}
                     className="block p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-shadow text-center hover:no-underline"
                   >
                     <h3 className="text-md font-semibold text-pink-600 dark:text-pink-400">

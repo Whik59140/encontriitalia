@@ -70,7 +70,7 @@ import rehypeStringify from 'rehype-stringify'; // For very basic fallback to HT
 import { PostTableOfContents } from './post-table-of-contents'; // Adjust path if necessary
 
 // Import affiliate links from the central location
-import { categoryAffiliateLinks } from '@/lib/constants';
+import { categoryAffiliateLinks, type AffiliateCategory } from '@/lib/constants';
 
 interface ArticleContentRendererProps extends ArticleRenderData {
   fallbackMarkdownBody?: string;
@@ -239,7 +239,7 @@ const ArticleContentRenderer: React.FC<ArticleContentRendererProps> = ({
   const categorySlug = frontmatter.categorySlug || '';
   const categoryName = frontmatter.category || categorySlug; // Use category name if available, else slug
   // Get the affiliate link for the current category
-  const affiliateUrl = categorySlug ? categoryAffiliateLinks[categorySlug] : undefined;
+  const affiliateUrl = categorySlug ? categoryAffiliateLinks[categorySlug as AffiliateCategory] : undefined;
 
   return (
     <div className="container mx-auto px-4 py-8 flex flex-col lg:flex-row lg:space-x-8">

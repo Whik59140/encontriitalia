@@ -23,38 +23,47 @@ export const ERECTION_HELP_LINK = 'https://nplink.net/dc78zw3w';
 export const REGISTRATION_OPTIONS: {
   key: AffiliateCategory;
   label: string;
-  emoji: string;
+  imageSrc: string;
   spicyText: string;
   buttonText: string;
+  onlineMembersMin: number;
+  onlineMembersMax: number;
 }[] = [
   {
     key: 'milf',
     label: 'MILF Mature',
-    emoji: '👵��',
+    imageSrc: '/blog/milf/7.webp',
     spicyText: 'Scopa MILF Italiane GRATIS! 👵🔥 Accesso XXX! 🔞',
-    buttonText: 'Entra nel mondo MILF',
+    buttonText: '➡️ Clicca Qui per MILF! 👵',
+    onlineMembersMin: 200,
+    onlineMembersMax: 300,
   },
   {
     key: 'donne',
     label: 'Donne Eccitanti',
-    emoji: '💃🔥',
+    imageSrc: '/blog/donne/donne (34).webp',
     spicyText: 'Scopa Donne Italiane GRATIS! 💃💦 Contenuti Espliciti! 🔞',
-    buttonText: 'Scopri le Donne',
+    buttonText: '➡️ Clicca Qui per Donne! 🍑',
+    onlineMembersMin: 1100,
+    onlineMembersMax: 1300,
+  },
+  {
+    key: 'gay',
+    label: 'Gay Appassionati',
+    imageSrc: '/blog/gay/gay (12).webp',
+    spicyText: 'Incontri Gay Esplosivi GRATIS! 👨‍❤️‍💋‍👨🔥 Video e Chat! 🔞',
+    buttonText: '➡️ Clicca Qui per Gay! 👨‍❤️‍💋‍👨',
+    onlineMembersMin: 400,
+    onlineMembersMax: 500,
   },
   {
     key: 'trans',
     label: 'Trans Sensuali',
-    emoji: '⚧️💖',
+    imageSrc: '/blog/trans/trans (2).webp',
     spicyText: 'Scopa Trans Italiane GRATIS! ⚧️💖 Video XXX Proibiti! 🔞',
-    buttonText: 'Avventure Trans',
-  },
- 
-  {
-    key: 'escort',
-    label: 'Escort di Lusso',
-    emoji: '💎��',
-    spicyText: 'Escort Italiane di Lusso! 💎🥂 Incontri Esclusivi! 🔞',
-    buttonText: 'Incontra Escort Top',
+    buttonText: '➡️ Clicca Qui per Trans! ⚧️',
+    onlineMembersMin: 200,
+    onlineMembersMax: 300,
   },
 ];
 
