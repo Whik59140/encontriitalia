@@ -8,7 +8,7 @@ function generateCityCategoryFeaturesSiteMap(citySlugs: string[], categorySlugs:
   let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
   xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
 
-  const features = ['chat', 'annunci'];
+  const features = ['chat', 'annunci', 'annunci-gratis', 'annunci-sesso', 'annunci-incontri'];
 
   citySlugs.forEach(citySlug => {
     categorySlugs.forEach(categorySlug => {
@@ -20,6 +20,13 @@ function generateCityCategoryFeaturesSiteMap(citySlugs: string[], categorySlugs:
         xml += '    <priority>0.6</priority>\n'; // Adjust priority as needed
         xml += '  </url>\n';
       });
+
+      xml += '  <url>\n';
+      xml += `    <loc>${URL}/${citySlug}/${categorySlug}/incontri-${categorySlug}-in-${citySlug}</loc>\n`;
+      xml += `    <lastmod>${today}</lastmod>\n`;
+      xml += '    <changefreq>weekly</changefreq>\n';
+      xml += '    <priority>0.8</priority>\n'; // Higher priority for article pages
+      xml += '  </url>\n';
     });
   });
 

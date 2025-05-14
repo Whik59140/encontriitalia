@@ -175,6 +175,7 @@ export default async function AnnunciChooserPage({ params: paramsPromise }: Annu
       <Footer
         currentCitySlug={citySlug}
         currentCategorySlug={categorySlug}
+        currentFeatureSlug="annunci"
         regionalCities={regionalCities}
         regionName={regionName}
       />

@@ -127,6 +127,7 @@ export default async function AnnunciSeriPage({ params: paramsPromise }: Annunci
       <Footer
         currentCitySlug={citySlug}
         currentCategorySlug={categorySlug}
+        currentFeatureSlug="annunci-seri"
         regionalCities={regionalCities}
         regionName={regionName}
       />

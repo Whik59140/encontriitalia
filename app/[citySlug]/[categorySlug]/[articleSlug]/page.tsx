@@ -19,7 +19,8 @@ import Link from 'next/link'; // Corrected import for Link
 import { CtaSection } from '@/components/common/cta-section'; // <<< ADD THIS IMPORT
 import { categoryAffiliateLinks } from '@/lib/constants'; // <<< IMPORT THE CENTRALIZED MAP
 import { capitalizeSlug } from '@/lib/utils/string';
-import { Metadata } from 'next';
+import { ChevronLeft } from 'lucide-react'; // Import ChevronLeft icon for back arrow
+import { articlePageStrings } from '@/app/translations'; // Import article page translations
 
 // Shadcn UI Accordion components - will be used by the client component
 // We still define the structure here, but rendering moves to client component
@@ -264,13 +265,23 @@ export default async function SpecificArticlePage({ params }: { params: Promise<
 
   return (
     <div className="bg-gray-50 dark:bg-gray-950 min-h-screen">
+      {/* Add header with back arrow */}
+      <header className="py-4 bg-white dark:bg-gray-900 shadow-sm">
+        <div className="container mx-auto px-4 flex items-center justify-between">
+          <Link href={`/${citySlug}/${categorySlug}`} className="flex items-center text-pink-600 dark:text-pink-400 hover:underline">
+            <ChevronLeft size={20} className="mr-1" />
+            {articlePageStrings.backLinkText(displayCategoryName, displayCityName)}
+          </Link>
+        </div>
+      </header>
+      
       {/* Sticky Table of Contents for larger screens - Commented out for now */}
       {/* {articleRenderData.headings && articleRenderData.headings.length > 3 && (
         <div className="hidden lg:block fixed top-1/4 left-8 z-40">
           <TableOfContents headings={articleRenderData.headings} />
         </div>
       )} */}
-      <main className="container mx-auto px-4 pt-20 lg:px-24 xl:px-32 2xl:px-40 pb-24"> {/* Adjusted padding: pt-20 (for sticky header) and kept pb-24 (for sticky footer) */}
+      <main className="container mx-auto px-4 pt-10 lg:px-24 xl:px-32 2xl:px-40 pb-24"> {/* Adjusted padding from pt-20 to pt-10 since we now have a header */}
         <div className="flex-grow">
           {/* Top Article CTA (Serious/Sex) */}
           <TopArticleCTA 
@@ -323,28 +334,8 @@ export default async function SpecificArticlePage({ params }: { params: Promise<
 }
 
 // Optional: Metadata generation (can remain largely the same, using frontmatter)
-export async function generateMetadata({ params }: { params: ResolvedPageParams }): Promise<Metadata> {
-  const { citySlug, categorySlug, articleSlug } = params;
-  const expectedFilename = `${articleSlug}.md`;
-  const filePath = path.join(process.cwd(), 'content', 'articles', categorySlug, citySlug, expectedFilename);
-
-  try {
-    const fileContent = await fs.readFile(filePath, 'utf8');
-    const { data: frontmatter } = matter(fileContent);
-    
-    // Use the article title from frontmatter if available, otherwise generate one
-    const title = frontmatter.title || `${capitalizeSlug(categorySlug)} a ${capitalizeSlug(citySlug)}`;
-    const description = frontmatter.description || `Scopri tutto su ${categorySlug} a ${citySlug}.`;
-    
-    return { 
-      title, 
-      description 
-    };
-  } catch (error) {
-    // Fallback metadata if article file can't be read
-    return { 
-      title: `${capitalizeSlug(categorySlug)} a ${capitalizeSlug(citySlug)}`,
-      description: `Informazioni su ${categorySlug} a ${citySlug}.`
-    };
-  }
-} 
+// export async function generateMetadata({ params }: { params: ResolvedPageParams }): Promise<Metadata> {
+//   // ... logic to fetch frontmatter ...
+//   return { title: frontmatter.title, description: frontmatter.description };
+// } 
+// } 

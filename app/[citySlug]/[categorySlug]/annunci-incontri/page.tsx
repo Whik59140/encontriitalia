@@ -127,6 +127,7 @@ export default async function AnnunciIncontriPage({ params: paramsPromise }: Ann
       <Footer
         currentCitySlug={citySlug}
         currentCategorySlug={categorySlug}
+        currentFeatureSlug="annunci-incontri"
         regionalCities={regionalCities}
         regionName={regionName}
       />

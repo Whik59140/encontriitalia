@@ -138,6 +138,7 @@ export default async function AnnunciGratisPage({ params: paramsPromise }: Annun
       <Footer
         currentCitySlug={citySlug}
         currentCategorySlug={categorySlug}
+        currentFeatureSlug="annunci-gratis"
         regionalCities={regionalCities}
         regionName={regionName}
       />

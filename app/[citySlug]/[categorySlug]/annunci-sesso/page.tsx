@@ -127,6 +127,7 @@ export default async function AnnunciSessoPage({ params: paramsPromise }: Annunc
       <Footer
         currentCitySlug={citySlug}
         currentCategorySlug={categorySlug}
+        currentFeatureSlug="annunci-sesso"
         regionalCities={regionalCities}
         regionName={regionName}
       />

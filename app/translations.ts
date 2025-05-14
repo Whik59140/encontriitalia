@@ -71,8 +71,8 @@ export const chatPageStrings = {
 export const citySlugPageStrings = {
   notFoundTitle: 'Città Non Trovata',
   notFoundDescription: 'La città che stai cercando non esiste.',
-  generateMetadataTitle: (cityName: string) => `Incontri a ${cityName} - Annunci per Adulti`,
-  generateMetadataDescription: (cityName: string) => `Esplora categorie come gay, milf, donne, trans, escort a ${cityName}. Trova i migliori annunci.`,
+  generateMetadataTitle: (cityName: string) => `Incontri a ${cityName} - Annunci e Articoli per Adulti`,
+  generateMetadataDescription: (cityName: string) => `Esplora categorie come gay, milf, donne, trans, escort a ${cityName}. Trova i migliori annunci e articoli.`,
   breadcrumbHome: "Home",
   headerTitle: (cityName: string) => `Incontri a ${cityName}`,
   headerDescription: (cityName: string) => `Esplora le categorie disponibili per ${cityName} e trova quello che cerchi.`,
@@ -96,7 +96,7 @@ export const citySlugPageStrings = {
 
 export const cityCategoryPageStrings = {
   untitledArticle: "Articolo Senza Titolo",
-  pageTitle: (city: string, category: string) => `${category} a ${city}`,
+  pageTitle: (city: string, category: string) => `Articoli e Guide: ${category} a ${city}`,
   ctaTitle: (category: string, city: string) => `Cerchi ${category} a ${city}?`,
   ctaSubtitle: "Trova subito quello che cerchi!",
   readMoreButtonText: "✨ Leggi di più &rarr;",
@@ -652,3 +652,8 @@ export const citySearchDisplayStrings = {
 
 // Add other component-specific string objects below as needed
 // export const someOtherComponentStrings = { ... }; 
+
+// Add translations for article page
+export const articlePageStrings = {
+  backLinkText: (categoryDisplayName: string, cityName: string) => `Torna a ${categoryDisplayName} a ${cityName}`,
+}; 

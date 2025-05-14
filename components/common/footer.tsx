@@ -6,6 +6,7 @@ interface FooterProps {
   currentCitySlug?: string;
   currentCategorySlug?: string;
   currentArticleSlug?: string;
+  currentFeatureSlug?: string; // New prop to track feature pages
   regionalCities?: City[];
   regionName?: string | null;
 }
@@ -14,6 +15,7 @@ export function Footer({
   currentCitySlug, 
   currentCategorySlug, 
   currentArticleSlug,
+  currentFeatureSlug, // Accept the feature path
   regionalCities, 
   regionName 
 }: FooterProps) {
@@ -40,11 +42,14 @@ export function Footer({
                   const newArticleSlug = currentArticleSlug.replace(currentCitySlug, city.slug);
                   linkHref += `/${currentCategorySlug}/${newArticleSlug}`;
                 } else if (currentCategorySlug) {
-                  // Fallback for non-article links or if currentCitySlug/currentArticleSlug is missing
+                  // Add category slug to base path
                   linkHref += `/${currentCategorySlug}`;
+                  
+                  // Add feature slug if available (annunci, annunci-sesso, etc.)
+                  if (currentFeatureSlug) {
+                    linkHref += `/${currentFeatureSlug}`;
+                  }
                 }
-                // Note: If only currentArticleSlug is present without category/citySlug, it defaults to city link `/${city.slug}`.
-                // This case should ideally not happen for article-specific linking.
 
                 return (
                   <li key={city.slug}>
@@ -52,7 +57,7 @@ export function Footer({
                       href={linkHref}
                       className="text-purple-600 dark:text-purple-400 hover:underline"
                     >
-                      {linkText} {/* Display city name, context is in the heading */}
+                      {linkText}
                     </Link>
                   </li>
                 );
@@ -60,7 +65,7 @@ export function Footer({
             </ul>
           </div>
         )}
-        <div className="text-center"> {/* Ensure copyright and other links remain centered */}
+        <div className="text-center">
           <p className="mb-2">
             {footerStrings.copyrightPrefix} {currentYear} {globalSiteStrings.siteName}. {footerStrings.copyrightSuffix}
           </p>
