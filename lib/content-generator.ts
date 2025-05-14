@@ -9,7 +9,7 @@
  * Deterministic random number generator using a string seed
  * This ensures consistent but varied selections for the same influencer+category
  */
-function seedRandom(seed: string): () => number {
+export function seedRandom(seed: string): () => number {
   let hash = 0;
   for (let i = 0; i < seed.length; i++) {
     hash = ((hash << 5) - hash) + seed.charCodeAt(i);
