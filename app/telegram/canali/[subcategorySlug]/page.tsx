@@ -3,14 +3,14 @@ import { Metadata } from 'next';
 import { globalSiteStrings } from '@/app/translations';
 import Breadcrumb from '@/components/common/breadcrumb';
 import { Footer } from '@/components/common/footer';
-import { getAllTelegramSubcategorySlugs, getTelegramSubcategoryBySlug, TelegramSubcategory } from '@/lib/telegram-categories';
+import { getAllTelegramSubcategorySlugs, getTelegramSubcategoryBySlug } from '@/lib/telegram-categories';
 import { notFound } from 'next/navigation';
 import { capitalizeFirstLetter } from '@/lib/utils/string'; // Assuming this utility exists
 
 interface TelegramSubcategoryPageProps {
-  params: {
+  params: Promise<{
     subcategorySlug: string;
-  };
+  }>;
 }
 
 export async function generateStaticParams() {
@@ -22,7 +22,8 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: TelegramSubcategoryPageProps): Promise<Metadata> {
-  const subcategory = getTelegramSubcategoryBySlug(params.subcategorySlug);
+  const actualParams = await params;
+  const subcategory = getTelegramSubcategoryBySlug(actualParams.subcategorySlug);
   const subcategoryName = subcategory ? capitalizeFirstLetter(subcategory.name) : 'Sconosciuta';
   const title = `Canali Telegram: ${subcategoryName} - ${globalSiteStrings.siteName}`;
   const description = `Scopri i migliori canali Telegram per ${subcategoryName}. Contenuti aggiornati e link diretti.`;
@@ -30,11 +31,11 @@ export async function generateMetadata({ params }: TelegramSubcategoryPageProps)
   return {
     title,
     description,
-    keywords: ["canali telegram", params.subcategorySlug, subcategoryName, "telegram italia"].join(', '),
+    keywords: ["canali telegram", actualParams.subcategorySlug, subcategoryName, "telegram italia"].join(', '),
     openGraph: {
       title,
       description,
-      url: `/telegram/canali/${params.subcategorySlug}`,
+      url: `/telegram/canali/${actualParams.subcategorySlug}`,
       siteName: globalSiteStrings.siteName,
       // Add OG image if available
       locale: 'it_IT',
@@ -43,8 +44,9 @@ export async function generateMetadata({ params }: TelegramSubcategoryPageProps)
   };
 }
 
-export default function TelegramCanaliSubcategoryPage({ params }: TelegramSubcategoryPageProps) {
-  const { subcategorySlug } = params;
+export default async function TelegramCanaliSubcategoryPage({ params }: TelegramSubcategoryPageProps) {
+  const actualParams = await params;
+  const { subcategorySlug } = actualParams;
   const subcategory = getTelegramSubcategoryBySlug(subcategorySlug);
 
   if (!subcategory) {
@@ -70,7 +72,7 @@ export default function TelegramCanaliSubcategoryPage({ params }: TelegramSubcat
             Canali Telegram: {subcategoryName}
           </h1>
           <p className="text-lg text-gray-600 dark:text-gray-300">
-            Elenco dei canali Telegram per la categoria "{subcategoryName}" in aggiornamento...
+            Elenco dei canali Telegram per la categoria &quot;{subcategoryName}&quot; in aggiornamento...
           </p>
         </header>
 

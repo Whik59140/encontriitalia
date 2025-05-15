@@ -1028,7 +1028,51 @@ async function generateMockData(type: 'canali' | 'gruppi', subcategory: Telegram
         }
         break;
 
-
+      case 'gay':
+        if (type === 'canali') {
+          longDescription = `
+            <h2>👨‍❤️‍👨 ${typeName} Telegram ${subcategoryName}: Amore, Passione e Orgoglio Maschile! 🏳️‍🌈</h2>
+            <p>Benvenuto nei <strong>canali Telegram dedicati al mondo ${subcategoryName.toUpperCase()}</strong>! Un universo di contenuti che celebrano l'amore e il sesso tra uomini. Qui troverai video, foto, gif e storie che esplorano ogni aspetto dell'intimità ${subcategoryName.toLowerCase()}: dal romantico all'hardcore, dall'amatoriale al professionale. 🔥</p>
+            <p>Cosa ti aspetta in questi canali dedicati all'eros ${subcategoryName.toLowerCase()}:</p>
+            <ul>
+              <li>💪 Uomini di ogni tipo: muscolosi, bear, twink, daddy, jock, e tanti altri, tutti pronti a condividere la loro passione.</li>
+              <li>🎬 Scene di sesso ${subcategoryName.toLowerCase()} esplicite: baci appassionati, sesso orale, anale, e ogni altra forma di intimità maschile.</li>
+              <li>❤️ Contenuti che spaziano dal porno più spinto a rappresentazioni più tenere e romantiche dell'amore ${subcategoryName.toLowerCase()}.</li>
+              <li>✨ Una vasta gamma di generi: bareback, BDSM, fetish, amatoriale, e molto altro per soddisfare ogni preferenza.</li>
+            </ul>
+            <p>Se cerchi contenuti ${subcategoryName.toLowerCase()} autentici, eccitanti e senza censure, questi canali sono il tuo paradiso. Immergiti nell'esplorazione del desiderio maschile in tutte le sue forme. Solo per maggiorenni. 🔞</p>
+          `;
+          faq = [
+            { question: `Quali tipi di uomini si trovano nei canali ${subcategoryName.toLowerCase()}? C'è varietà? 🧔👨‍🦰👱‍♂️`, answer: `Assolutamente! I canali ${subcategoryName.toLowerCase()} presentano una grande diversità di uomini: 'twinks' (giovani e magri), 'bears' (maturi e pelosi), 'jocks' (atletici), 'daddies' (più anziani e autorevoli), e molti altri tipi fisici ed età. Ce n'è per tutti i gusti.` },
+            { question: `I contenuti sono solo hardcore o c'è spazio anche per il romanticismo ${subcategoryName.toLowerCase()}? 😘`, answer: `Entrambi. Molti canali si concentrano sul porno ${subcategoryName.toLowerCase()} hardcore, ma ne esistono anche altri che offrono contenuti più soft, erotici o persino romantici, celebrando l'amore e l'affetto tra uomini.` },
+            { question: `Si trovano contenuti ${subcategoryName.toLowerCase()} amatoriali o solo di attori professionisti? 🏠🎬`, answer: `C'è una vasta offerta di entrambi. Troverai produzioni professionali con attori famosi nel settore del porno ${subcategoryName.toLowerCase()}, ma anche tantissimi video e foto amatoriali di uomini comuni che condividono la loro vita sessuale.` },
+            { question: `Quali sono i generi più popolari nel porno ${subcategoryName.toLowerCase()}? 🔥`, answer: `Alcuni dei generi più popolari includono 'bareback' (sesso senza preservativo), 'twink', 'bear', 'daddy/son', BDSM, e vari fetish. La popolarità varia molto a seconda delle preferenze individuali.` },
+            { question: `Questi canali sono inclusivi verso tutte le identità all'interno della comunità ${subcategoryName.toLowerCase()}? 🏳️‍🌈`, answer: `L'obiettivo di molti canali è di essere inclusivi, ma la specificità del contenuto può variare. Alcuni canali potrebbero focalizzarsi su nicchie particolari, mentre altri cercano di rappresentare un più ampio spettro dell'esperienza ${subcategoryName.toLowerCase()}.` },
+            { question: `Come viene affrontato il tema del sesso sicuro e del consenso nei canali ${subcategoryName.toLowerCase()}? ✅`, answer: `Nei canali gestiti responsabilmente, si promuove (o si dovrebbe promuovere) il sesso sicuro e il consenso. Tuttavia, è sempre importante essere critici. Molti contenuti 'bareback', ad esempio, sono performance e non necessariamente riflettono pratiche sicure nella vita reale senza previo accordo e test.` }
+          ];
+        } else { // type === 'gruppi'
+          longDescription = `
+            <h2>💬 ${typeName} Telegram ${subcategoryName}: Community, Incontri e Discussioni Libere! 🏳️‍🌈</h2>
+            <p>Entra nei <strong>gruppi Telegram ${subcategoryName.toUpperCase()}</strong>! Spazi sicuri e accoglienti per uomini ${subcategoryName.toLowerCase()} e persone queer per connettersi, chattare, condividere esperienze, discutere di temi LGBTQ+ e, perché no, organizzare incontri. L'orgoglio e il rispetto sono di casa! ❤️</p>
+            <p>Cosa puoi fare in questi gruppi ${subcategoryName.toLowerCase()}:</p>
+            <ul>
+              <li>🗣️ Discutere di cultura ${subcategoryName.toLowerCase()}, coming out, relazioni, diritti LGBTQ+ e molto altro.</li>
+              <li>🏳️‍🌈 Condividere notizie, eventi e risorse per la comunità ${subcategoryName.toLowerCase()}.</li>
+              <li>🤝 Conoscere altri uomini ${subcategoryName.toLowerCase()} nella tua zona o con interessi simili per amicizia o appuntamenti.</li>
+              <li>🔞 Condividere contenuti erotici (se le regole del gruppo lo permettono e sempre con un occhio al consenso e al copyright).</li>
+            </ul>
+            <p>Se cerchi una community ${subcategoryName.toLowerCase()} vivace, supporto, o semplicemente un posto per essere te stesso, questi gruppi Telegram ti offrono un ambiente inclusivo e stimolante. Unisciti alla conversazione! Solo per maggiorenni. 🔞</p>
+          `;
+          faq = [
+            { question: `I gruppi ${subcategoryName.toLowerCase()} su Telegram sono solo per incontri o anche per amicizia e supporto? 🤗`, answer: `Entrambe le cose! Molti gruppi ${subcategoryName.toLowerCase()} sono nati per socializzare, trovare amici, offrire supporto e discutere temi importanti per la comunità. Altri sono più specificamente orientati agli incontri e al dating.` },
+            { question: `Come posso trovare gruppi ${subcategoryName.toLowerCase()} specifici per la mia città o i miei interessi? 📍 hobbies`, answer: `Puoi usare la funzione di ricerca di Telegram con parole chiave come \'${subcategoryName.toLowerCase()} [tua città]\' o \'${subcategoryName.toLowerCase()} [tuo interesse]\' (es. \'${subcategoryName.toLowerCase()} bear\', \'${subcategoryName.toLowerCase()} gaming\'). Chiedere in gruppi più grandi può anche aiutare a trovare community di nicchia.` },
+            { question: `Questi gruppi sono sicuri per le persone ${subcategoryName.toLowerCase()}? Come viene gestita la privacy? 🔒`, answer: `La sicurezza varia. Molti amministratori lavorano per creare spazi sicuri e moderare i contenuti. È importante scegliere gruppi con regole chiare e fare attenzione a non condividere informazioni troppo personali con sconosciuti. Utilizza le impostazioni di privacy di Telegram.` },
+            { question: `Si discute di sesso sicuro e salute sessuale nei gruppi ${subcategoryName.toLowerCase()}? ✅`, answer: `Sì, molti gruppi ${subcategoryName.toLowerCase()} responsabili dedicano spazio a discussioni sulla salute sessuale, l'importanza del sesso sicuro, test HIV/IST e prevenzione. È un tema cruciale per la comunità.` },
+            { question: `Posso trovare supporto per il coming out o per affrontare l'omofobia in questi gruppi? ❤️`, answer: `Assolutamente. Molti gruppi ${subcategoryName.toLowerCase()} offrono un ambiente di supporto dove le persone possono condividere le loro esperienze di coming out, chiedere consigli e trovare solidarietà nell'affrontare discriminazione e omofobia.` },
+            { question: `I gruppi ${subcategoryName.toLowerCase()} su Telegram sono aperti anche ad alleati o persone eterosessuali curiose? 🤔`, answer: `Dipende dal gruppo. Alcuni sono esclusivi per uomini ${subcategoryName.toLowerCase()} e persone queer per creare spazi protetti. Altri potrebbero essere aperti ad alleati rispettosi. È sempre bene leggere le regole del gruppo o chiedere agli amministratori.` }
+          ];
+        }
+        break;
 
       case 'trans':
         if (type === 'canali') {

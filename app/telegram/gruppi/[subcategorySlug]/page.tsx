@@ -1,26 +1,20 @@
-import Link from 'next/link';
 import { Metadata } from 'next';
-import { globalSiteStrings } from '@/app/translations';
-import Breadcrumb from '@/components/common/breadcrumb';
-import { Footer } from '@/components/common/footer';
-import { getAllTelegramSubcategorySlugs, getTelegramSubcategoryBySlug, TelegramSubcategory } from '@/lib/telegram-categories';
+import { getAllTelegramSubcategorySlugs } from '@/lib/telegram-categories';
 import { notFound } from 'next/navigation';
-import { capitalizeFirstLetter } from '@/lib/utils/string'; // Assuming this utility exists
-import { getTelegramPageData, getAllTelegramPageParams, TelegramPageData } from '@/lib/data/telegram-data'; // Assuming this path is correct for your project
+import { getTelegramPageData, TelegramPageData } from '@/lib/data/telegram-data'; // Assuming this path is correct for your project
 import TelegramPageContent from '@/components/telegram/telegram-page-content'; // Assuming this path
 
-interface PageParams {
-  subcategorySlug: string;
-  // If this page is ONLY for 'gruppi', 'type' might be implicit or handled differently.
-  // For now, I'll assume getTelegramPageData needs a 'type'. We may need to adjust this.
-}
+// interface PageParams { // This interface can be removed if we inline into PageProps or directly into functions
+//   subcategorySlug: string;
+// }
 
 interface PageProps {
-  params: PageParams;
+  params: Promise<{ subcategorySlug: string; }>; // <-- Add Promise here
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { subcategorySlug } = params; // Correctly destructured
+  const actualParams = await params; // <-- await params
+  const { subcategorySlug } = actualParams;
   const type = 'gruppi'; // Assuming this page is always for 'gruppi'
 
   // console.log(`[generateMetadata] Params: type=${type}, subcategorySlug=${subcategorySlug}`);
@@ -47,7 +41,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function TelegramSubcategoryPage({ params }: PageProps) {
-  const { subcategorySlug } = params; // Correctly destructured
+  const actualParams = await params; // <-- await params
+  const { subcategorySlug } = actualParams;
   const type = 'gruppi'; // Assuming this page is always for 'gruppi'
   
   // console.log(`[Page] Params: type=${type}, subcategorySlug=${subcategorySlug}`);

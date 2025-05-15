@@ -19,6 +19,7 @@ export function seedRandom(seed: string): () => number {
   // Simple random generator with seed
   return () => {
     hash = (hash * 9301 + 49297) % 233280;
+    hash = (hash + 233280) % 233280; // Ensure hash is non-negative
     return hash / 233280;
   };
 }
@@ -28,7 +29,7 @@ export function seedRandom(seed: string): () => number {
  */
 function selectWithSeed(array: string[], seed: string, offset: number = 0): string {
   if (!array || array.length === 0) {
-    console.warn(`Empty or undefined array provided to selectWithSeed with seed ${seed}-${offset}`);
+   // console.warn(`Empty or undefined array provided to selectWithSeed with seed ${seed}-${offset}`);
     return "content not available"; // Default value
   }
   
@@ -37,7 +38,7 @@ function selectWithSeed(array: string[], seed: string, offset: number = 0): stri
   
   // Safety check for array bounds
   if (index < 0 || index >= array.length) {
-    console.warn(`Invalid index ${index} for array of length ${array.length}`);
+   // console.warn(`Invalid index ${index} for array of length ${array.length}`);
     return array[0] || "content not available";
   }
   
@@ -295,27 +296,27 @@ export function generateInfluencerSubcategoryContent(
     const seed = `${influencerSlug}-${subcategorySlug}`;
     
     // Debug log
-    console.log(`Generating content for ${influencerName} - ${subcategoryDisplayName} with seed ${seed}`);
+   // console.log(`Generating content for ${influencerName} - ${subcategoryDisplayName} with seed ${seed}`);
     
     // Select content components based on seed with logging
     const intro = selectWithSeed(introductions, seed, 0);
-    console.log(`Selected intro: ${intro}`);
+  //  console.log(`Selected intro: ${intro}`);
     
     const bodyPart1 = selectWithSeed(bodyDescriptions, seed, 1);
-    console.log(`Selected bodyPart1: ${bodyPart1}`);
+  //  console.log(`Selected bodyPart1: ${bodyPart1}`);
     
     // Get category-specific content or use default
     let categoryContent = categorySpecificContent[subcategorySlug as keyof typeof categorySpecificContent];
     if (!categoryContent || categoryContent.length === 0) {
-      console.warn(`No category content found for ${subcategorySlug}, using fallback`);
+     // console.warn(`No category content found for ${subcategorySlug}, using fallback`);
       categoryContent = categorySpecificContent.sesso || [];
     }
     
     const categoryPart1 = selectWithSeed(categoryContent, seed, 2);
-    console.log(`Selected categoryPart1: ${categoryPart1}`);
+   // console.log(`Selected categoryPart1: ${categoryPart1}`);
     
     const cta = selectWithSeed(ctaStatements, seed, 3);
-    console.log(`Selected CTA: ${cta}`);
+   // console.log(`Selected CTA: ${cta}`);
     
     // Get unique attributes for this influencer or use default
     const appearance = uniqueAttributes.appearance[influencerSlug] || uniqueAttributes.appearance.default || [];
@@ -323,10 +324,10 @@ export function generateInfluencerSubcategoryContent(
     
     // Select additional body and category parts
     const bodyPart2 = selectWithSeed(bodyDescriptions, seed, 6); // New offset
-    console.log(`Selected bodyPart2: ${bodyPart2}`);
+   // console.log(`Selected bodyPart2: ${bodyPart2}`);
     
     const categoryPart2 = selectWithSeed(categoryContent, seed, 7); // New offset
-    console.log(`Selected categoryPart2: ${categoryPart2}`);
+  //  console.log(`Selected categoryPart2: ${categoryPart2}`);
 
     // Select a content structure based on seed with proper error handling
     const randomValue = seedRandom(`${seed}-structure`)();

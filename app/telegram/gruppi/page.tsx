@@ -59,8 +59,8 @@ export default function GruppiTelegramAdultIndexPage() {
           <h2 className="text-2xl font-semibold mb-4">Domande Frequenti (FAQ) sui Gruppi Telegram Adult</h2>
           <div className="space-y-4">
             <details className="p-4 border border-gray-700 rounded-lg bg-gray-800">
-              <summary className="font-medium cursor-pointer">🔞 L'accesso a questi gruppi è per soli maggiorenni?</summary>
-              <p className="mt-2 text-gray-300">Sì, categoricamente. Tutti i gruppi elencati e i temi trattati sono intesi per un pubblico adulto e consenziente. È vietato l'accesso ai minori.</p>
+              <summary className="font-medium cursor-pointer">🔞 L&apos;accesso a questi gruppi è per soli maggiorenni?</summary>
+              <p className="mt-2 text-gray-300">Sì, categoricamente. Tutti i gruppi elencati e i temi trattati sono intesi per un pubblico adulto e consenziente. È vietato l&apos;accesso ai minori.</p>
             </details>
             <details className="p-4 border border-gray-700 rounded-lg bg-gray-800">
               <summary className="font-medium cursor-pointer">💬 Come funzionano le chat di gruppo?</summary>

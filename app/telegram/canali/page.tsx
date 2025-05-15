@@ -30,7 +30,7 @@ export default function CanaliTelegramAdultIndexPage() {
             <li>⚡ <strong>Accesso Istantaneo:</strong> Ricevi video, foto, link e aggiornamenti direttamente sul tuo dispositivo.</li>
             <li>💎 <strong>Contenuti Esclusivi:</strong> Molti canali offrono materiale raro, amatoriale o di nicchia non facilmente reperibile altrove.</li>
             <li>🔄 <strong>Aggiornamenti Costanti:</strong> I migliori canali vengono aggiornati frequentemente con nuovi contenuti freschi.</li>
-            <li>🎯 <strong>Nicchie Specifiche:</strong> Dalle categorie più generali a quelle più particolari, c'è un canale per ogni fantasia.</li>
+            <li>🎯 <strong>Nicchie Specifiche:</strong> Dalle categorie più generali a quelle più particolari, c&apos;è un canale per ogni fantasia.</li>
           </ul>
           <p>Esplora le nostre categorie per trovare i canali che accenderanno la tua curiosità. Ricorda di accedere a questi contenuti in modo responsabile e nel rispetto delle normative vigenti.</p>
         </section>
@@ -60,19 +60,19 @@ export default function CanaliTelegramAdultIndexPage() {
           <div className="space-y-4">
             <details className="p-4 border border-gray-700 rounded-lg bg-gray-800">
               <summary className="font-medium cursor-pointer">🔞 Questi canali sono solo per maggiorenni?</summary>
-              <p className="mt-2 text-gray-300">Assolutamente sì. I contenuti presenti nei canali elencati sono esplicitamente per un pubblico adulto e maggiorenne. L'accesso è vietato ai minori.</p>
+              <p className="mt-2 text-gray-300">Assolutamente sì. I contenuti presenti nei canali elencati sono esplicitamente per un pubblico adulto e maggiorenne. L&apos;accesso è vietato ai minori.</p>
             </details>
             <details className="p-4 border border-gray-700 rounded-lg bg-gray-800">
-              <summary className="font-medium cursor-pointer">💸 L'accesso ai canali è gratuito?</summary>
+              <summary className="font-medium cursor-pointer">💸 L&apos;accesso ai canali è gratuito?</summary>
               <p className="mt-2 text-gray-300">Molti canali offrono contenuti gratuiti. Alcuni potrebbero avere sezioni VIP, richiedere un abbonamento, o vendere pacchetti di contenuti. Verifica sempre le condizioni specifiche del canale.</p>
             </details>
             <details className="p-4 border border-gray-700 rounded-lg bg-gray-800">
               <summary className="font-medium cursor-pointer">❓ Come mi unisco a un canale?</summary>
-              <p className="mt-2 text-gray-300">Clicca sul link del canale che ti interessa. Se hai Telegram installato, si aprirà direttamente l'app e potrai cliccare su "Unisciti".</p>
+              <p className="mt-2 text-gray-300">Clicca sul link del canale che ti interessa. Se hai Telegram installato, si aprirà direttamente l&apos;app e potrai cliccare su &quot;Unisciti&quot;.</p>
             </details>
              <details className="p-4 border border-gray-700 rounded-lg bg-gray-800">
               <summary className="font-medium cursor-pointer">⚠️ È sicuro navigare e scaricare da questi canali?</summary>
-              <p className="mt-2 text-gray-300">Mentre Telegram offre un certo livello di privacy, la sicurezza dei contenuti (link esterni, file) dipende dagli amministratori del canale. Usa sempre buonsenso, un antivirus aggiornato e fai attenzione a ciò che scarichi o ai siti esterni che visiti.</p>
+              <p className="mt-2 text-gray-300">Mentre Telegram offre un certo livello di privacy, la sicurezza dei contenuti (link esterni, file) dipende dagli amministratori dell&apos;canale. Usa sempre buonsenso, un antivirus aggiornato e fai attenzione a ciò che scarichi o ai siti esterni che visiti.</p>
             </details>
           </div>
         </section>
