@@ -51,6 +51,9 @@ export const homePageStrings = {
     'donne': 'Donne',
     'ragazze': 'Ragazze',
     'trav': 'Trav',
+    'telegram': 'Telegram', // Main category for Telegram chooser page
+    'telegram-canali': 'Canali Telegram 📺', // Specific for homepage link
+    'telegram-gruppi': 'Gruppi Telegram 💬', // Specific for homepage link
   } as { [key: string]: string },
   mainHeading: "Trova quello che cerchi nella tua città!",
   subHeading: "Seleziona la categoria di tuo interesse per iniziare.",
@@ -646,6 +649,42 @@ export const cityPaginationStrings = {
 
 export const citySearchDisplayStrings = {
   searchInputPlaceholder: "Cerca la tua città... (es. Roma, Milano, Napoli)",
+};
+
+export const telegramChooserPageStrings = {
+  metadataTitle: "Telegram Italia: Scopri Canali e Gruppi Esclusivi",
+  metadataDescription: "Esplora i migliori canali e gruppi Telegram in Italia. Trova contenuti unici, community e molto altro. Accesso diretto alle risorse Telegram più richieste.",
+  metadataKeywords: ["telegram italia", "canali telegram", "gruppi telegram", "telegram links", "community telegram"],
+  mainHeading: "Esplora il Mondo di Telegram",
+  subHeading: "Scegli se vuoi scoprire i migliori Canali o Gruppi Telegram.",
+  canaliLinkText: "Canali Telegram 📺",
+  canaliLinkSubtext: "Scopri liste di canali tematici, notizie, intrattenimento e altro.",
+  gruppiLinkText: "Gruppi Telegram 💬",
+  gruppiLinkSubtext: "Unisciti a community, discussioni, gruppi di supporto e interesse.",
+  pageTitle: "Telegram: Canali e Gruppi",
+  breadcrumbHome: "Home",
+};
+
+export const telegramCanaliPageStrings = {
+  metadataTitle: "Canali Telegram Italia - Liste Aggiornate e Link Diretti",
+  metadataDescription: "Trova i migliori canali Telegram italiani divisi per categoria. Notizie, intrattenimento, xxx, offerte e molto altro. Link diretti per unirti subito.",
+  metadataKeywords: ["canali telegram", "lista canali telegram", "migliori canali telegram", "telegram channels italia"],
+  mainHeading: "Canali Telegram Selezionati per Te",
+  subHeading: "Esplora le categorie e trova i canali Telegram più adatti ai tuoi interessi.",
+  breadcrumbTelegram: "Telegram",
+  breadcrumbHome: "Home",
+  // Add more as needed
+};
+
+export const telegramGruppiPageStrings = {
+  metadataTitle: "Gruppi Telegram Italia - Community e Discussioni",
+  metadataDescription: "Scopri e unisciti ai migliori gruppi Telegram italiani. Trova community, gruppi di discussione, supporto e molto altro. Link diretti per partecipare.",
+  metadataKeywords: ["gruppi telegram", "lista gruppi telegram", "migliori gruppi telegram", "telegram groups italia"],
+  mainHeading: "Gruppi Telegram per Ogni Interesse",
+  subHeading: "Connettiti con persone che condividono le tue passioni. Sfoglia i gruppi.",
+  breadcrumbTelegram: "Telegram",
+  breadcrumbHome: "Home",
+  // Add more as needed
 };
 
 // Add other component-specific string objects below as needed

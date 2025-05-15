@@ -41,6 +41,18 @@ export default async function HomePage() {
                 className="block w-full px-6 py-4 bg-gradient-to-r from-pink-500 to-red-500 text-white text-lg font-semibold rounded-lg shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200 ease-in-out"
               />
             ))}
+            {/* Added Telegram Canali Link */}
+            <Link href="/telegram/canali" passHref>
+              <div className="block w-full px-6 py-4 bg-gradient-to-r from-blue-500 to-sky-500 text-white text-lg font-semibold rounded-lg shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200 ease-in-out cursor-pointer text-center">
+                {categoryDisplayNames['telegram-canali'] || 'Canali Telegram'}
+              </div>
+            </Link>
+            {/* Added Telegram Gruppi Link */}
+            <Link href="/telegram/gruppi" passHref>
+              <div className="block w-full px-6 py-4 bg-gradient-to-r from-green-500 to-emerald-500 text-white text-lg font-semibold rounded-lg shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200 ease-in-out cursor-pointer text-center">
+                {categoryDisplayNames['telegram-gruppi'] || 'Gruppi Telegram'}
+              </div>
+            </Link>
           </div>
         </section>
 

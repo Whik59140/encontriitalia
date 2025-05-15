@@ -16,4 +16,9 @@ export function capitalizeCityName(name: string): string {
     .join(' ');
 }
 
+export function capitalizeFirstLetter(str: string): string {
+  if (!str) return '';
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
 // You can add other string utility functions here in the future. 
